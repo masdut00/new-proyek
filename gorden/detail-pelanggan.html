@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pelanggan Gorden - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .component-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      background: var(--secondary);
+      transition: var(--transition-smooth);
+      margin-bottom: 1rem;
+    }
+    .component-card.active {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-box {
+      background: var(--primary-light);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      color: var(--text-dark);
+    }
+    .preview-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .preview-value {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    /* Custom Searchable Select Dropdown Styles */
+    .custom-select-container {
+      position: relative;
+      width: 100%;
+    }
+    .custom-select-trigger-wrap {
+      position: relative;
+    }
+    .custom-select-trigger-wrap::after {
+      content: '\F2E5'; /* Bootstrap Icon chevron-down */
+      font-family: 'bootstrap-icons';
+      position: absolute;
+      right: 1.15rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--text-muted);
+      transition: var(--transition-smooth);
+    }
+    .custom-select-container.open .custom-select-trigger-wrap::after {
+      transform: translateY(-50%) rotate(180deg);
+      color: var(--primary);
+    }
+    .custom-select-dropdown {
+      position: absolute;
+      top: 105%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg) !important;
+      z-index: 1060;
+      max-height: 180px;
+      overflow-y: auto;
+      transition: var(--transition-smooth);
+    }
+    .custom-select-option {
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: var(--text-body);
+      border-bottom: 1px solid rgba(241, 245, 249, 0.5);
+    }
+    .custom-select-option:last-child {
+      border-bottom: none;
+    }
+    .custom-select-option:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+    }
+    .custom-select-option .option-price {
+      font-weight: 700;
+      color: var(--success);
+      font-size: 0.8rem;
+    }
+    .custom-select-option.custom-add-option {
+      border-top: 1px dashed var(--border-color);
+      font-weight: 600;
+      color: var(--primary);
+      background-color: rgba(92, 96, 245, 0.02);
+    }
+
+    /* Print invoice layout */
+    .print-invoice {
+      display: none;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+      .sidebar, .bottom-nav, .page-header, .sidebar-overlay, .btn, .no-print, header, nav, .card, .alert, .modal {
+        display: none !important;
+      }
+      .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      .page-content {
+        padding: 0 !important;
+      }
+      .print-invoice {
+        display: block !important;
+      }
+      .table th {
+        background: #f1f5f9 !important;
+        color: #000000 !important;
+        border-bottom: 2px solid #000000 !important;
+      }
+      .table td {
+        border-bottom: 1px solid #cbd5e1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay print-hide" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar print-hide" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link active">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- Printable Invoice Header (Hidden on Screen, Shown on Print) -->
+    <div class="print-invoice container py-4">
+      <div class="row align-items-center mb-4 pb-3 border-bottom" style="border-bottom: 2px solid #000 !important;">
+        <div class="col-8">
+          <h2 class="fw-bold text-dark m-0" style="letter-spacing: -0.02em;">TOKO DUTA INTERIOR</h2>
+          <p class="text-dark small m-0 mt-1" style="font-weight: 500;">Penyedia Gorden, Vitrace, Blinds, Vertical Blinds & Kaca Film</p>
+          <p class="text-muted small m-0">No. Telp: 0812-3456-7890 | Alamat: Jln. Raya Duta No. 12, Kelapa Gading, Jakarta Utara</p>
+        </div>
+        <div class="col-4 text-end">
+          <h4 class="fw-bold m-0 text-primary">INVOICE PEMESANAN</h4>
+          <p class="text-muted small m-0 mt-1" id="printDate">Tanggal: -</p>
+          <p class="text-muted small m-0" id="printInvoiceNum">No: INV-GORDEN-</p>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-6">
+          <p class="text-muted small mb-1">Dibuat Untuk Pelanggan:</p>
+          <h5 class="fw-bold text-dark m-0" id="printCustomerName">-</h5>
+          <p class="text-muted small m-0" id="printCustomerPhone">-</p>
+          <p class="text-muted small m-0" id="printCustomerAddress">-</p>
+        </div>
+        <div class="col-6 text-end">
+          <p class="text-muted small mb-1">Status Pemesanan:</p>
+          <h5 class="fw-bold text-success m-0">FIXED ORDER</h5>
+          <p class="text-muted small m-0">Semua Ukuran Sudah Divalidasi</p>
+        </div>
+      </div>
+      
+      <table class="table table-bordered mb-4">
+        <thead>
+          <tr class="table-light">
+            <th style="width: 40px;">No</th>
+            <th>Jendela & Ukuran</th>
+            <th>Rincian Pemakaian & Bahan</th>
+            <th class="text-end" style="width: 160px;">Subtotal Jendela</th>
+          </tr>
+        </thead>
+        <tbody id="printInvoiceBody">
+          <!-- Populated dynamically during printing -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" class="text-end">Total Nilai Kotor</th>
+            <th class="text-end text-dark" id="printSubtotal">Rp 0</th>
+          </tr>
+          <tr>
+            <th colspan="3" class="text-end text-danger">Potongan Diskon</th>
+            <th class="text-end text-danger" id="printDiscount">Rp 0</th>
+          </tr>
+          <tr class="table-light">
+            <th colspan="3" class="text-end fs-6">Grand Total Pembayaran</th>
+            <th class="text-end text-primary fw-bold fs-6" id="printGrandTotal">Rp 0</th>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="row mt-5 pt-4">
+        <div class="col-4 text-center">
+          <p class="small text-muted mb-5 pb-3">Pelanggan</p>
+          <p class="small fw-bold m-0 border-top pt-2" id="printSignClient">-</p>
+        </div>
+        <div class="col-4 offset-4 text-center">
+          <p class="small text-muted mb-5 pb-3">Admin Duta Interior</p>
+          <p class="small fw-bold m-0 border-top pt-2">Duta Interior Gorden</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen UI Header -->
+    <header class="page-header print-hide">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title" id="pageTitle">Detail Pelanggan</h1>
+          <p class="page-subtitle">Informasi lengkap pesanan jendela per pelanggan</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Screen UI Content -->
+    <main class="page-content print-hide">
+      <div class="row">
+        
+        <!-- Left: Customer Info Card -->
+        <div class="col-12 col-lg-4 mb-4">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Informasi Pelanggan</h3>
+            </div>
+            <div class="card-body">
+              <div class="text-center mb-3">
+                <div class="display-4 text-primary mb-2">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+                <h2 class="h5 mb-1" id="namaPelanggan">-</h2>
+                <p class="text-muted small mb-0" id="alamatPelanggan">-</p>
+              </div>
+
+              <hr>
+
+              <div class="mb-3">
+                <p class="text-muted small mb-1">Telepon</p>
+                <p class="mb-0 fw-semibold" id="teleponPelanggan">-</p>
+              </div>
+
+              <div class="mb-3">
+                <p class="text-muted small mb-1">Alamat Pemasangan</p>
+                <p class="mb-0" id="alamatLengkap">-</p>
+              </div>
+
+              <div class="d-grid gap-2">
+                <a href="/gorden/pelanggan.html" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-left me-1"></i> Kembali
+                </a>
+                <button class="btn btn-outline-danger action-btn d-none" id="deleteBtn">
+                  <i class="bi bi-trash me-1"></i> Hapus Pelanggan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Grouped Windows & Summary -->
+        <div class="col-12 col-lg-8">
+          
+          <!-- Summary & Discount Card -->
+          <div class="card mb-4">
+            <div class="card-body p-4">
+              <div class="row text-center mb-4">
+                <div class="col-4 border-end">
+                  <p class="display-6 text-primary mb-1" id="jumlahJendela">0</p>
+                  <p class="text-muted small mb-0">Total Jendela</p>
+                </div>
+                <div class="col-4 border-end">
+                  <p class="display-6 text-success mb-1" id="totalKain">0.0</p>
+                  <p class="text-muted small mb-0">Meter Kain</p>
+                </div>
+                <div class="col-4">
+                  <p class="display-6 text-warning mb-1" id="totalNilai">Rp 0</p>
+                  <p class="text-muted small mb-0">Total Nilai (Kotor)</p>
+                </div>
+              </div>
+              
+              <div class="row align-items-end border-top pt-3 g-3">
+                <div class="col-12 col-md-5">
+                  <label class="form-label small mb-1">Potongan Diskon Akhir (Rp)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">Rp</span>
+                    <input type="number" class="form-control" id="diskonInput" value="0" placeholder="Contoh: 50000">
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 text-center text-md-start">
+                  <span class="text-muted small d-block">Grand Total Pembayaran</span>
+                  <strong class="fs-4 text-success" id="grandTotalVal">Rp 0</strong>
+                </div>
+                <div class="col-6 col-md-3 text-end">
+                  <button class="btn btn-primary w-100 py-2.5" id="printInvoiceBtn">
+                    <i class="bi bi-printer me-1"></i> Cetak Invoice
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grouped Windows List -->
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3 class="card-title"><i class="bi bi-window-split me-2"></i>Daftar Jendela</h3>
+              <button class="btn btn-sm btn-primary action-btn d-none" id="addPesananBtn">
+                <i class="bi bi-plus"></i> Tambah Jendela
+              </button>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Lokasi</th>
+                      <th>Ukuran (cm)</th>
+                      <th>Komponen</th>
+                      <th class="text-end">Rincian Kain & Harga</th>
+                      <th class="text-end">Subtotal Jendela</th>
+                      <th class="text-center" style="width: 110px;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pesananBody">
+                    <tr>
+                      <td colspan="6" class="text-center py-4 text-muted">Memuat data pesanan...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav print-hide">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Add/Edit Pesanan Modal -->
+  <div class="modal fade" id="pesananModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title" id="modalTitle">Tambah Pesanan Jendela</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="pesananForm">
+            <!-- Info Ukuran Jendela -->
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-4">
+                <label class="form-label">Lokasi Jendela <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="modalLokasiJendela" placeholder="Kamar Utama, Ruang Tamu">
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">Lebar Jendela (cm) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="modalLebarCm" placeholder="100">
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="modalTinggiCm" placeholder="200">
+              </div>
+            </div>
+
+            <!-- KOMPONEN 1: Kain Gorden -->
+            <div class="component-card active" id="modalGordenBox">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="modalGordenChecked" checked>
+                  <label class="form-check-label fw-bold text-dark" for="modalGordenChecked">
+                    Kain Gorden (Utama)
+                  </label>
+                </div>
+              </div>
+              <div class="row g-3" id="modalGordenFields">
+                <div class="col-12 col-md-7">
+                  <label class="form-label small">Nama Produk / Motif Gorden</label>
+                  <div class="custom-select-container" id="modalGordenSelectContainer">
+                    <div class="custom-select-trigger-wrap">
+                      <input type="text" class="form-control custom-select-trigger" id="modalGordenSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                    </div>
+                    <div class="custom-select-dropdown shadow-lg d-none" id="modalGordenDropdown"></div>
+                  </div>
+                  <input type="hidden" id="modalGordenProduk" value="">
+                </div>
+                <div class="col-12 col-md-5">
+                  <label class="form-label small">Harga per Meter (Rp)</label>
+                  <input type="number" class="form-control" id="modalGordenHarga" value="0">
+                </div>
+              </div>
+            </div>
+
+            <!-- KOMPONEN 2: Vitrace (Daleman) -->
+            <div class="component-card" id="modalVitraceBox">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="modalVitraceChecked">
+                  <label class="form-check-label fw-bold text-dark" for="modalVitraceChecked">
+                    Kain Vitrace (Daleman Transparan)
+                  </label>
+                </div>
+              </div>
+              <div class="row g-3 d-none" id="modalVitraceFields">
+                <div class="col-12 col-md-7">
+                  <label class="form-label small">Nama Produk Vitrace</label>
+                  <div class="custom-select-container" id="modalVitraceSelectContainer">
+                    <div class="custom-select-trigger-wrap">
+                      <input type="text" class="form-control custom-select-trigger" id="modalVitraceSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                    </div>
+                    <div class="custom-select-dropdown shadow-lg d-none" id="modalVitraceDropdown"></div>
+                  </div>
+                  <input type="hidden" id="modalVitraceProduk" value="">
+                </div>
+                <div class="col-12 col-md-5">
+                  <label class="form-label small">Harga per Meter (Rp)</label>
+                  <input type="number" class="form-control" id="modalVitraceHarga" value="0" disabled>
+                </div>
+              </div>
+            </div>
+
+            <!-- KOMPONEN 3: Rell / Batang -->
+            <div class="component-card" id="modalRellBox">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="modalRellChecked">
+                  <label class="form-check-label fw-bold text-dark" for="modalRellChecked">
+                    Rell / Batang Gorden
+                  </label>
+                </div>
+              </div>
+              <div class="row g-3 d-none" id="modalRellFields">
+                <div class="col-12 col-md-7">
+                  <label class="form-label small">Tipe Rell</label>
+                  <div class="custom-select-container" id="modalRellSelectContainer">
+                    <div class="custom-select-trigger-wrap">
+                      <input type="text" class="form-control custom-select-trigger" id="modalRellSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                    </div>
+                    <div class="custom-select-dropdown shadow-lg d-none" id="modalRellDropdown"></div>
+                  </div>
+                  <input type="hidden" id="modalRellProduk" value="">
+                </div>
+                <div class="col-12 col-md-5">
+                  <label class="form-label small">Harga per Meter (Rp)</label>
+                  <input type="number" class="form-control" id="modalRellHarga" value="0" disabled>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Preview calculations -->
+            <div class="preview-box mt-4">
+              <div class="row text-center g-2">
+                <div class="col-6 col-md-3">
+                  <div class="preview-title">Kain Gorden</div>
+                  <div class="preview-value" id="modalEstGorden">-</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="preview-title">Kain Vitrace</div>
+                  <div class="preview-value" id="modalEstVitrace">-</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="preview-title">Batang Rell</div>
+                  <div class="preview-value" id="modalEstRell">-</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="preview-title">Total Jendela</div>
+                  <div class="preview-value text-primary fs-6" id="modalEstTotal">-</div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="savePesanan">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Pelanggan Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold">Hapus Pelanggan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-muted">
+          Apakah Anda yakin ingin menghapus pelanggan ini? Semua pesanan jendela akan ikut terhapus permanen dari database.
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { isLoggedIn } from '/assets/js/auth.js';
+    import { 
+      getPelangganById, 
+      deletePelanggan, 
+      createPesananJendela, 
+      deletePesananJendela, 
+      getProdukKatalog, 
+      updatePelangganDiscount, 
+      formatCurrency, 
+      showToast 
+    } from '/assets/js/app.js';
+
+    // State variables
+    let pelangganData = null;
+    let pelangganId = null;
+    let produkKatalogDb = [];
+    let groupedWindows = [];
+    let editingGroupKey = null;
+    let loggedIn = false;  // module-level so loadData() can access it
+
+    // Modal DOM Elements
+    const pesananModal = new bootstrap.Modal(document.getElementById('pesananModal'));
+    const delModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+    const modalLokasiInput = document.getElementById('modalLokasiJendela');
+    const modalLebarInput = document.getElementById('modalLebarCm');
+    const modalTinggiInput = document.getElementById('modalTinggiCm');
+
+    const modalGordenCheck = document.getElementById('modalGordenChecked');
+    const modalGordenHidden = document.getElementById('modalGordenProduk');
+    const modalGordenTrigger = document.getElementById('modalGordenSelectTrigger');
+    const modalGordenHargaInput = document.getElementById('modalGordenHarga');
+    const modalGordenFields = document.getElementById('modalGordenFields');
+
+    const modalVitraceCheck = document.getElementById('modalVitraceChecked');
+    const modalVitraceHidden = document.getElementById('modalVitraceProduk');
+    const modalVitraceTrigger = document.getElementById('modalVitraceSelectTrigger');
+    const modalVitraceHargaInput = document.getElementById('modalVitraceHarga');
+    const modalVitraceFields = document.getElementById('modalVitraceFields');
+
+    const modalRellCheck = document.getElementById('modalRellChecked');
+    const modalRellHidden = document.getElementById('modalRellProduk');
+    const modalRellTrigger = document.getElementById('modalRellSelectTrigger');
+    const modalRellHargaInput = document.getElementById('modalRellHarga');
+    const modalRellFields = document.getElementById('modalRellFields');
+
+    const modalEstGorden = document.getElementById('modalEstGorden');
+    const modalEstVitrace = document.getElementById('modalEstVitrace');
+    const modalEstRell = document.getElementById('modalEstRell');
+    const modalEstTotal = document.getElementById('modalEstTotal');
+
+    const diskonInput = document.getElementById('diskonInput');
+    const grandTotalVal = document.getElementById('grandTotalVal');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Mobile menu toggle
+      document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+      });
+      document.getElementById('sidebarOverlay').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      });
+
+      // Check auth
+      loggedIn = await isLoggedIn();
+      if (loggedIn) {
+        document.querySelectorAll('.action-btn').forEach(btn => btn.classList.remove('d-none'));
+      }
+
+      // Get ID from URL
+      const params = new URLSearchParams(window.location.search);
+      pelangganId = params.get('id');
+
+      if (!pelangganId) {
+        window.location.href = '/gorden/pelanggan.html';
+        return;
+      }
+
+      // Load Catalog and Customer Info
+      try {
+        produkKatalogDb = await getProdukKatalog();
+      } catch (err) {
+        console.error("Gagal memuat produk katalog:", err);
+      }
+
+      // Setup Searchable Dropdowns inside the Modal
+      initSearchableSelect(
+        'modalGordenSelectContainer',
+        'modalGordenProduk',
+        'modalGordenHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Gorden') || p.kategori.includes('Blind') || p.kategori.includes('Kaca Film')
+      );
+
+      initSearchableSelect(
+        'modalVitraceSelectContainer',
+        'modalVitraceProduk',
+        'modalVitraceHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Vitrace')
+      );
+
+      initSearchableSelect(
+        'modalRellSelectContainer',
+        'modalRellProduk',
+        'modalRellHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Rell') || p.kategori.includes('Aksesoris')
+      );
+
+      // Setup checkbox visibility togglers inside the Modal
+      setupCheckboxToggle(modalGordenCheck, modalGordenFields, modalGordenHargaInput, 'modalGordenBox');
+      setupCheckboxToggle(modalVitraceCheck, modalVitraceFields, modalVitraceHargaInput, 'modalVitraceBox');
+      setupCheckboxToggle(modalRellCheck, modalRellFields, modalRellHargaInput, 'modalRellBox');
+
+      // Listeners for calculations inside the Modal
+      [modalLebarInput, modalTinggiInput, modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput].forEach(inp => {
+        inp.addEventListener('input', runModalCalculations);
+      });
+      [modalGordenCheck, modalVitraceCheck, modalRellCheck].forEach(chk => {
+        chk.addEventListener('change', runModalCalculations);
+      });
+
+      // Load data
+      await loadData();
+
+      // Discount event listener
+      diskonInput.addEventListener('change', handleDiscountChange);
+      diskonInput.addEventListener('input', updateGrandTotalDisplay);
+
+      // Event handlers
+      document.getElementById('addPesananBtn').addEventListener('click', () => openEditModal(null));
+      document.getElementById('savePesanan').addEventListener('click', savePesanan);
+      document.getElementById('deleteBtn').addEventListener('click', () => delModal.show());
+      document.getElementById('confirmDelete').addEventListener('click', handleDelete);
+      document.getElementById('printInvoiceBtn').addEventListener('click', triggerInvoicePrint);
+    }
+
+    async function loadData() {
+      try {
+        pelangganData = await getPelangganById(pelangganId);
+
+        if (!pelangganData) {
+          showToast('Pelanggan tidak ditemukan di database', 'error');
+          setTimeout(() => window.location.href = '/gorden/pelanggan.html', 2000);
+          return;
+        }
+
+        // Update UI
+        document.getElementById('pageTitle').textContent = pelangganData.nama_pelanggan;
+        document.getElementById('namaPelanggan').textContent = pelangganData.nama_pelanggan;
+        document.getElementById('alamatPelanggan').textContent = pelangganData.alamat || 'Tidak ada alamat';
+        document.getElementById('teleponPelanggan').textContent = pelangganData.telepon || '-';
+        document.getElementById('alamatLengkap').textContent = pelangganData.alamat || '-';
+        diskonInput.value = pelangganData.diskon || 0;
+
+        // Group window orders
+        groupedWindows = groupPesananByWindow(pelangganData.pesanan_jendela || []);
+
+        // Calculate totals (safe null check for lokasi_jendela)
+        const rawPesanan = pelangganData.pesanan_jendela || [];
+        const totalKain = rawPesanan
+          .filter(p => p.komponen !== 'rell' && !(p.lokasi_jendela || '').toLowerCase().includes('rell'))
+          .reduce((a, p) => a + (parseFloat(p.kebutuhan_kain_m) || 0), 0);
+        const totalHarga = rawPesanan.reduce((a, p) => a + (p.total_harga || 0), 0);
+
+        document.getElementById('jumlahJendela').textContent = groupedWindows.length;
+        document.getElementById('totalKain').textContent = totalKain.toFixed(1) + ' m';
+        document.getElementById('totalNilai').textContent = formatCurrency(totalHarga);
+        updateGrandTotalDisplay();
+
+        // Render grouped table
+        const tbody = document.getElementById('pesananBody');
+        if (groupedWindows.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">Belum ada pesanan jendela terdaftar</td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = groupedWindows.map(win => {
+            const compLabels = [];
+            const detailRows = [];
+
+            if (win.components.gorden) {
+              compLabels.push('<span class="badge bg-primary-light text-primary me-1">Gorden</span>');
+              const g = win.components.gorden;
+              const kainM = parseFloat(g.kebutuhan_kain_m) || 0;
+              const hargaM = g.harga_per_m || 0;
+              detailRows.push(`<div>Gorden: <strong>${g.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m × Rp ${hargaM.toLocaleString('id-ID')})</div>`);
+            }
+
+            if (win.components.vitrace) {
+              compLabels.push('<span class="badge bg-info-light text-info me-1">Vitrace</span>');
+              const v = win.components.vitrace;
+              const kainM = parseFloat(v.kebutuhan_kain_m) || 0;
+              const hargaM = v.harga_per_m || 0;
+              detailRows.push(`<div>Vitrace: <strong>${v.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m × Rp ${hargaM.toLocaleString('id-ID')})</div>`);
+            }
+
+            if (win.components.rell) {
+              compLabels.push('<span class="badge bg-secondary-light text-secondary me-1">Rell</span>');
+              const r = win.components.rell;
+              const kainM = parseFloat(r.kebutuhan_kain_m) || 0;
+              const hargaM = r.harga_per_m || 0;
+              detailRows.push(`<div>Rell: <strong>${r.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m × Rp ${hargaM.toLocaleString('id-ID')})</div>`);
+            }
+
+            if (compLabels.length === 0) {
+              compLabels.push('<span class="badge bg-secondary-light text-secondary me-1">Standar</span>');
+            }
+
+            const key = win.id;
+
+            return `
+              <tr>
+                <td><strong>${win.nama_jendela}</strong></td>
+                <td>${win.lebar_cm} x ${win.tinggi_cm} cm</td>
+                <td>${compLabels.join('')}</td>
+                <td class="text-end small text-muted">${detailRows.join('') || '-'}</td>
+                <td class="text-end text-success fw-semibold">${formatCurrency(win.totalHarga)}</td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-outline-primary btn-edit-grouped action-btn d-none me-1" data-key="${key}" title="Edit Jendela">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger btn-del-grouped action-btn d-none" data-key="${key}" title="Hapus Jendela">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+
+          // Re-enable actions display if logged in
+          if (loggedIn) {
+            document.querySelectorAll('.action-btn').forEach(btn => btn.classList.remove('d-none'));
+          }
+
+          // Attach click listeners
+          document.querySelectorAll('.btn-edit-grouped').forEach(btn => {
+            btn.addEventListener('click', () => openEditModal(btn.dataset.key));
+          });
+
+          document.querySelectorAll('.btn-del-grouped').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              const key = btn.dataset.key;
+              const win = groupedWindows.find(w => w.id === key);
+              if (win && confirm(`Apakah Anda yakin ingin menghapus seluruh spesifikasi untuk jendela "${win.nama_jendela}"?`)) {
+                try {
+                  const deletePromises = win.rawRows.map(row => deletePesananJendela(row.id));
+                  await Promise.all(deletePromises);
+                  showToast(`Jendela "${win.nama_jendela}" berhasil dihapus`, 'success');
+                  await loadData();
+                } catch (err) {
+                  showToast(err.message, 'error');
+                }
+              }
+            });
+          });
+        }
+
+        document.title = `${pelangganData.nama_pelanggan} - Pelanggan Gorden`;
+      } catch (error) {
+        console.error('Error loading pelanggan data:', error);
+        const errMsg = error?.message || 'Error tidak diketahui';
+        showToast(`Gagal memuat data: ${errMsg}`, 'error');
+        // Only redirect if it's PGRST116 (not found) - otherwise show error and stay
+        if (errMsg.includes('PGRST116') || errMsg.includes('not found') || errMsg.includes('0 rows')) {
+          setTimeout(() => window.location.href = '/gorden/pelanggan.html', 2000);
+        }
+      }
+    }
+
+    // Grouping helper
+    function groupPesananByWindow(pesananList) {
+      const grouped = {};
+      pesananList.forEach(p => {
+        let windowName = p.nama_jendela;
+        let componentType = p.komponen;
+        let prodName = p.produk_nama;
+
+        // Fallback parsing for old records
+        if (!windowName) {
+          const parts = p.lokasi_jendela.split(' - ');
+          windowName = parts[0] || 'Jendela Utama';
+          if (parts[1]) {
+            const compParts = parts[1].split(' (');
+            componentType = compParts[0].trim().toLowerCase();
+            if (compParts[1]) {
+              prodName = compParts[1].replace(')', '').trim();
+            } else {
+              prodName = 'Kustom';
+            }
+          } else {
+            componentType = 'gorden';
+            prodName = 'Kustom';
+          }
+        }
+
+        const key = p.window_group_id || `${windowName}_${p.lebar_cm}_${p.tinggi_cm}`;
+        if (!grouped[key]) {
+          grouped[key] = {
+            id: key,
+            window_group_id: p.window_group_id || key,
+            nama_jendela: windowName,
+            lebar_cm: parseFloat(p.lebar_cm),
+            tinggi_cm: parseFloat(p.tinggi_cm),
+            components: {},
+            totalHarga: 0,
+            rawRows: []
+          };
+        }
+
+        grouped[key].components[componentType] = {
+          id: p.id,
+          produk_nama: prodName,
+          harga_per_m: p.harga_per_m,
+          kebutuhan_kain_m: parseFloat(p.kebutuhan_kain_m),
+          total_harga: p.total_harga,
+          foto_kain_url: p.foto_kain_url
+        };
+        grouped[key].totalHarga += p.total_harga;
+        grouped[key].rawRows.push(p);
+      });
+      return Object.values(grouped);
+    }
+
+    // Modal Edit Opening and Prefill
+    function openEditModal(key = null) {
+      document.getElementById('pesananForm').reset();
+      
+      if (key) {
+        editingGroupKey = key;
+        const win = groupedWindows.find(w => w.id === key);
+        if (!win) return;
+
+        document.getElementById('modalTitle').textContent = `Ubah Spesifikasi: ${win.nama_jendela}`;
+        modalLokasiInput.value = win.nama_jendela;
+        modalLebarInput.value = win.lebar_cm;
+        modalTinggiInput.value = win.tinggi_cm;
+
+        // Gorden
+        if (win.components.gorden) {
+          modalGordenCheck.checked = true;
+          const matched = produkKatalogDb.find(p => p.nama.toLowerCase() === win.components.gorden.produk_nama.toLowerCase());
+          modalGordenHidden.value = matched ? matched.id : 'custom';
+          modalGordenTrigger.value = win.components.gorden.produk_nama;
+          modalGordenHargaInput.value = win.components.gorden.harga_per_m;
+        } else {
+          modalGordenCheck.checked = false;
+        }
+
+        // Vitrace
+        if (win.components.vitrace) {
+          modalVitraceCheck.checked = true;
+          const matched = produkKatalogDb.find(p => p.nama.toLowerCase() === win.components.vitrace.produk_nama.toLowerCase());
+          modalVitraceHidden.value = matched ? matched.id : 'custom';
+          modalVitraceTrigger.value = win.components.vitrace.produk_nama;
+          modalVitraceHargaInput.value = win.components.vitrace.harga_per_m;
+        } else {
+          modalVitraceCheck.checked = false;
+        }
+
+        // Rell
+        if (win.components.rell) {
+          modalRellCheck.checked = true;
+          const matched = produkKatalogDb.find(p => p.nama.toLowerCase() === win.components.rell.produk_nama.toLowerCase());
+          modalRellHidden.value = matched ? matched.id : 'custom';
+          modalRellTrigger.value = win.components.rell.produk_nama;
+          modalRellHargaInput.value = win.components.rell.harga_per_m;
+        } else {
+          modalRellCheck.checked = false;
+        }
+      } else {
+        editingGroupKey = null;
+        document.getElementById('modalTitle').textContent = "Tambah Pesanan Jendela Baru";
+        modalLokasiInput.value = 'Jendela ' + (groupedWindows.length + 1);
+        modalLebarInput.value = '';
+        modalTinggiInput.value = '';
+
+        modalGordenCheck.checked = true;
+        modalVitraceCheck.checked = false;
+        modalRellCheck.checked = false;
+
+        initDefaultModalProductSelections();
+      }
+
+      // Trigger visibility updates
+      modalGordenCheck.dispatchEvent(new Event('change'));
+      modalVitraceCheck.dispatchEvent(new Event('change'));
+      modalRellCheck.dispatchEvent(new Event('change'));
+
+      runModalCalculations();
+      pesananModal.show();
+    }
+
+    function initDefaultModalProductSelections() {
+      // Gorden Default
+      const firstGorden = produkKatalogDb.find(p => p.kategori.includes('Gorden'));
+      if (firstGorden) {
+        modalGordenHidden.value = firstGorden.id;
+        modalGordenTrigger.value = firstGorden.nama;
+        modalGordenHargaInput.value = firstGorden.harga;
+      }
+      // Vitrace Default
+      const firstVitrace = produkKatalogDb.find(p => p.kategori.includes('Vitrace'));
+      if (firstVitrace) {
+        modalVitraceHidden.value = firstVitrace.id;
+        modalVitraceTrigger.value = firstVitrace.nama;
+        modalVitraceHargaInput.value = firstVitrace.harga;
+      }
+      // Rell Default
+      const firstRell = produkKatalogDb.find(p => p.kategori.includes('Rell'));
+      if (firstRell) {
+        modalRellHidden.value = firstRell.id;
+        modalRellTrigger.value = firstRell.nama;
+        modalRellHargaInput.value = firstRell.harga;
+      }
+    }
+
+    function setupCheckboxToggle(checkbox, fieldsDiv, priceInput, cardId) {
+      const card = document.getElementById(cardId);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          fieldsDiv.classList.remove('d-none');
+          priceInput.disabled = false;
+          card.classList.add('active');
+        } else {
+          fieldsDiv.classList.add('d-none');
+          priceInput.disabled = true;
+          card.classList.remove('active');
+        }
+        runModalCalculations();
+      });
+    }
+
+    function initSearchableSelect(containerId, hiddenInputId, priceInputId, products, categoryFilter) {
+      const container = document.getElementById(containerId);
+      const triggerInput = container.querySelector('.custom-select-trigger');
+      const dropdown = container.querySelector('.custom-select-dropdown');
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const priceInput = document.getElementById(priceInputId);
+
+      const filteredProducts = products.filter(categoryFilter);
+
+      function renderOptions(searchTerm = '') {
+        dropdown.innerHTML = '';
+        const term = searchTerm.toLowerCase().trim();
+
+        filteredProducts.forEach(prod => {
+          if (prod.nama.toLowerCase().includes(term) || prod.kategori.toLowerCase().includes(term)) {
+            const opt = document.createElement('div');
+            opt.className = 'custom-select-option';
+            opt.innerHTML = `
+              <div><strong class="text-dark d-block" style="font-size:0.85rem">${prod.nama}</strong><small class="text-muted">${prod.kategori}</small></div>
+              <span class="option-price">Rp ${prod.harga.toLocaleString('id-ID')}/${prod.satuan}</span>
+            `;
+            opt.addEventListener('click', () => {
+              hiddenInput.value = prod.id;
+              triggerInput.value = prod.nama;
+              priceInput.value = prod.harga;
+              closeDropdown();
+              triggerInput.dispatchEvent(new Event('input'));
+              priceInput.dispatchEvent(new Event('input'));
+            });
+            dropdown.appendChild(opt);
+          }
+        });
+
+        // Add custom
+        if (term.length > 0) {
+          const customOpt = document.createElement('div');
+          customOpt.className = 'custom-select-option custom-add-option';
+          customOpt.innerHTML = `<div><strong class="text-primary">Gunakan Kustom</strong><small class="text-muted d-block">"${searchTerm}"</small></div><span class="option-price text-primary">Input Harga</span>`;
+          customOpt.addEventListener('click', () => {
+            hiddenInput.value = 'custom';
+            triggerInput.value = searchTerm;
+            priceInput.value = '';
+            priceInput.disabled = false;
+            priceInput.focus();
+            closeDropdown();
+            triggerInput.dispatchEvent(new Event('input'));
+            priceInput.dispatchEvent(new Event('input'));
+          });
+          dropdown.appendChild(customOpt);
+        }
+      }
+
+      function openDropdown() {
+        document.querySelectorAll('.custom-select-container').forEach(c => {
+          if (c.id !== containerId) {
+            c.classList.remove('open');
+            c.querySelector('.custom-select-dropdown').classList.add('d-none');
+          }
+        });
+        container.classList.add('open');
+        dropdown.classList.remove('d-none');
+        renderOptions(triggerInput.value);
+      }
+
+      function closeDropdown() {
+        container.classList.remove('open');
+        dropdown.classList.add('d-none');
+      }
+
+      triggerInput.addEventListener('focus', () => {
+        triggerInput.select();
+        openDropdown();
+      });
+      triggerInput.addEventListener('input', () => {
+        openDropdown();
+        const exactMatch = filteredProducts.find(p => p.nama.toLowerCase() === triggerInput.value.toLowerCase());
+        if (exactMatch) {
+          hiddenInput.value = exactMatch.id;
+          priceInput.value = exactMatch.harga;
+        } else {
+          hiddenInput.value = 'custom';
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+    }
+
+    function runModalCalculations() {
+      const lebar = parseFloat(modalLebarInput.value) || 0;
+      const tinggi = parseFloat(modalTinggiInput.value) || 0;
+
+      let gordenCost = 0;
+      let vitraceCost = 0;
+      let rellCost = 0;
+
+      const kainQty = lebar > 0 ? (lebar / 100) * 2.5 : 0;
+      const rellQty = lebar > 0 ? (lebar + 30) / 100 : 0;
+
+      if (modalGordenCheck.checked && lebar > 0) {
+        const price = parseInt(modalGordenHargaInput.value) || 0;
+        gordenCost = kainQty * price;
+        modalEstGorden.textContent = `${kainQty.toFixed(1)} m`;
+      } else {
+        modalEstGorden.textContent = '-';
+      }
+
+      if (modalVitraceCheck.checked && lebar > 0) {
+        const price = parseInt(modalVitraceHargaInput.value) || 0;
+        vitraceCost = kainQty * price;
+        modalEstVitrace.textContent = `${kainQty.toFixed(1)} m`;
+      } else {
+        modalEstVitrace.textContent = '-';
+      }
+
+      if (modalRellCheck.checked && lebar > 0) {
+        const price = parseInt(modalRellHargaInput.value) || 0;
+        rellCost = rellQty * price;
+        modalEstRell.textContent = `${rellQty.toFixed(1)} m`;
+      } else {
+        modalEstRell.textContent = '-';
+      }
+
+      const total = gordenCost + vitraceCost + rellCost;
+      if (total > 0) {
+        modalEstTotal.textContent = formatCurrency(Math.round(total));
+      } else {
+        modalEstTotal.textContent = '-';
+      }
+    }
+
+    // Save Pesanan (Modal Submission)
+    async function savePesanan() {
+      const lokasi = modalLokasiInput.value.trim();
+      const lebar = parseFloat(modalLebarInput.value);
+      const tinggi = parseFloat(modalTinggiInput.value);
+
+      if (!lokasi || !lebar || !tinggi) {
+        showToast('Masukkan lokasi, lebar, dan tinggi jendela!', 'error');
+        return;
+      }
+
+      const gordenChecked = modalGordenCheck.checked;
+      const vitraceChecked = modalVitraceCheck.checked;
+      const rellChecked = modalRellCheck.checked;
+
+      if (!gordenChecked && !vitraceChecked && !rellChecked) {
+        showToast('Centang minimal satu komponen jendela!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('savePesanan');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+
+      try {
+        let activeGroupId = editingGroupKey;
+
+        // If we were editing, delete all old rows in this group first
+        if (editingGroupKey) {
+          const win = groupedWindows.find(w => w.id === editingGroupKey);
+          if (win) {
+            const deletePromises = win.rawRows.map(row => deletePesananJendela(row.id));
+            await Promise.all(deletePromises);
+            activeGroupId = win.window_group_id || editingGroupKey;
+          }
+        } else {
+          // New window, generate group ID
+          activeGroupId = 'win_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+        }
+
+        const promises = [];
+        const kainQty = (lebar / 100) * 2.5;
+        const rellQty = (lebar + 30) / 100;
+
+        if (gordenChecked) {
+          const prodName = modalGordenTrigger.value.trim() || 'Custom Gorden';
+          const price = parseInt(modalGordenHargaInput.value) || 0;
+          promises.push(createPesananJendela({
+            id_pelanggan: pelangganId,
+            lokasi_jendela: `${lokasi} - Gorden (${prodName})`,
+            tinggi_cm: tinggi,
+            lebar_cm: lebar,
+            kebutuhan_kain_m: kainQty,
+            harga_per_m: price,
+            total_harga: Math.round(kainQty * price),
+            nama_jendela: lokasi,
+            komponen: 'gorden',
+            produk_nama: prodName,
+            window_group_id: activeGroupId
+          }));
+        }
+
+        if (vitraceChecked) {
+          const prodName = modalVitraceTrigger.value.trim() || 'Custom Vitrace';
+          const price = parseInt(modalVitraceHargaInput.value) || 0;
+          promises.push(createPesananJendela({
+            id_pelanggan: pelangganId,
+            lokasi_jendela: `${lokasi} - Vitrace (${prodName})`,
+            tinggi_cm: tinggi,
+            lebar_cm: lebar,
+            kebutuhan_kain_m: kainQty,
+            harga_per_m: price,
+            total_harga: Math.round(kainQty * price),
+            nama_jendela: lokasi,
+            komponen: 'vitrace',
+            produk_nama: prodName,
+            window_group_id: activeGroupId
+          }));
+        }
+
+        if (rellChecked) {
+          const prodName = modalRellTrigger.value.trim() || 'Custom Rell';
+          const price = parseInt(modalRellHargaInput.value) || 0;
+          promises.push(createPesananJendela({
+            id_pelanggan: pelangganId,
+            lokasi_jendela: `${lokasi} - Rell (${prodName})`,
+            tinggi_cm: tinggi,
+            lebar_cm: lebar,
+            kebutuhan_kain_m: rellQty,
+            harga_per_m: price,
+            total_harga: Math.round(rellQty * price),
+            nama_jendela: lokasi,
+            komponen: 'rell',
+            produk_nama: prodName,
+            window_group_id: activeGroupId
+          }));
+        }
+
+        await Promise.all(promises);
+        showToast('Jendela berhasil disimpan!', 'success');
+        pesananModal.hide();
+        await loadData();
+
+      } catch (err) {
+        showToast(`Gagal menyimpan: ${err.message}`, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = 'Simpan Perubahan';
+      }
+    }
+
+    // Save Discount to Database
+    async function handleDiscountChange() {
+      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      diskonInput.value = disc;
+      
+      try {
+        await updatePelangganDiscount(pelangganId, disc);
+        showToast('Diskon berhasil disimpan ke database!', 'success');
+        updateGrandTotalDisplay();
+      } catch (err) {
+        showToast(`Gagal menyimpan diskon: ${err.message}`, 'error');
+      }
+    }
+
+    // Reactive Total updates
+    function updateGrandTotalDisplay() {
+      const rawPesanan = pelangganData?.pesanan_jendela || [];
+      const totalKotor = rawPesanan.reduce((a, p) => a + (p.total_harga || 0), 0);
+      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      const grandTotal = Math.max(0, totalKotor - disc);
+      
+      grandTotalVal.textContent = formatCurrency(grandTotal);
+    }
+
+    // Delete customer completely
+    async function handleDelete() {
+      try {
+        await deletePelanggan(pelangganId);
+        showToast('Pelanggan berhasil dihapus!', 'success');
+        delModal.hide();
+        setTimeout(() => window.location.href = '/gorden/pelanggan.html', 1000);
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    }
+
+    // Trigger Print layout populated and window.print()
+    function triggerInvoicePrint() {
+      const today = new Date();
+      document.getElementById('printDate').textContent = "Tanggal: " + new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(today);
+      document.getElementById('printInvoiceNum').textContent = "No: INV-GORDEN-" + pelangganId.substring(0, 8).toUpperCase();
+      document.getElementById('printCustomerName').textContent = pelangganData.nama_pelanggan;
+      document.getElementById('printCustomerPhone').textContent = pelangganData.telepon || 'Tidak ada no telepon';
+      document.getElementById('printCustomerAddress').textContent = pelangganData.alamat || 'Tidak ada alamat';
+      document.getElementById('printSignClient').textContent = pelangganData.nama_pelanggan;
+
+      // Subtotal & Grand calculations
+      const rawPesanan = pelangganData.pesanan_jendela || [];
+      const totalKotor = rawPesanan.reduce((a, p) => a + (p.total_harga || 0), 0);
+      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      const grandTotal = Math.max(0, totalKotor - disc);
+
+      document.getElementById('printSubtotal').textContent = formatCurrency(totalKotor);
+      document.getElementById('printDiscount').textContent = formatCurrency(disc);
+      document.getElementById('printGrandTotal').textContent = formatCurrency(grandTotal);
+
+      // Render BoQ grouped by window
+      const printBody = document.getElementById('printInvoiceBody');
+      printBody.innerHTML = groupedWindows.map((win, idx) => {
+        const itemRows = [];
+
+        if (win.components.gorden) {
+          const g = win.components.gorden;
+          const kainM = parseFloat(g.kebutuhan_kain_m) || 0;
+          const hargaM = g.harga_per_m || 0;
+          const subT = g.total_harga || Math.round(kainM * hargaM);
+          itemRows.push(`Gorden: <strong>${g.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m x Rp ${hargaM.toLocaleString('id-ID')}) = Rp ${subT.toLocaleString('id-ID')}`);
+        }
+
+        if (win.components.vitrace) {
+          const v = win.components.vitrace;
+          const kainM = parseFloat(v.kebutuhan_kain_m) || 0;
+          const hargaM = v.harga_per_m || 0;
+          const subT = v.total_harga || Math.round(kainM * hargaM);
+          itemRows.push(`Vitrace: <strong>${v.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m x Rp ${hargaM.toLocaleString('id-ID')}) = Rp ${subT.toLocaleString('id-ID')}`);
+        }
+
+        if (win.components.rell) {
+          const r = win.components.rell;
+          const kainM = parseFloat(r.kebutuhan_kain_m) || 0;
+          const hargaM = r.harga_per_m || 0;
+          const subT = r.total_harga || Math.round(kainM * hargaM);
+          itemRows.push(`Rell: <strong>${r.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m x Rp ${hargaM.toLocaleString('id-ID')}) = Rp ${subT.toLocaleString('id-ID')}`);
+        }
+
+        return `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>
+              <strong>Jendela: ${win.nama_jendela}</strong><br>
+              <span class="text-muted small">Ukuran: ${win.lebar_cm} x ${win.tinggi_cm} cm</span>
+            </td>
+            <td class="small">
+              <ul class="mb-0 ps-3">
+                ${itemRows.map(row => `<li>${row}</li>`).join('')}
+              </ul>
+            </td>
+            <td class="text-end fw-bold text-success">${formatCurrency(win.totalHarga)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Open browser Print dialog
+      window.print();
+    }
+  </script>
+</body>
+</html>

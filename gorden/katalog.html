@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Produk - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .katalog-img-box {
+      height: 180px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(92, 96, 245, 0.05) 100%);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+    .katalog-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .badge-kategori {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-weight: 700;
+      font-size: 0.725rem;
+      letter-spacing: 0.02em;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+    }
+    .image-preview-box {
+      width: 100%;
+      height: 160px;
+      border: 2px dashed rgba(92, 96, 245, 0.3);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--secondary);
+      overflow: hidden;
+      position: relative;
+    }
+    .image-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link active">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Katalog Produk</h1>
+          <p class="page-subtitle">Daftar harga gorden, vitrace, blinds, dan aksesoris</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary d-none" id="addProdukBtn">
+            <i class="bi bi-plus-circle me-1"></i> Tambah Produk Baru
+          </button>
+          <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+            <i class="bi bi-list fs-4"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <!-- Tabs Kategori -->
+      <ul class="nav nav-pills mb-4 overflow-auto flex-nowrap pb-2 gap-2" id="katalogTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active text-nowrap btn" id="semua-tab" data-bs-toggle="pill" data-bs-target="#semua" type="button" role="tab">Semua</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-nowrap btn" id="blackout-tab" data-bs-toggle="pill" data-bs-target="#blackout" type="button" role="tab">Blackout 100%</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-nowrap btn" id="dimout-tab" data-bs-toggle="pill" data-bs-target="#dimout" type="button" role="tab">Dimout 80%</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-nowrap btn" id="vitrace-tab" data-bs-toggle="pill" data-bs-target="#vitrace" type="button" role="tab">Vitrace</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-nowrap btn" id="blinds-tab" data-bs-toggle="pill" data-bs-target="#blinds" type="button" role="tab">Blinds</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-nowrap btn" id="aksesoris-tab" data-bs-toggle="pill" data-bs-target="#aksesoris" type="button" role="tab">Aksesoris & Rell</button>
+        </li>
+      </ul>
+
+      <!-- Tab Contents -->
+      <div class="tab-content" id="katalogTabsContent">
+        
+        <!-- Tab 1: Semua -->
+        <div class="tab-pane fade show active" id="semua" role="tabpanel">
+          <div class="row g-4" id="semuaContainer">
+            <div class="col-12 text-center py-5">
+              <span class="spinner-border spinner-border-lg text-primary"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Blackout -->
+        <div class="tab-pane fade" id="blackout" role="tabpanel">
+          <div class="row g-4" id="blackoutContainer"></div>
+        </div>
+
+        <!-- Tab 3: Dimout -->
+        <div class="tab-pane fade" id="dimout" role="tabpanel">
+          <div class="row g-4" id="dimoutContainer"></div>
+        </div>
+
+        <!-- Tab 4: Vitrace -->
+        <div class="tab-pane fade" id="vitrace" role="tabpanel">
+          <div class="row g-4" id="vitraceContainer"></div>
+        </div>
+
+        <!-- Tab 5: Blinds -->
+        <div class="tab-pane fade" id="blinds" role="tabpanel">
+          <div class="row g-4" id="blindsContainer"></div>
+        </div>
+
+        <!-- Tab 6: Aksesoris -->
+        <div class="tab-pane fade" id="aksesoris" role="tabpanel">
+          <div class="row g-4" id="aksesorisContainer"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Tambah Produk Modal -->
+  <div class="modal fade" id="produkModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold">Tambah Produk Baru</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="produkForm" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label class="form-label">ID / Kode Produk <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="prodId" required placeholder="Contoh: amani-blackout">
+              <div class="invalid-feedback">Kode produk wajib diisi (unik, huruf kecil, tanda hubung)</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Nama Produk <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="prodNama" required placeholder="Contoh: Seri Amani Blackout">
+              <div class="invalid-feedback">Nama produk wajib diisi</div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label">Kategori <span class="text-danger">*</span></label>
+                <select class="form-select" id="prodKategori" required>
+                  <option value="Gorden Blackout">Gorden Blackout</option>
+                  <option value="Gorden Dimout">Gorden Dimout</option>
+                  <option value="Gorden Standar">Gorden Standar</option>
+                  <option value="Vitrace">Vitrace</option>
+                  <option value="Roller Blind">Roller Blind</option>
+                  <option value="Vertical Blind">Vertical Blind</option>
+                  <option value="Rell">Rell</option>
+                  <option value="Kaca Film">Kaca Film</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Satuan <span class="text-danger">*</span></label>
+                <select class="form-select" id="prodSatuan" required>
+                  <option value="m">meter (m)</option>
+                  <option value="m²">meter persegi (m²)</option>
+                  <option value="Pcs">Pcs</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label">Harga Jual (Rp) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="prodHarga" required placeholder="85000">
+                <div class="invalid-feedback">Harga jual wajib diisi</div>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Icon Fallback <span class="text-danger">*</span></label>
+                <select class="form-select" id="prodIcon" required>
+                  <option value="bi-moon-stars">Bulan Bintang (Blackout)</option>
+                  <option value="bi-sun-fill">Matahari (Dimout)</option>
+                  <option value="bi-clouds">Awan (Vitrace)</option>
+                  <option value="bi-distribute-vertical">Blind Vertikal</option>
+                  <option value="bi-record-circle">Rell Tiang</option>
+                  <option value="bi-gem">Permata (Premium)</option>
+                  <option value="bi-box-seam">Boks (Standar)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Deskripsi Produk</label>
+              <textarea class="form-control" id="prodDeskripsi" rows="3" placeholder="Keterangan tebal, peredaman cahaya, penolak panas, dll."></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Foto / Gambar Produk</label>
+              <input type="file" class="form-control mb-2" id="prodGambar" accept="image/*">
+              <div class="image-preview-box" id="previewContainer">
+                <span class="text-muted small" id="previewText">Preview akan muncul jika gambar diunggah</span>
+                <img id="imagePreview" class="d-none" alt="Preview Gambar">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="saveProdukBtn">Unggah & Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script type="module">
+    import { isLoggedIn } from '/assets/js/auth.js';
+    import { uploadFotoKain } from '/assets/js/cloudinary.js';
+    import { getProdukKatalog, createProdukKatalog, deleteProdukKatalog, showToast } from '/assets/js/app.js';
+
+    // State
+    let catalogList = [];
+    const modalEl = document.getElementById('produkModal');
+    const produkModal = new bootstrap.Modal(modalEl);
+    const form = document.getElementById('produkForm');
+    const fileInput = document.getElementById('prodGambar');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewText = document.getElementById('previewText');
+    const saveProdukBtn = document.getElementById('saveProdukBtn');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Toggle Mobile Menu
+      document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+      });
+      document.getElementById('sidebarOverlay').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      });
+
+      // Verify logged in for additions
+      const logged = await isLoggedIn();
+      if (logged) {
+        document.getElementById('addProdukBtn').classList.remove('d-none');
+      }
+
+      // Load Catalog Data
+      await loadCatalog();
+
+      // Form bindings
+      document.getElementById('addProdukBtn').addEventListener('click', () => {
+        form.reset();
+        form.classList.remove('was-validated');
+        imagePreview.src = '';
+        imagePreview.classList.add('d-none');
+        previewText.classList.remove('d-none');
+        produkModal.show();
+      });
+
+      fileInput.addEventListener('change', handleImagePreview);
+      saveProdukBtn.addEventListener('click', handleFormSubmit);
+
+      // Auto-generate code id based on name
+      document.getElementById('prodNama').addEventListener('input', (e) => {
+        const idInput = document.getElementById('prodId');
+        // only auto-fill if not manually touched or empty
+        if (!idInput.value || idInput.value === slugify(e.target.value.substring(0, e.target.value.length - 1))) {
+          idInput.value = slugify(e.target.value);
+        }
+      });
+    }
+
+    function slugify(text) {
+      return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start
+        .replace(/-+$/, '');            // Trim - from end
+    }
+
+    function handleImagePreview(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          imagePreview.src = evt.target.result;
+          imagePreview.classList.remove('d-none');
+          previewText.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.src = '';
+        imagePreview.classList.add('d-none');
+        previewText.classList.remove('d-none');
+      }
+    }
+
+    async function loadCatalog() {
+      try {
+        catalogList = await getProdukKatalog();
+        renderCatalog();
+      } catch (err) {
+        console.error("Gagal mengambil katalog:", err);
+      }
+    }
+
+    function createCard(item, loggedIn) {
+      let badgeClass = 'bg-primary';
+      if (item.kategori.includes('Dimout')) badgeClass = 'bg-warning text-dark';
+      if (item.kategori.includes('Vitrace')) badgeClass = 'bg-info text-dark';
+      if (item.kategori.includes('Blind')) badgeClass = 'bg-dark';
+      if (item.kategori.includes('Rell') || item.kategori.includes('Aksesoris')) badgeClass = 'bg-secondary';
+      if (item.kategori.includes('Kaca Film')) badgeClass = 'bg-danger';
+
+      const imgHtml = item.gambar_url 
+        ? `<img src="${item.gambar_url}" alt="${item.nama}">`
+        : `<i class="bi ${item.icon} display-3"></i>`;
+
+      const deleteBtn = loggedIn 
+        ? `<button class="btn btn-sm btn-outline-danger px-3 rounded-pill btn-delete-prod" data-id="${item.id}" data-name="${item.nama}"><i class="bi bi-trash"></i> Hapus</button>`
+        : '';
+
+      return `
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 position-relative">
+            <span class="badge ${badgeClass} badge-kategori">${item.kategori}</span>
+            <div class="katalog-img-box">
+              ${imgHtml}
+            </div>
+            <div class="card-body d-flex flex-column justify-content-between p-4" style="min-height: 160px;">
+              <div>
+                <h5 class="card-title mb-2 text-dark" style="font-size: 1.1rem; font-weight: 700;">${item.nama}</h5>
+                <p class="card-text text-muted small mb-3" style="line-height: 1.6;">${item.deskripsi || 'Tidak ada deskripsi'}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-light">
+                <span class="text-primary fw-bold fs-5">Rp ${item.harga.toLocaleString('id-ID')} <small class="text-muted fs-6">/ ${item.satuan}</small></span>
+                ${deleteBtn}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function renderCatalog() {
+      const logged = await isLoggedIn();
+
+      // Render tab "Semua"
+      document.getElementById('semuaContainer').innerHTML = catalogList.map(item => createCard(item, logged)).join('');
+
+      // Map categories to Tab Containers
+      const tabContainers = {
+        'blackout': (item) => item.kategori === 'Gorden Blackout',
+        'dimout': (item) => item.kategori === 'Gorden Dimout',
+        'vitrace': (item) => item.kategori === 'Vitrace',
+        'blinds': (item) => item.kategori.includes('Blind'),
+        'aksesoris': (item) => item.kategori === 'Rell' || item.kategori === 'Aksesoris' || item.kategori === 'Gorden Standar' || item.kategori === 'Kaca Film'
+      };
+
+      Object.keys(tabContainers).forEach(tab => {
+        const filtered = catalogList.filter(tabContainers[tab]);
+        const html = filtered.map(item => createCard(item, logged)).join('');
+        document.getElementById(`${tab}Container`).innerHTML = html || `<div class="col-12 text-center py-5 text-muted"><i class="bi bi-inbox fs-1 d-block mb-2"></i>Belum ada produk di kategori ini</div>`;
+      });
+
+      // Bind delete handlers
+      document.querySelectorAll('.btn-delete-prod').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.id;
+          const name = btn.dataset.name;
+          if (confirm(`Apakah Anda yakin ingin menghapus produk "${name}" dari katalog?`)) {
+            try {
+              await deleteProdukKatalog(id);
+              showToast(`Produk "${name}" berhasil dihapus`, 'success');
+              await loadCatalog();
+            } catch (err) {
+              showToast(`Gagal menghapus produk: ${err.message}`, 'error');
+            }
+          }
+        });
+      });
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        e.stopPropagation();
+        form.classList.add('was-validated');
+        return;
+      }
+
+      saveProdukBtn.disabled = true;
+      saveProdukBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mengunggah...';
+
+      try {
+        let imageUrl = null;
+        const file = fileInput.files[0];
+        
+        // Upload to Cloudinary if image is selected
+        if (file) {
+          imageUrl = await uploadFotoKain(file);
+          if (!imageUrl) {
+            throw new Error('Gagal mengupload gambar ke Cloudinary. Silakan coba lagi.');
+          }
+        }
+
+        const category = document.getElementById('prodKategori').value;
+        
+        // map category text to a category_id slug for landing page logic
+        let categoryId = 'other';
+        if (category === 'Gorden Blackout') categoryId = 'gorden-blackout';
+        else if (category === 'Gorden Dimout') categoryId = 'gorden-dimout';
+        else if (category === 'Gorden Standar') categoryId = 'gorden-standar';
+        else if (category === 'Vitrace') categoryId = 'vitrace';
+        else if (category === 'Roller Blind') categoryId = 'roller-blind';
+        else if (category === 'Vertical Blind') categoryId = 'vertical-blind';
+        else if (category === 'Kaca Film') categoryId = 'kaca-film';
+        else if (category === 'Rell') categoryId = 'rell';
+
+        const payload = {
+          id: document.getElementById('prodId').value.trim(),
+          nama: document.getElementById('prodNama').value.trim(),
+          kategori: category,
+          kategori_id: categoryId,
+          deskripsi: document.getElementById('prodDeskripsi').value.trim() || null,
+          harga: parseInt(document.getElementById('prodHarga').value) || 0,
+          satuan: document.getElementById('prodSatuan').value,
+          icon: document.getElementById('prodIcon').value,
+          gambar_url: imageUrl
+        };
+
+        await createProdukKatalog(payload);
+        showToast(`Produk "${payload.nama}" berhasil ditambahkan ke katalog!`, 'success');
+        produkModal.hide();
+        await loadCatalog();
+
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        saveProdukBtn.disabled = false;
+        saveProdukBtn.innerHTML = 'Unggah & Simpan';
+      }
+    }
+  </script>
+</body>
+</html>

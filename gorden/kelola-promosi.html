@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Konten & Promosi - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .promo-preview-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: white;
+      transition: var(--transition-spring);
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .promo-preview-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    .promo-card-img {
+      height: 160px;
+      object-fit: cover;
+      width: 100%;
+      background-color: #0f172a;
+    }
+    .promo-badge-order {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+    .image-preview-box {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed rgba(92, 96, 245, 0.3);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--secondary);
+      overflow: hidden;
+      position: relative;
+    }
+    .image-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link active">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Kelola Konten & Promosi</h1>
+          <p class="page-subtitle">Atur slide gambar berjalan dan info kategori di halaman utama publik</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs mb-4 border-bottom" id="kontenTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="slides-tab" data-bs-toggle="tab" data-bs-target="#slidesSection" type="button" role="tab">
+            <i class="bi bi-images me-1"></i> Slide Banners (Carousel)
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categoriesSection" type="button" role="tab">
+            <i class="bi bi-card-list me-1"></i> Penjelasan Kategori Jendela
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Contents -->
+      <div class="tab-content" id="kontenTabsContent">
+
+        <!-- TAB 1: SLIDE BANNERS (CAROUSEL) -->
+        <div class="tab-pane fade show active" id="slidesSection" role="tabpanel">
+          <div class="row g-4">
+            <!-- Left: Form slide -->
+            <div class="col-12 col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title" id="formSlideTitle"><i class="bi bi-plus-circle me-2"></i>Tambah Slide Baru</h3>
+                </div>
+                <div class="card-body p-4">
+                  <form id="promoForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                      <label class="form-label">Judul Promosi <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="promoJudul" required placeholder="Contoh: Gorden Sutra Mewah">
+                      <div class="invalid-feedback">Judul promosi wajib diisi</div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Subjudul / Deskripsi <span class="text-danger">*</span></label>
+                      <textarea class="form-control" id="promoSubjudul" rows="3" required placeholder="Tulis penjelasan singkat promo..."></textarea>
+                      <div class="invalid-feedback">Subjudul wajib diisi</div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Urutan Tampil <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" id="promoUrutan" value="1" min="1" required>
+                      <div class="invalid-feedback">Urutan wajib diisi</div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Gambar Slide <span id="gambarLabelBintang" class="text-danger">*</span></label>
+                      <input type="file" class="form-control mb-2" id="promoGambar" accept="image/*">
+                      <div class="invalid-feedback">File gambar wajib dipilih</div>
+                      
+                      <div class="image-preview-box mt-2" id="previewContainer">
+                        <span class="text-muted small" id="previewText">Preview gambar akan muncul di sini</span>
+                        <img id="imagePreview" class="d-none" alt="Preview Gambar">
+                      </div>
+                    </div>
+
+                    <div class="d-grid gap-2" id="formSlideActions">
+                      <button type="submit" class="btn btn-primary py-3" id="savePromoBtn">
+                        <i class="bi bi-cloud-arrow-up me-1"></i> Unggah & Simpan Slide
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Grid slides -->
+            <div class="col-12 col-lg-8">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="bi bi-images me-2"></i>Slide Promosi Aktif</h3>
+                </div>
+                <div class="card-body p-4">
+                  <div class="row g-3" id="promoGrid">
+                    <div class="col-12 text-center py-5">
+                      <span class="spinner-border spinner-border-lg text-primary"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: CATEGORY INFORMATIONAL EXPLANATIONS -->
+        <div class="tab-pane fade" id="categoriesSection" role="tabpanel">
+          <div class="row g-4">
+            
+            <!-- Left: Category List -->
+            <div class="col-12 col-lg-7">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="bi bi-card-list me-2"></i>Penjelasan Kategori Aktif</h3>
+                </div>
+                <div class="card-body p-4">
+                  <div class="row g-3" id="categoryGrid">
+                    <div class="col-12 text-center py-5">
+                      <span class="spinner-border spinner-border-lg text-primary"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Category Edit Form -->
+            <div class="col-12 col-lg-5">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="bi bi-pencil-square me-2"></i>Edit Penjelasan Kategori</h3>
+                </div>
+                <div class="card-body p-4">
+                  <form id="categoryForm" class="needs-validation" novalidate>
+                    <input type="hidden" id="catId" value="">
+                    
+                    <div class="mb-3">
+                      <label class="form-label">Kode Kategori</label>
+                      <input type="text" class="form-control" id="catIdDisplay" disabled>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Nama Kategori <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="catNama" required placeholder="Contoh: Gorden Premium">
+                      <div class="invalid-feedback">Nama kategori wajib diisi</div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">Penjelasan / Deskripsi Singkat <span class="text-danger">*</span></label>
+                      <textarea class="form-control" id="catDeskripsi" rows="4" required placeholder="Tuliskan keunggulan dan penjelasan kategori ini..."></textarea>
+                      <div class="invalid-feedback">Penjelasan kategori wajib diisi</div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Gambar Ilustrasi Kategori</label>
+                      <input type="file" class="form-control mb-2" id="catGambar" accept="image/*">
+                      
+                      <div class="image-preview-box mt-2" id="catPreviewContainer">
+                        <span class="text-muted small" id="catPreviewText">Gambar Kategori Aktif</span>
+                        <img id="catImagePreview" class="d-none" alt="Preview Gambar Kategori">
+                      </div>
+                    </div>
+
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-success py-3" id="saveCatBtn" disabled>
+                        <i class="bi bi-save me-1"></i> Simpan Perubahan Kategori
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { checkAuth } from '/assets/js/auth.js';
+    import { uploadFotoKain } from '/assets/js/cloudinary.js';
+    import { supabase, logActivity } from '/assets/js/supabase.js';
+    import { getPromosiList, updatePromosi, getKategoriInfo, updateKategoriInfo, showToast } from '/assets/js/app.js';
+
+    // State Variables
+    let activeSlidesList = [];
+    let activeCategoriesList = [];
+    let editingSlideId = null;
+
+    // Slide Banners DOM Elements
+    const formSlide = document.getElementById('promoForm');
+    const fileInput = document.getElementById('promoGambar');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewText = document.getElementById('previewText');
+    const savePromoBtn = document.getElementById('savePromoBtn');
+    const promoGrid = document.getElementById('promoGrid');
+    const formSlideTitle = document.getElementById('formSlideTitle');
+
+    // Category Explanations DOM Elements
+    const formCategory = document.getElementById('categoryForm');
+    const catFileInput = document.getElementById('catGambar');
+    const catImagePreview = document.getElementById('catImagePreview');
+    const catPreviewText = document.getElementById('catPreviewText');
+    const saveCatBtn = document.getElementById('saveCatBtn');
+    const categoryGrid = document.getElementById('categoryGrid');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Guard Check
+      await checkAuth();
+
+      // Mobile Menu
+      document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+      });
+      document.getElementById('sidebarOverlay').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      });
+
+      // 1. Fetch & Render slides
+      await fetchAndRenderSlides();
+
+      // 2. Fetch & Render categories
+      await fetchAndRenderCategories();
+
+      // Form interactions: Banners
+      fileInput.addEventListener('change', (e) => handleImagePreview(e, imagePreview, previewText));
+      formSlide.addEventListener('submit', handleSlideSubmit);
+
+      // Form interactions: Categories
+      catFileInput.addEventListener('change', (e) => handleImagePreview(e, catImagePreview, catPreviewText));
+      formCategory.addEventListener('submit', handleCategorySubmit);
+    }
+
+    function handleImagePreview(e, imgElement, textElement) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          imgElement.src = evt.target.result;
+          imgElement.classList.remove('d-none');
+          textElement.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imgElement.src = '';
+        imgElement.classList.add('d-none');
+        textElement.classList.remove('d-none');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // SLIDE BANNERS OPERATIONS
+    // -------------------------------------------------------------
+
+    async function fetchAndRenderSlides() {
+      try {
+        activeSlidesList = await getPromosiList();
+        
+        if (activeSlidesList.length === 0) {
+          promoGrid.innerHTML = `
+            <div class="col-12 text-center py-5 text-muted">
+              <i class="bi bi-images fs-1 d-block mb-2"></i>
+              Belum ada slide promosi terdaftar. Tampilan landing page menggunakan slide fallback default.
+            </div>
+          `;
+          return;
+        }
+
+        promoGrid.innerHTML = activeSlidesList.map(slide => `
+          <div class="col-12 col-md-6">
+            <div class="promo-preview-card">
+              <div>
+                <span class="badge bg-primary promo-badge-order">Urutan: ${slide.urutan}</span>
+                <img src="${slide.gambar_url}" class="promo-card-img" alt="${slide.judul}">
+                <div class="p-3">
+                  <h5 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">${slide.judul}</h5>
+                  <p class="text-muted small mb-0 text-truncate-2" style="height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${slide.subjudul || '-'}</p>
+                </div>
+              </div>
+              <div class="p-3 pt-0 d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm flex-grow-1 btn-edit-slide" data-id="${slide.id}">
+                  <i class="bi bi-pencil me-1"></i> Edit
+                </button>
+                <button class="btn btn-outline-danger btn-sm flex-grow-1 btn-delete-slide" data-id="${slide.id}" data-judul="${slide.judul}">
+                  <i class="bi bi-trash me-1"></i> Haps
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind Edit buttons
+        document.querySelectorAll('.btn-edit-slide').forEach(btn => {
+          btn.addEventListener('click', () => loadSlideForEdit(btn.dataset.id));
+        });
+
+        // Bind Delete buttons
+        document.querySelectorAll('.btn-delete-slide').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const name = btn.dataset.judul;
+            if (confirm(`Hapus slide promosi "${name}"?`)) {
+              try {
+                const { error } = await supabase.from('promosi').delete().eq('id', id);
+                if (error) throw error;
+                showToast(`Slide "${name}" berhasil dihapus!`, 'success');
+                await fetchAndRenderSlides();
+              } catch (err) {
+                showToast(err.message, 'error');
+              }
+            }
+          });
+        });
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function loadSlideForEdit(id) {
+      const slide = activeSlidesList.find(s => s.id === id);
+      if (!slide) return;
+
+      editingSlideId = id;
+      formSlideTitle.innerHTML = `<i class="bi bi-pencil-square me-2"></i>Ubah Slide: ${slide.judul}`;
+      document.getElementById('promoJudul').value = slide.judul;
+      document.getElementById('promoSubjudul').value = slide.subjudul;
+      document.getElementById('promoUrutan').value = slide.urutan;
+      
+      // Make image field optional since they can keep the current image
+      fileInput.required = false;
+      document.getElementById('gambarLabelBintang').classList.add('d-none');
+
+      // Set preview image
+      imagePreview.src = slide.gambar_url;
+      imagePreview.classList.remove('d-none');
+      previewText.classList.add('d-none');
+
+      // Append Cancel button
+      if (!document.getElementById('cancelSlideEditBtn')) {
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.id = 'cancelSlideEditBtn';
+        cancelBtn.className = 'btn btn-outline-secondary py-2.5';
+        cancelBtn.innerHTML = 'Batal Edit';
+        cancelBtn.onclick = resetSlideForm;
+        document.getElementById('formSlideActions').appendChild(cancelBtn);
+      }
+
+      savePromoBtn.innerHTML = '<i class="bi bi-save me-1"></i> Perbarui Slide';
+      document.getElementById('promoJudul').focus();
+    }
+
+    function resetSlideForm() {
+      editingSlideId = null;
+      formSlide.reset();
+      formSlide.classList.remove('was-validated');
+      formSlideTitle.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Tambah Slide Baru';
+      fileInput.required = true;
+      document.getElementById('gambarLabelBintang').classList.remove('d-none');
+      imagePreview.src = '';
+      imagePreview.classList.add('d-none');
+      previewText.classList.remove('d-none');
+      
+      if (document.getElementById('cancelSlideEditBtn')) {
+        document.getElementById('cancelSlideEditBtn').remove();
+      }
+      savePromoBtn.innerHTML = '<i class="bi bi-cloud-arrow-up me-1"></i> Unggah & Simpan Slide';
+    }
+
+    async function handleSlideSubmit(e) {
+      e.preventDefault();
+
+      if (!formSlide.checkValidity()) {
+        e.stopPropagation();
+        formSlide.classList.add('was-validated');
+        return;
+      }
+
+      const judul = document.getElementById('promoJudul').value.trim();
+      const subjudul = document.getElementById('promoSubjudul').value.trim();
+      const urutan = parseInt(document.getElementById('promoUrutan').value) || 1;
+      const file = fileInput.files[0];
+
+      if (!file && !editingSlideId) {
+        showToast('Unggah file gambar promosi terlebih dahulu!', 'error');
+        return;
+      }
+
+      savePromoBtn.disabled = true;
+      
+      try {
+        let imageUrl = null;
+
+        // If file is selected, upload to Cloudinary
+        if (file) {
+          savePromoBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mengunggah...';
+          imageUrl = await uploadFotoKain(file);
+          if (!imageUrl) {
+            throw new Error('Gagal mengupload gambar ke Cloudinary.');
+          }
+        }
+
+        savePromoBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan data...';
+
+        if (editingSlideId) {
+          // Update Slide
+          const slide = activeSlidesList.find(s => s.id === editingSlideId);
+          const payload = {
+            judul,
+            subjudul,
+            urutan,
+            gambar_url: imageUrl || slide.gambar_url
+          };
+          await updatePromosi(editingSlideId, payload);
+          showToast(`Slide "${judul}" berhasil diperbarui!`, 'success');
+          resetSlideForm();
+        } else {
+          // Insert Slide
+          const payload = {
+            judul,
+            subjudul,
+            urutan,
+            gambar_url: imageUrl
+          };
+          const { data, error } = await supabase.from('promosi').insert(payload).select().single();
+          if (error) throw error;
+          showToast(`Slide "${judul}" berhasil ditambahkan!`, 'success');
+          await logActivity('create', 'promosi', data.id, `Menambah slide promosi: ${payload.judul}`);
+          resetSlideForm();
+        }
+
+        await fetchAndRenderSlides();
+
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        savePromoBtn.disabled = false;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // CATEGORY EXPLANATIONS OPERATIONS
+    // -------------------------------------------------------------
+
+    async function fetchAndRenderCategories() {
+      try {
+        activeCategoriesList = await getKategoriInfo();
+        
+        if (activeCategoriesList.length === 0) {
+          categoryGrid.innerHTML = `
+            <div class="col-12 text-center py-5 text-muted">
+              <i class="bi bi-card-text fs-1 d-block mb-2"></i>
+              Belum ada penjelasan kategori di database. Jalankan file migrasi untuk melakukan seed otomatis.
+            </div>
+          `;
+          return;
+        }
+
+        categoryGrid.innerHTML = activeCategoriesList.map(cat => `
+          <div class="col-12 col-md-6">
+            <div class="promo-preview-card">
+              <div>
+                <img src="${cat.gambar_url || '/assets/images/promo_luxury.png'}" class="promo-card-img" alt="${cat.nama}">
+                <div class="p-3">
+                  <h5 class="fw-bold text-dark mb-1" style="font-size: 1rem;">${cat.nama} <small class="text-muted">(${cat.id})</small></h5>
+                  <p class="text-muted small mb-0" style="line-height:1.5; font-size:0.825rem">${cat.deskripsi}</p>
+                </div>
+              </div>
+              <div class="p-3 pt-0">
+                <button class="btn btn-outline-success btn-sm w-100 btn-edit-cat" data-id="${cat.id}">
+                  <i class="bi bi-pencil-square me-1"></i> Edit Penjelasan
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        // Bind Edit buttons
+        document.querySelectorAll('.btn-edit-cat').forEach(btn => {
+          btn.addEventListener('click', () => loadCategoryForEdit(btn.dataset.id));
+        });
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function loadCategoryForEdit(id) {
+      const cat = activeCategoriesList.find(c => c.id === id);
+      if (!cat) return;
+
+      document.getElementById('catId').value = cat.id;
+      document.getElementById('catIdDisplay').value = cat.id;
+      document.getElementById('catNama').value = cat.nama;
+      document.getElementById('catDeskripsi').value = cat.deskripsi;
+      
+      // Set preview image
+      catImagePreview.src = cat.gambar_url || '';
+      if (cat.gambar_url) {
+        catImagePreview.classList.remove('d-none');
+        catPreviewText.classList.add('d-none');
+      } else {
+        catImagePreview.classList.add('d-none');
+        catPreviewText.classList.remove('d-none');
+      }
+
+      saveCatBtn.disabled = false;
+      document.getElementById('catNama').focus();
+    }
+
+    async function handleCategorySubmit(e) {
+      e.preventDefault();
+
+      if (!formCategory.checkValidity()) {
+        e.stopPropagation();
+        formCategory.classList.add('was-validated');
+        return;
+      }
+
+      const id = document.getElementById('catId').value;
+      const nama = document.getElementById('catNama').value.trim();
+      const deskripsi = document.getElementById('catDeskripsi').value.trim();
+      const file = catFileInput.files[0];
+
+      saveCatBtn.disabled = true;
+      saveCatBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mengunggah...';
+
+      try {
+        let imageUrl = null;
+
+        // If file is selected, upload to Cloudinary
+        if (file) {
+          imageUrl = await uploadFotoKain(file);
+          if (!imageUrl) {
+            throw new Error('Gagal mengupload gambar kategori ke Cloudinary.');
+          }
+        }
+
+        saveCatBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+
+        const cat = activeCategoriesList.find(c => c.id === id);
+        const payload = {
+          nama,
+          deskripsi,
+          gambar_url: imageUrl || cat.gambar_url
+        };
+
+        await updateKategoriInfo(id, payload);
+        showToast(`Penjelasan kategori "${nama}" berhasil diperbarui!`, 'success');
+
+        // Reset category form
+        formCategory.reset();
+        formCategory.classList.remove('was-validated');
+        document.getElementById('catId').value = '';
+        catImagePreview.src = '';
+        catImagePreview.classList.add('d-none');
+        catPreviewText.classList.remove('d-none');
+        saveCatBtn.disabled = true;
+
+        await fetchAndRenderCategories();
+
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        saveCatBtn.disabled = false;
+        saveCatBtn.innerHTML = '<i class="bi bi-save me-1"></i> Simpan Perubahan Kategori';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambah Pelanggan Gorden - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .component-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      background: var(--secondary);
+      transition: var(--transition-smooth);
+      margin-bottom: 1rem;
+    }
+    .component-card.active {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-box {
+      background: var(--primary-light);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      color: var(--text-dark);
+    }
+    .preview-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .preview-value {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    /* Custom Searchable Select Dropdown Styles */
+    .custom-select-container {
+      position: relative;
+      width: 100%;
+    }
+    .custom-select-trigger-wrap {
+      position: relative;
+    }
+    .custom-select-trigger-wrap::after {
+      content: '\F2E5'; /* Bootstrap Icon chevron-down */
+      font-family: 'bootstrap-icons';
+      position: absolute;
+      right: 1.15rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--text-muted);
+      transition: var(--transition-smooth);
+    }
+    .custom-select-container.open .custom-select-trigger-wrap::after {
+      transform: translateY(-50%) rotate(180deg);
+      color: var(--primary);
+    }
+    .custom-select-dropdown {
+      position: absolute;
+      top: 105%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg) !important;
+      z-index: 1050;
+      max-height: 240px;
+      overflow-y: auto;
+      transition: var(--transition-smooth);
+    }
+    .custom-select-option {
+      padding: 0.75rem 1.15rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.925rem;
+      color: var(--text-body);
+      border-bottom: 1px solid rgba(241, 245, 249, 0.5);
+    }
+    .custom-select-option:last-child {
+      border-bottom: none;
+    }
+    .custom-select-option:hover, .custom-select-option.highlighted {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+    }
+    .custom-select-option .option-price {
+      font-weight: 700;
+      color: var(--success);
+      font-size: 0.85rem;
+    }
+    .custom-select-option.custom-add-option {
+      border-top: 1px dashed var(--border-color);
+      font-weight: 600;
+      color: var(--primary);
+      background-color: rgba(92, 96, 245, 0.02);
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link active">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Tambah Pelanggan Gorden</h1>
+          <p class="page-subtitle">Daftarkan pelanggan baru dan spesifikasi seluruh jendela</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Restoration Alert (Dismissible, styled banner) -->
+      <div class="alert alert-primary border-0 shadow-sm d-none align-items-center justify-content-between p-3 mb-4 animate-fade-in" id="draftAlert" style="border-radius: var(--radius-md); background-color: var(--primary-light);">
+        <div class="d-flex align-items-center gap-3">
+          <i class="bi bi-info-circle-fill text-primary fs-4"></i>
+          <div>
+            <h5 class="alert-heading fw-bold mb-1" style="font-size: 0.95rem; color: var(--primary-dark);">Draf Tersimpan Ditemukan</h5>
+            <p class="mb-0 small text-muted">Draf data pelanggan sebelumnya (<strong id="draftCustName">-</strong>) dengan <strong id="draftWinCount">0</strong> jendela terdeteksi.</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary btn-sm px-3" id="restoreDraftBtn">Pulihkan Draf</button>
+          <button class="btn btn-outline-secondary btn-sm px-3 text-dark" id="clearDraftBtn" style="border-color: rgba(0,0,0,0.15)">Hapus Draf</button>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        
+        <!-- Kolom Kiri: Profil Pelanggan -->
+        <div class="col-12 col-lg-5">
+          <div class="card h-100">
+            <div class="card-header">
+              <h3 class="card-title"><i class="bi bi-person-fill me-2"></i>Profil Pelanggan</h3>
+            </div>
+            <div class="card-body p-4">
+              <div class="mb-3">
+                <label class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="namaPelanggan" required placeholder="Nama pemilik rumah">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Nomor Telepon</label>
+                <input type="tel" class="form-control" id="telepon" placeholder="08xxxxxxxxxx">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Alamat Lengkap</label>
+                <textarea class="form-control" id="alamat" rows="4" placeholder="Alamat lengkap pemasangan gorden"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Input Spesifikasi Jendela -->
+        <div class="col-12 col-lg-7">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="bi bi-window-split me-2"></i>Tambah Spesifikasi Jendela</h3>
+            </div>
+            <div class="card-body p-4">
+              
+              <!-- Info Ukuran Jendela -->
+              <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                  <label class="form-label">Lokasi Jendela <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="lokasiJendela" value="Jendela 1" placeholder="Kamar Utama, Ruang Tamu">
+                </div>
+                <div class="col-6 col-md-4">
+                  <label class="form-label">Lebar Jendela (cm) <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="lebarCm" placeholder="100">
+                </div>
+                <div class="col-6 col-md-4">
+                  <label class="form-label">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="tinggiCm" placeholder="200">
+                </div>
+              </div>
+
+              <!-- KOMPONEN 1: Kain Gorden -->
+              <div class="component-card active" id="gordenBox">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gordenChecked" checked>
+                    <label class="form-check-label fw-bold text-dark" for="gordenChecked">
+                      Kain Gorden (Utama)
+                    </label>
+                  </div>
+                </div>
+                <div class="row g-3" id="gordenFields">
+                  <div class="col-12 col-md-7">
+                    <label class="form-label small">Nama Produk / Motif Gorden</label>
+                    <div class="custom-select-container" id="gordenSelectContainer">
+                      <div class="custom-select-trigger-wrap">
+                        <input type="text" class="form-control custom-select-trigger" id="gordenSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                      </div>
+                      <div class="custom-select-dropdown shadow-lg d-none" id="gordenDropdown"></div>
+                    </div>
+                    <input type="hidden" id="gordenProduk" value="">
+                  </div>
+                  <div class="col-12 col-md-5">
+                    <label class="form-label small">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="gordenHarga" value="0">
+                  </div>
+                </div>
+              </div>
+
+              <!-- KOMPONEN 2: Vitrace (Daleman) -->
+              <div class="component-card" id="vitraceBox">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="vitraceChecked">
+                    <label class="form-check-label fw-bold text-dark" for="vitraceChecked">
+                      Kain Vitrace (Daleman Transparan)
+                    </label>
+                  </div>
+                </div>
+                <div class="row g-3 d-none" id="vitraceFields">
+                  <div class="col-12 col-md-7">
+                    <label class="form-label small">Nama Produk Vitrace</label>
+                    <div class="custom-select-container" id="vitraceSelectContainer">
+                      <div class="custom-select-trigger-wrap">
+                        <input type="text" class="form-control custom-select-trigger" id="vitraceSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                      </div>
+                      <div class="custom-select-dropdown shadow-lg d-none" id="vitraceDropdown"></div>
+                    </div>
+                    <input type="hidden" id="vitraceProduk" value="">
+                  </div>
+                  <div class="col-12 col-md-5">
+                    <label class="form-label small">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="vitraceHarga" value="0" disabled>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KOMPONEN 3: Rell / Batang -->
+              <div class="component-card" id="rellBox">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rellChecked">
+                    <label class="form-check-label fw-bold text-dark" for="rellChecked">
+                      Rell / Batang Gorden
+                    </label>
+                  </div>
+                </div>
+                <div class="row g-3 d-none" id="rellFields">
+                  <div class="col-12 col-md-7">
+                    <label class="form-label small">Tipe Rell</label>
+                    <div class="custom-select-container" id="rellSelectContainer">
+                      <div class="custom-select-trigger-wrap">
+                        <input type="text" class="form-control custom-select-trigger" id="rellSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                      </div>
+                      <div class="custom-select-dropdown shadow-lg d-none" id="rellDropdown"></div>
+                    </div>
+                    <input type="hidden" id="rellProduk" value="">
+                  </div>
+                  <div class="col-12 col-md-5">
+                    <label class="form-label small">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="rellHarga" value="0" disabled>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Preview untuk Jendela yang Sedang Dibuat -->
+              <div class="preview-box mt-4 mb-3">
+                <div class="row text-center g-2">
+                  <div class="col-6 col-md-3">
+                    <div class="preview-title">Kain Gorden</div>
+                    <div class="preview-value" id="estGordenKain">-</div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="preview-title">Kain Vitrace</div>
+                    <div class="preview-value" id="estVitraceKain">-</div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="preview-title">Batang Rell</div>
+                    <div class="preview-value" id="estRellBatang">-</div>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <div class="preview-title">Subtotal</div>
+                    <div class="preview-value text-primary fs-6" id="estTotalBiaya">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tambah Jendela ke Draf Button -->
+              <div class="d-grid">
+                <button type="button" class="btn btn-outline-primary py-3" id="addWindowBtn">
+                  <i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Section Bawah: Daftar Tabel Jendela Draf -->
+      <div class="card mt-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title"><i class="bi bi-card-list me-2"></i>Daftar Jendela dalam Draf</h3>
+          <span class="badge bg-primary" id="draftWindowCountBadge">0 Jendela</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Lokasi Jendela</th>
+                  <th>Ukuran (L x T)</th>
+                  <th>Komponen Dipilih</th>
+                  <th class="text-end">Detail Pemakaian & Harga</th>
+                  <th class="text-end">Subtotal Jendela</th>
+                  <th class="text-center" style="width: 80px;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="draftWindowsBody">
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-muted">Belum ada jendela yang ditambahkan ke draf. Isi parameter jendela di atas lalu klik "Tambahkan Jendela ke Draf Daftar"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-light p-4">
+          <div class="row align-items-center justify-content-between g-3">
+            <div class="col-12 col-md-8">
+              <div class="row g-2 text-center text-md-start">
+                <div class="col-6 col-md-3 border-end">
+                  <span class="text-muted small d-block">Total Jendela</span>
+                  <strong class="fs-5 text-dark" id="summaryTotalWin">0</strong>
+                </div>
+                <div class="col-6 col-md-3 border-end">
+                  <span class="text-muted small d-block">Est. Kain Gorden/Vitrace</span>
+                  <strong class="fs-5 text-dark" id="summaryTotalKain">0.0 m</strong>
+                </div>
+                <div class="col-6 col-md-3 border-end">
+                  <span class="text-muted small d-block">Est. Batang Rell</span>
+                  <strong class="fs-5 text-dark" id="summaryTotalRell">0.0 m</strong>
+                </div>
+                <div class="col-6 col-md-3">
+                  <span class="text-muted small d-block">Grand Total</span>
+                  <strong class="fs-5 text-success" id="summaryGrandTotal">Rp 0</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4 text-md-end">
+              <div class="d-flex gap-2 justify-content-md-end">
+                <a href="/gorden/pelanggan.html" class="btn btn-outline-secondary py-3 px-4">
+                  Batal
+                </a>
+                <button type="button" class="btn btn-success py-3 px-4" id="submitAllBtn" disabled>
+                  <i class="bi bi-check-all me-1"></i> Simpan Pelanggan & Semua Jendela
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { checkAuth } from '/assets/js/auth.js';
+    import { createPelanggan, createPesananJendela, getProdukKatalog, showToast, formatCurrency } from '/assets/js/app.js';
+
+    // Global States
+    let produkKatalogDb = [];
+    let draftWindows = [];
+    let editingWindowId = null;
+
+    // Inputs Profile
+    const namaPelangganInput = document.getElementById('namaPelanggan');
+    const teleponInput = document.getElementById('telepon');
+    const alamatInput = document.getElementById('alamat');
+
+    // Inputs Window
+    const lokasiInput = document.getElementById('lokasiJendela');
+    const lebarInput = document.getElementById('lebarCm');
+    const tinggiInput = document.getElementById('tinggiCm');
+
+    const gordenCheck = document.getElementById('gordenChecked');
+    const gordenHidden = document.getElementById('gordenProduk');
+    const gordenTrigger = document.getElementById('gordenSelectTrigger');
+    const gordenHargaInput = document.getElementById('gordenHarga');
+    const gordenFields = document.getElementById('gordenFields');
+
+    const vitraceCheck = document.getElementById('vitraceChecked');
+    const vitraceHidden = document.getElementById('vitraceProduk');
+    const vitraceTrigger = document.getElementById('vitraceSelectTrigger');
+    const vitraceHargaInput = document.getElementById('vitraceHarga');
+    const vitraceFields = document.getElementById('vitraceFields');
+
+    const rellCheck = document.getElementById('rellChecked');
+    const rellHidden = document.getElementById('rellProduk');
+    const rellTrigger = document.getElementById('rellSelectTrigger');
+    const rellHargaInput = document.getElementById('rellHarga');
+    const rellFields = document.getElementById('rellFields');
+
+    // Live previews
+    const estGordenKain = document.getElementById('estGordenKain');
+    const estVitraceKain = document.getElementById('estVitraceKain');
+    const estRellBatang = document.getElementById('estRellBatang');
+    const estTotalBiaya = document.getElementById('estTotalBiaya');
+
+    // Action buttons
+    const addWindowBtn = document.getElementById('addWindowBtn');
+    const submitAllBtn = document.getElementById('submitAllBtn');
+    const draftAlert = document.getElementById('draftAlert');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // 1. Guard check
+      await checkAuth();
+
+      // Mobile Menu
+      document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+        document.getElementById('sidebarOverlay').classList.toggle('show');
+      });
+      document.getElementById('sidebarOverlay').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.remove('show');
+        document.getElementById('sidebarOverlay').classList.remove('show');
+      });
+
+      // 2. Fetch Catalog items from Supabase
+      try {
+        produkKatalogDb = await getProdukKatalog();
+      } catch (err) {
+        console.error("Gagal memuat produk katalog:", err);
+      }
+
+      // 3. Initialize Custom Searchable Selects
+      initSearchableSelect(
+        'gordenSelectContainer',
+        'gordenProduk',
+        'gordenHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Gorden') || p.kategori.includes('Blind') || p.kategori.includes('Kaca Film')
+      );
+
+      initSearchableSelect(
+        'vitraceSelectContainer',
+        'vitraceProduk',
+        'vitraceHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Vitrace')
+      );
+
+      initSearchableSelect(
+        'rellSelectContainer',
+        'rellProduk',
+        'rellHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Rell') || p.kategori.includes('Aksesoris')
+      );
+
+      // 4. Setup Checkbox visibility logic
+      setupCheckboxToggle(gordenCheck, gordenFields, gordenHargaInput, 'gordenBox');
+      setupCheckboxToggle(vitraceCheck, vitraceFields, vitraceHargaInput, 'vitraceBox');
+      setupCheckboxToggle(rellCheck, rellFields, rellHargaInput, 'rellBox');
+
+      // 5. Setup Live calculations triggers
+      [lebarInput, tinggiInput, gordenHargaInput, vitraceHargaInput, rellHargaInput].forEach(inp => {
+        inp.addEventListener('input', runCalculations);
+      });
+      [gordenCheck, vitraceCheck, rellCheck].forEach(chk => {
+        chk.addEventListener('change', runCalculations);
+      });
+
+      // 6. Setup LocalStorage auto-save listeners on customer profile fields
+      [namaPelangganInput, teleponInput, alamatInput].forEach(inp => {
+        inp.addEventListener('input', saveDraftToLocalStorage);
+      });
+
+      // 7. Add window to draft event
+      addWindowBtn.addEventListener('click', addWindowToDraft);
+
+      // 8. Submit all draft event
+      submitAllBtn.addEventListener('click', submitAllData);
+
+      // 9. Load default product selections
+      initDefaultProductSelections();
+
+      // 10. Check if LocalStorage draft exists
+      checkLocalStorageDraft();
+
+      runCalculations();
+    }
+
+    // Set default select selections
+    function initDefaultProductSelections() {
+      // Gorden Default
+      const firstGorden = produkKatalogDb.find(p => p.kategori.includes('Gorden'));
+      if (firstGorden) {
+        gordenHidden.value = firstGorden.id;
+        gordenTrigger.value = firstGorden.nama;
+        gordenHargaInput.value = firstGorden.harga;
+      }
+
+      // Vitrace Default
+      const firstVitrace = produkKatalogDb.find(p => p.kategori.includes('Vitrace'));
+      if (firstVitrace) {
+        vitraceHidden.value = firstVitrace.id;
+        vitraceTrigger.value = firstVitrace.nama;
+        vitraceHargaInput.value = firstVitrace.harga;
+      }
+
+      // Rell Default
+      const firstRell = produkKatalogDb.find(p => p.kategori.includes('Rell'));
+      if (firstRell) {
+        rellHidden.value = firstRell.id;
+        rellTrigger.value = firstRell.nama;
+        rellHargaInput.value = firstRell.harga;
+      }
+    }
+
+    // Check LocalStorage Draft
+    function checkLocalStorageDraft() {
+      const stored = localStorage.getItem('duta_tambah_pelanggan_draft');
+      if (stored) {
+        try {
+          const draftObj = JSON.parse(stored);
+          if (draftObj && (draftObj.customer.nama || draftObj.windows.length > 0)) {
+            // Show alert
+            document.getElementById('draftCustName').textContent = draftObj.customer.nama || '(Tanpa Nama)';
+            document.getElementById('draftWinCount').textContent = draftObj.windows.length;
+            draftAlert.classList.remove('d-none');
+            draftAlert.classList.add('d-flex');
+
+            // Bind restore handler
+            document.getElementById('restoreDraftBtn').onclick = () => {
+              namaPelangganInput.value = draftObj.customer.nama || '';
+              teleponInput.value = draftObj.customer.telepon || '';
+              alamatInput.value = draftObj.customer.alamat || '';
+              draftWindows = draftObj.windows || [];
+              renderDraftTable();
+              
+              // Reset window lokasi default to count+1
+              lokasiInput.value = 'Jendela ' + (draftWindows.length + 1);
+
+              draftAlert.classList.remove('d-flex');
+              draftAlert.classList.add('d-none');
+              showToast('Draf pendaftaran berhasil dipulihkan', 'success');
+            };
+
+            // Bind clear handler
+            document.getElementById('clearDraftBtn').onclick = () => {
+              localStorage.removeItem('duta_tambah_pelanggan_draft');
+              draftAlert.classList.remove('d-flex');
+              draftAlert.classList.add('d-none');
+              showToast('Draf dibersihkan', 'info');
+            };
+          }
+        } catch (err) {
+          console.error("Gagal mengurai draf lokal:", err);
+        }
+      }
+    }
+
+    // LocalStorage Save function
+    function saveDraftToLocalStorage() {
+      const draftObj = {
+        customer: {
+          nama: namaPelangganInput.value.trim(),
+          telepon: teleponInput.value.trim(),
+          alamat: alamatInput.value.trim()
+        },
+        windows: draftWindows
+      };
+      localStorage.setItem('duta_tambah_pelanggan_draft', JSON.stringify(draftObj));
+    }
+
+    // Setup component checkbox visual toggler
+    function setupCheckboxToggle(checkbox, fieldsDiv, priceInput, cardId) {
+      const card = document.getElementById(cardId);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          fieldsDiv.classList.remove('d-none');
+          priceInput.disabled = false;
+          card.classList.add('active');
+        } else {
+          fieldsDiv.classList.add('d-none');
+          priceInput.disabled = true;
+          card.classList.remove('active');
+        }
+        runCalculations();
+      });
+    }
+
+    // Reusable Searchable Dropdown Builder
+    function initSearchableSelect(containerId, hiddenInputId, priceInputId, products, categoryFilter) {
+      const container = document.getElementById(containerId);
+      const triggerInput = container.querySelector('.custom-select-trigger');
+      const dropdown = container.querySelector('.custom-select-dropdown');
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const priceInput = document.getElementById(priceInputId);
+
+      const filteredProducts = products.filter(categoryFilter);
+
+      function renderOptions(searchTerm = '') {
+        dropdown.innerHTML = '';
+        const term = searchTerm.toLowerCase().trim();
+
+        filteredProducts.forEach(prod => {
+          if (prod.nama.toLowerCase().includes(term) || prod.kategori.toLowerCase().includes(term)) {
+            const opt = document.createElement('div');
+            opt.className = 'custom-select-option';
+            opt.innerHTML = `
+              <div>
+                <div class="fw-semibold">${prod.nama}</div>
+                <div class="text-muted small">${prod.kategori}</div>
+              </div>
+              <span class="option-price">Rp ${prod.harga.toLocaleString('id-ID')}/${prod.satuan}</span>
+            `;
+            opt.addEventListener('click', () => selectProduct(prod.id, prod.nama, prod.harga));
+            dropdown.appendChild(opt);
+          }
+        });
+
+        // Custom fabric option
+        if (term.length > 0) {
+          const customOpt = document.createElement('div');
+          customOpt.className = 'custom-select-option custom-add-option';
+          customOpt.innerHTML = `
+            <div>
+              <div class="fw-bold text-primary"><i class="bi bi-plus-circle me-1"></i>Gunakan Kustom</div>
+              <div class="text-muted small">"${searchTerm}"</div>
+            </div>
+            <span class="option-price text-primary">Tentukan Harga...</span>
+          `;
+          customOpt.addEventListener('click', () => selectProduct('custom', searchTerm, 0));
+          dropdown.appendChild(customOpt);
+        } else {
+          // Default custom option
+          const customOpt = document.createElement('div');
+          customOpt.className = 'custom-select-option custom-add-option';
+          customOpt.innerHTML = `
+            <div>
+              <div class="fw-bold text-primary"><i class="bi bi-pencil-square me-1"></i>Bahan Kustom Baru</div>
+              <div class="text-muted small">Tulis nama & harga sendiri</div>
+            </div>
+            <span class="option-price text-primary">Kustom</span>
+          `;
+          customOpt.addEventListener('click', () => selectProduct('custom', '', 0));
+          dropdown.appendChild(customOpt);
+        }
+      }
+
+      function selectProduct(id, name, price) {
+        hiddenInput.value = id;
+        if (id === 'custom') {
+          triggerInput.value = name || '';
+          priceInput.value = '';
+          priceInput.disabled = false;
+          priceInput.focus();
+        } else {
+          triggerInput.value = name;
+          priceInput.value = price;
+        }
+        closeDropdown();
+        
+        // Dispatch events to run calculation updates
+        triggerInput.dispatchEvent(new Event('input'));
+        hiddenInput.dispatchEvent(new Event('change'));
+        priceInput.dispatchEvent(new Event('input'));
+      }
+
+      function openDropdown() {
+        // Close all other dropdowns first
+        document.querySelectorAll('.custom-select-container').forEach(c => {
+          if (c.id !== containerId) {
+            c.classList.remove('open');
+            c.querySelector('.custom-select-dropdown').classList.add('d-none');
+          }
+        });
+
+        container.classList.add('open');
+        dropdown.classList.remove('d-none');
+        renderOptions(triggerInput.value);
+      }
+
+      function closeDropdown() {
+        container.classList.remove('open');
+        dropdown.classList.add('d-none');
+      }
+
+      triggerInput.addEventListener('focus', () => {
+        triggerInput.select();
+        openDropdown();
+      });
+
+      triggerInput.addEventListener('input', () => {
+        openDropdown();
+        // Check exact match
+        const exactMatch = filteredProducts.find(p => p.nama.toLowerCase() === triggerInput.value.toLowerCase());
+        if (exactMatch) {
+          hiddenInput.value = exactMatch.id;
+          priceInput.value = exactMatch.harga;
+        } else {
+          hiddenInput.value = 'custom';
+        }
+      });
+
+      // Close on clicking outside
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+    }
+
+    // Live Calculations
+    function runCalculations() {
+      const lebar = parseFloat(lebarInput.value) || 0;
+      const tinggi = parseFloat(tinggiInput.value) || 0;
+
+      let gordenCost = 0;
+      let vitraceCost = 0;
+      let rellCost = 0;
+
+      // Formula: kain needed = lebar * 2.5
+      const kainNeeded = lebar > 0 ? (lebar / 100) * 2.5 : 0;
+      // Formula: Rell needed = lebar + 30cm
+      const rellNeeded = lebar > 0 ? (lebar + 30) / 100 : 0;
+
+      // 1. Gorden
+      if (gordenCheck.checked && lebar > 0) {
+        const gordenPrice = parseInt(gordenHargaInput.value) || 0;
+        gordenCost = kainNeeded * gordenPrice;
+        estGordenKain.textContent = `${kainNeeded.toFixed(1)} m`;
+      } else {
+        estGordenKain.textContent = '-';
+      }
+
+      // 2. Vitrace
+      if (vitraceCheck.checked && lebar > 0) {
+        const vitracePrice = parseInt(vitraceHargaInput.value) || 0;
+        vitraceCost = kainNeeded * vitracePrice;
+        estVitraceKain.textContent = `${kainNeeded.toFixed(1)} m`;
+      } else {
+        estVitraceKain.textContent = '-';
+      }
+
+      // 3. Rell
+      if (rellCheck.checked && lebar > 0) {
+        const rellPrice = parseInt(rellHargaInput.value) || 0;
+        rellCost = rellNeeded * rellPrice;
+        estRellBatang.textContent = `${rellNeeded.toFixed(1)} m`;
+      } else {
+        estRellBatang.textContent = '-';
+      }
+
+      const total = gordenCost + vitraceCost + rellCost;
+      if (total > 0) {
+        estTotalBiaya.textContent = formatCurrency(Math.round(total));
+      } else {
+        estTotalBiaya.textContent = '-';
+      }
+    }
+
+    // Add configured window to Javascript draft array
+    function addWindowToDraft() {
+      const lokasi = lokasiInput.value.trim();
+      const lebar = parseFloat(lebarInput.value) || 0;
+      const tinggi = parseFloat(tinggiInput.value) || 0;
+
+      // Validation checks
+      if (!lokasi) {
+        showToast('Masukkan lokasi jendela (contoh: Kamar Utama)', 'error');
+        lokasiInput.focus();
+        return;
+      }
+      if (lebar <= 0 || tinggi <= 0) {
+        showToast('Lebar dan Tinggi jendela harus diisi dengan angka valid (> 0)', 'error');
+        lebarInput.focus();
+        return;
+      }
+
+      if (!gordenCheck.checked && !vitraceCheck.checked && !rellCheck.checked) {
+        showToast('Centang minimal satu komponen jendela (Gorden / Vitrace / Rell)', 'error');
+        return;
+      }
+
+      // Fabric / Rell Needs
+      const kainQty = (lebar / 100) * 2.5;
+      const rellQty = (lebar + 30) / 100;
+
+      // Construct components info
+      const windowItem = {
+        id: editingWindowId || ('win_' + Date.now() + '_' + Math.floor(Math.random() * 1000)),
+        lokasi: lokasi,
+        lebar: lebar,
+        tinggi: tinggi,
+        components: {
+          gorden: {
+            enabled: gordenCheck.checked,
+            productId: gordenHidden.value,
+            productName: gordenTrigger.value.trim() || 'Custom Gorden',
+            harga: parseInt(gordenHargaInput.value) || 0,
+            qty: kainQty,
+            subtotal: 0
+          },
+          vitrace: {
+            enabled: vitraceCheck.checked,
+            productId: vitraceHidden.value,
+            productName: vitraceTrigger.value.trim() || 'Custom Vitrace',
+            harga: parseInt(vitraceHargaInput.value) || 0,
+            qty: kainQty,
+            subtotal: 0
+          },
+          rell: {
+            enabled: rellCheck.checked,
+            productId: rellHidden.value,
+            productName: rellTrigger.value.trim() || 'Custom Rell',
+            harga: parseInt(rellHargaInput.value) || 0,
+            qty: rellQty,
+            subtotal: 0
+          }
+        },
+        totalHarga: 0
+      };
+
+      // Set Subtotals
+      let windowTotal = 0;
+      if (windowItem.components.gorden.enabled) {
+        windowItem.components.gorden.subtotal = Math.round(kainQty * windowItem.components.gorden.harga);
+        windowTotal += windowItem.components.gorden.subtotal;
+      }
+      if (windowItem.components.vitrace.enabled) {
+        windowItem.components.vitrace.subtotal = Math.round(kainQty * windowItem.components.vitrace.harga);
+        windowTotal += windowItem.components.vitrace.subtotal;
+      }
+      if (windowItem.components.rell.enabled) {
+        windowItem.components.rell.subtotal = Math.round(rellQty * windowItem.components.rell.harga);
+        windowTotal += windowItem.components.rell.subtotal;
+      }
+      windowItem.totalHarga = windowTotal;
+
+      if (editingWindowId) {
+        const idx = draftWindows.findIndex(w => w.id === editingWindowId);
+        if (idx !== -1) {
+          draftWindows[idx] = windowItem;
+        }
+        editingWindowId = null;
+        addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
+        addWindowBtn.className = 'btn btn-outline-primary py-3';
+        if (document.getElementById('cancelEditBtn')) {
+          document.getElementById('cancelEditBtn').remove();
+        }
+        showToast(`Jendela "${lokasi}" berhasil diperbarui!`, 'success');
+      } else {
+        draftWindows.push(windowItem);
+        showToast(`Jendela "${lokasi}" berhasil ditambahkan ke draf list!`, 'success');
+      }
+
+      saveDraftToLocalStorage();
+      renderDraftTable();
+
+      // Reset window parameters for next inputs
+      resetWindowInputs();
+    }
+
+    function resetWindowInputs() {
+      lokasiInput.value = 'Jendela ' + (draftWindows.length + 1);
+      lebarInput.value = '';
+      tinggiInput.value = '';
+      
+      // Default unchecked except gorden
+      gordenCheck.checked = true;
+      vitraceCheck.checked = false;
+      rellCheck.checked = false;
+
+      gordenCheck.dispatchEvent(new Event('change'));
+      vitraceCheck.dispatchEvent(new Event('change'));
+      rellCheck.dispatchEvent(new Event('change'));
+
+      initDefaultProductSelections();
+      runCalculations();
+    }
+
+    // Render Draft table
+    function renderDraftTable() {
+      const tbody = document.getElementById('draftWindowsBody');
+      const badgeCount = document.getElementById('draftWindowCountBadge');
+      
+      badgeCount.textContent = `${draftWindows.length} Jendela`;
+
+      if (draftWindows.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">Belum ada jendela yang ditambahkan ke draf. Isi parameter jendela di atas lalu klik "Tambahkan Jendela ke Draf Daftar"</td>
+          </tr>
+        `;
+        submitAllBtn.disabled = true;
+
+        // Reset summaries
+        document.getElementById('summaryTotalWin').textContent = '0';
+        document.getElementById('summaryTotalKain').textContent = '0.0 m';
+        document.getElementById('summaryTotalRell').textContent = '0.0 m';
+        document.getElementById('summaryGrandTotal').textContent = 'Rp 0';
+        return;
+      }
+
+      submitAllBtn.disabled = false;
+
+      let totalKain = 0;
+      let totalRell = 0;
+      let grandTotal = 0;
+
+      tbody.innerHTML = draftWindows.map((win, idx) => {
+        // Collect checked components
+        const componentNames = [];
+        const detailRows = [];
+
+        if (win.components.gorden.enabled) {
+          componentNames.push('<span class="badge bg-primary-light text-primary me-1">Gorden</span>');
+          detailRows.push(`<div>Gorden: <strong>${win.components.gorden.productName}</strong> (${win.components.gorden.qty.toFixed(1)}m x Rp ${win.components.gorden.harga.toLocaleString('id-ID')})</div>`);
+          totalKain += win.components.gorden.qty;
+          grandTotal += win.components.gorden.subtotal;
+        }
+
+        if (win.components.vitrace.enabled) {
+          componentNames.push('<span class="badge bg-info-light text-info me-1">Vitrace</span>');
+          detailRows.push(`<div>Vitrace: <strong>${win.components.vitrace.productName}</strong> (${win.components.vitrace.qty.toFixed(1)}m x Rp ${win.components.vitrace.harga.toLocaleString('id-ID')})</div>`);
+          totalKain += win.components.vitrace.qty;
+          grandTotal += win.components.vitrace.subtotal;
+        }
+
+        if (win.components.rell.enabled) {
+          componentNames.push('<span class="badge bg-secondary-light text-secondary me-1">Rell</span>');
+          detailRows.push(`<div>Rell: <strong>${win.components.rell.productName}</strong> (${win.components.rell.qty.toFixed(1)}m x Rp ${win.components.rell.harga.toLocaleString('id-ID')})</div>`);
+          totalRell += win.components.rell.qty;
+          grandTotal += win.components.rell.subtotal;
+        }
+
+        const isEditing = editingWindowId === win.id;
+        const rowClass = isEditing ? 'table-warning border-warning' : '';
+        const badgeEdit = isEditing ? '<br><span class="badge bg-warning text-dark mt-1"><i class="bi bi-pencil-square me-1"></i>Sedang Diedit</span>' : '';
+
+        return `
+          <tr class="${rowClass}">
+            <td><strong>${win.lokasi}</strong>${badgeEdit}</td>
+            <td>${win.lebar} x ${win.tinggi} cm</td>
+            <td>${componentNames.join('')}</td>
+            <td class="text-end small text-muted">${detailRows.join('')}</td>
+            <td class="text-end text-success fw-bold">${formatCurrency(win.totalHarga)}</td>
+            <td class="text-center">
+              <button class="btn btn-outline-primary btn-sm px-2 py-1 me-1" onclick="editDraftWindow('${win.id}')" title="Edit Jendela" ${isEditing ? 'disabled' : ''}>
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-outline-danger btn-sm px-2 py-1" onclick="deleteDraftWindow('${win.id}')" title="Hapus Jendela">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Update Summaries
+      document.getElementById('summaryTotalWin').textContent = draftWindows.length;
+      document.getElementById('summaryTotalKain').textContent = `${totalKain.toFixed(1)} m`;
+      document.getElementById('summaryTotalRell').textContent = `${totalRell.toFixed(1)} m`;
+      document.getElementById('summaryGrandTotal').textContent = formatCurrency(grandTotal);
+
+      // Expose edit & delete to window so inline onclick works
+      window.editDraftWindow = (id) => {
+        const win = draftWindows.find(w => w.id === id);
+        if (!win) return;
+
+        editingWindowId = id;
+        renderDraftTable();
+
+        lokasiInput.value = win.lokasi;
+        lebarInput.value = win.lebar;
+        tinggiInput.value = win.tinggi;
+
+        gordenCheck.checked = win.components.gorden.enabled;
+        gordenHidden.value = win.components.gorden.productId;
+        gordenTrigger.value = win.components.gorden.productName;
+        gordenHargaInput.value = win.components.gorden.harga;
+
+        vitraceCheck.checked = win.components.vitrace.enabled;
+        vitraceHidden.value = win.components.vitrace.productId;
+        vitraceTrigger.value = win.components.vitrace.productName;
+        vitraceHargaInput.value = win.components.vitrace.harga;
+
+        rellCheck.checked = win.components.rell.enabled;
+        rellHidden.value = win.components.rell.productId;
+        rellTrigger.value = win.components.rell.productName;
+        rellHargaInput.value = win.components.rell.harga;
+
+        gordenCheck.dispatchEvent(new Event('change'));
+        vitraceCheck.dispatchEvent(new Event('change'));
+        rellCheck.dispatchEvent(new Event('change'));
+
+        addWindowBtn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Perbarui Jendela Draf';
+        addWindowBtn.className = 'btn btn-primary py-3';
+
+        // Add dynamic cancel edit button
+        if (!document.getElementById('cancelEditBtn')) {
+          const cancelBtn = document.createElement('button');
+          cancelBtn.type = 'button';
+          cancelBtn.id = 'cancelEditBtn';
+          cancelBtn.className = 'btn btn-outline-secondary py-3 mt-2';
+          cancelBtn.innerHTML = '<i class="bi bi-x-circle me-1"></i> Batal Edit';
+          cancelBtn.onclick = () => {
+            editingWindowId = null;
+            addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
+            addWindowBtn.className = 'btn btn-outline-primary py-3';
+            cancelBtn.remove();
+            resetWindowInputs();
+            renderDraftTable();
+            showToast('Pengeditan dibatalkan', 'info');
+          };
+          addWindowBtn.parentNode.appendChild(cancelBtn);
+        }
+
+        document.getElementById('lokasiJendela').scrollIntoView({ behavior: 'smooth' });
+        runCalculations();
+      };
+
+      window.deleteDraftWindow = (id) => {
+        if (editingWindowId === id) {
+          editingWindowId = null;
+          addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
+          addWindowBtn.className = 'btn btn-outline-primary py-3';
+          if (document.getElementById('cancelEditBtn')) {
+            document.getElementById('cancelEditBtn').remove();
+          }
+          resetWindowInputs();
+        }
+        draftWindows = draftWindows.filter(win => win.id !== id);
+        saveDraftToLocalStorage();
+        renderDraftTable();
+        showToast('Jendela dihapus dari draf list', 'info');
+      };
+    }
+
+    // Submit all data to Supabase
+    async function submitAllData() {
+      if (editingWindowId) {
+        showToast('Ada jendela yang sedang dalam pengeditan! Selesaikan edit jendela terlebih dahulu (klik "Perbarui Jendela Draf" atau "Batal Edit").', 'warning');
+        document.getElementById('lokasiJendela').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      const nama = namaPelangganInput.value.trim();
+      if (!nama) {
+        showToast('Nama pelanggan wajib diisi!', 'error');
+        namaPelangganInput.focus();
+        return;
+      }
+      if (draftWindows.length === 0) {
+        showToast('Belum ada jendela di draf daftar untuk disimpan!', 'error');
+        return;
+      }
+
+      submitAllBtn.disabled = true;
+      submitAllBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+
+      try {
+        // 1. Create Customer
+        const payloadPelanggan = {
+          nama_pelanggan: nama,
+          telepon: teleponInput.value.trim() || null,
+          alamat: alamatInput.value.trim() || null
+        };
+        const customer = await createPelanggan(payloadPelanggan);
+
+        // 2. Loop insert all checked components for each window
+        const promises = [];
+
+        draftWindows.forEach(win => {
+          const lokasi = win.lokasi;
+          const lebar = win.lebar;
+          const tinggi = win.tinggi;
+          const groupId = win.id; // use the draft window unique id
+
+          // Gorden Insert
+          if (win.components.gorden.enabled) {
+            promises.push(createPesananJendela({
+              id_pelanggan: customer.id,
+              lokasi_jendela: `${lokasi} - Gorden (${win.components.gorden.productName})`,
+              tinggi_cm: tinggi,
+              lebar_cm: lebar,
+              kebutuhan_kain_m: win.components.gorden.qty,
+              harga_per_m: win.components.gorden.harga,
+              total_harga: win.components.gorden.subtotal,
+              nama_jendela: lokasi,
+              komponen: 'gorden',
+              produk_nama: win.components.gorden.productName,
+              window_group_id: groupId
+            }));
+          }
+
+          // Vitrace Insert
+          if (win.components.vitrace.enabled) {
+            promises.push(createPesananJendela({
+              id_pelanggan: customer.id,
+              lokasi_jendela: `${lokasi} - Vitrace (${win.components.vitrace.productName})`,
+              tinggi_cm: tinggi,
+              lebar_cm: lebar,
+              kebutuhan_kain_m: win.components.vitrace.qty,
+              harga_per_m: win.components.vitrace.harga,
+              total_harga: win.components.vitrace.subtotal,
+              nama_jendela: lokasi,
+              komponen: 'vitrace',
+              produk_nama: win.components.vitrace.productName,
+              window_group_id: groupId
+            }));
+          }
+
+          // Rell Insert
+          if (win.components.rell.enabled) {
+            promises.push(createPesananJendela({
+              id_pelanggan: customer.id,
+              lokasi_jendela: `${lokasi} - Rell (${win.components.rell.productName})`,
+              tinggi_cm: tinggi,
+              lebar_cm: lebar,
+              kebutuhan_kain_m: win.components.rell.qty,
+              harga_per_m: win.components.rell.harga,
+              total_harga: win.components.rell.subtotal,
+              nama_jendela: lokasi,
+              komponen: 'rell',
+              produk_nama: win.components.rell.productName,
+              window_group_id: groupId
+            }));
+          }
+        });
+
+        await Promise.all(promises);
+
+        showToast('Pelanggan & seluruh pesanan jendela berhasil disimpan!', 'success');
+        
+        // Clear LocalStorage draft
+        localStorage.removeItem('duta_tambah_pelanggan_draft');
+        
+        // Redirect to detail page
+        setTimeout(() => {
+          window.location.href = `/gorden/detail-pelanggan.html?id=${customer.id}`;
+        }, 1000);
+
+      } catch (err) {
+        showToast(`Gagal menyimpan data: ${err.message}`, 'error');
+        submitAllBtn.disabled = false;
+        submitAllBtn.innerHTML = '<i class="bi bi-check-all me-1"></i> Simpan Pelanggan & Semua Jendela';
+      }
+    }
+  </script>
+</body>
+</html>

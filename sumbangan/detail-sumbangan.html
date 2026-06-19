@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Sumbangan - Manajemen Keluarga</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link active">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Detail Sumbangan</h1>
+          <p class="page-subtitle">Informasi lengkap sumbangan</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+          <!-- Info Card -->
+          <div class="card mb-3">
+            <div class="card-body p-4">
+              <div class="text-center mb-4">
+                <div class="display-4 text-success mb-2">
+                  <i class="bi bi-cash-stack"></i>
+                </div>
+                <h2 class="h4 mb-1" id="namaPenyumbang">-</h2>
+                <p class="text-muted mb-0" id="hajatanName">-</p>
+              </div>
+
+              <hr>
+
+              <div class="row g-3">
+                <div class="col-6">
+                  <p class="text-muted small mb-1">Nominal</p>
+                  <p class="h5 text-success mb-0" id="nominal">Rp 0</p>
+                </div>
+                <div class="col-6">
+                  <p class="text-muted small mb-1">Tanggal</p>
+                  <p class="h6 mb-0" id="tanggal">-</p>
+                </div>
+                <div class="col-6">
+                  <p class="text-muted small mb-1">Jenis Acara</p>
+                  <p class="mb-0" id="jenisAcara">-</p>
+                </div>
+                <div class="col-6">
+                  <p class="text-muted small mb-1">Status</p>
+                  <p class="mb-0"><span class="badge bg-success-light text-success" id="status">-</span></p>
+                </div>
+              </div>
+
+              <div class="mt-4" id="catatanSection" style="display: none;">
+                <p class="text-muted small mb-1">Catatan</p>
+                <p class="mb-0" id="catatan">-</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex gap-2">
+            <a href="/sumbangan/daftar-sumbangan.html" class="btn btn-outline-secondary flex-grow-1">
+              <i class="bi bi-arrow-left me-1"></i> Kembali
+            </a>
+            <button class="btn btn-outline-danger flex-grow-1 action-btn d-none" id="deleteBtn">
+              <i class="bi bi-trash me-1"></i> Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item active">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Hapus Sumbangan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Apakah Anda yakin ingin menghapus sumbangan ini?</p>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { isLoggedIn } from '/assets/js/auth.js';
+    import { getSumbanganById, deleteSumbangan, formatDate, formatCurrency, showToast } from '/assets/js/app.js';
+
+    // State
+    let sumbanganData = null;
+
+    // DOM Elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    const confirmDelete = document.getElementById('confirmDelete');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Mobile menu toggle
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+      });
+
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+      });
+
+      // Check auth
+      const loggedIn = await isLoggedIn();
+      if (loggedIn) {
+        document.querySelectorAll('.action-btn').forEach(btn => btn.classList.remove('d-none'));
+      }
+
+      // Get ID from URL
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        window.location.href = '/sumbangan/daftar-sumbangan.html';
+        return;
+      }
+
+      // Load data
+      await loadData(id);
+
+      // Delete handler
+      deleteBtn.addEventListener('click', () => deleteModal.show());
+      confirmDelete.addEventListener('click', handleDelete);
+    }
+
+    async function loadData(id) {
+      try {
+        sumbanganData = await getSumbanganById(id);
+
+        document.getElementById('namaPenyumbang').textContent = sumbanganData.nama_penyumbang;
+        document.getElementById('nominal').textContent = formatCurrency(sumbanganData.nominal);
+        document.getElementById('tanggal').textContent = formatDate(sumbanganData.tanggal);
+        document.getElementById('jenisAcara').textContent = sumbanganData.hajatan?.jenis_acara || '-';
+        document.getElementById('hajatanName').textContent = sumbanganData.hajatan?.nama_hajatan || '-';
+        document.getElementById('status').textContent = sumbanganData.status || 'tercatat';
+
+        if (sumbanganData.catatan) {
+          document.getElementById('catatan').textContent = sumbanganData.catatan;
+          document.getElementById('catatanSection').style.display = 'block';
+        }
+
+        document.title = `${sumbanganData.nama_penyumbang} - Detail Sumbangan`;
+      } catch (error) {
+        showToast('Data tidak ditemukan', 'error');
+        setTimeout(() => {
+          window.location.href = '/sumbangan/daftar-sumbangan.html';
+        }, 1500);
+      }
+    }
+
+    async function handleDelete() {
+      if (!sumbanganData) return;
+
+      try {
+        await deleteSumbangan(sumbanganData.id);
+        showToast('Sumbangan berhasil dihapus', 'success');
+        deleteModal.hide();
+        setTimeout(() => {
+          window.location.href = '/sumbangan/daftar-sumbangan.html';
+        }, 1000);
+      } catch (error) {
+        showToast(error.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

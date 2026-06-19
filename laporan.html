@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan - Manajemen Keluarga</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link active">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Laporan</h1>
+          <p class="page-subtitle">Rekap data keseluruhan</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <!-- Filter Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-6 col-md-3">
+              <label class="form-label">Dari Tanggal</label>
+              <input type="date" class="form-control" id="filterDari">
+            </div>
+            <div class="col-6 col-md-3">
+              <label class="form-label">Sampai Tanggal</label>
+              <input type="date" class="form-control" id="filterSampai">
+            </div>
+            <div class="col-12 col-md-3 d-flex align-items-end">
+              <button class="btn btn-primary w-100" id="applyFilter">
+                <i class="bi bi-funnel me-1"></i> Filter
+              </button>
+            </div>
+            <div class="col-12 col-md-3 d-flex align-items-end">
+              <button class="btn btn-outline-secondary w-100" id="printReport">
+                <i class="bi bi-printer me-1"></i> Cetak
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="row mb-4">
+        <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="display-4 text-primary mb-2">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+              <h2 class="h3 mb-1" id="totalHajatan">0</h2>
+              <p class="text-muted mb-0">Hajatan</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="display-4 text-success mb-2">
+                <i class="bi bi-cash-stack"></i>
+              </div>
+              <h2 class="h3 mb-1" id="totalSumbangan">0</h2>
+              <p class="text-muted mb-0">Sumbangan</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="display-4 text-warning mb-2">
+                <i class="bi bi-window-split"></i>
+              </div>
+              <h2 class="h3 mb-1" id="totalPelanggan">0</h2>
+              <p class="text-muted mb-0">Pelanggan</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card h-100">
+            <div class="card-body text-center">
+              <div class="display-4 text-danger mb-2">
+                <i class="bi bi-window"></i>
+              </div>
+              <h2 class="h3 mb-1" id="totalPesanan">0</h2>
+              <p class="text-muted mb-0">Pesanan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sumbangan Report -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title"><i class="bi bi-cash-stack me-2"></i>Rekap Sumbangan</h3>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Hajatan</th>
+                  <th>Jenis</th>
+                  <th>Tanggal</th>
+                  <th>Jumlah Penyumbang</th>
+                  <th>Total Sumbangan</th>
+                </tr>
+              </thead>
+              <tbody id="sumbanganReportBody">
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-muted">Memuat data...</td>
+                </tr>
+              </tbody>
+              <tfoot id="sumbanganFooter" style="display: none;">
+                <tr class="table-primary">
+                  <th colspan="3">Total Keseluruhan</th>
+                  <th id="totalPenyumbang">0</th>
+                  <th id="totalNominal">Rp 0</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gorden Report -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><i class="bi bi-window-split me-2"></i>Rekap Pesanan Gorden</h3>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>Pelanggan</th>
+                  <th>Alamat</th>
+                  <th>Jumlah Jendela</th>
+                  <th>Total Kain</th>
+                  <th>Total Nilai</th>
+                </tr>
+              </thead>
+              <tbody id="gordenReportBody">
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-muted">Memuat data...</td>
+                </tr>
+              </tbody>
+              <tfoot id="gordenFooter" style="display: none;">
+                <tr class="table-warning">
+                  <th colspan="2">Total Keseluruhan</th>
+                  <th id="totalJendela">0</th>
+                  <th id="totalKain">0 m</th>
+                  <th id="totalNilaiGorden">Rp 0</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { isLoggedIn } from '/assets/js/auth.js';
+    import { getHajatanList, getSumbanganList, getPelangganList, formatCurrency, formatDate } from '/assets/js/app.js';
+
+    // DOM Elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const filterDari = document.getElementById('filterDari');
+    const filterSampai = document.getElementById('filterSampai');
+    const applyFilter = document.getElementById('applyFilter');
+    const printReport = document.getElementById('printReport');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Mobile menu toggle
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+      });
+
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+      });
+
+      // Set default date range (current year)
+      const now = new Date();
+      filterDari.value = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+      filterSampai.value = now.toISOString().split('T')[0];
+
+      // Load data
+      await loadAllData();
+
+      // Event handlers
+      applyFilter.addEventListener('click', loadAllData);
+      printReport.addEventListener('click', () => window.print());
+    }
+
+    async function loadAllData() {
+      await Promise.all([
+        loadSummary(),
+        loadSumbanganReport(),
+        loadGordenReport()
+      ]);
+    }
+
+    async function loadSummary() {
+      try {
+        // Get counts
+        const { data: hajatanData } = await getHajatanList(1000);
+        const { data: sumbanganData } = await getSumbanganList({}, 1000);
+        const { data: pelangganData } = await getPelangganList(1000);
+
+        // Get pesanan count
+        let pesananCount = 0;
+        if (pelangganData) {
+          pesananCount = pelangganData.reduce((a, p) => a + (p.pesanan_jendela?.length || 0), 0);
+        }
+
+        document.getElementById('totalHajatan').textContent = hajatanData?.length || 0;
+        document.getElementById('totalSumbangan').textContent = sumbanganData?.length || 0;
+        document.getElementById('totalPelanggan').textContent = pelangganData?.length || 0;
+        document.getElementById('totalPesanan').textContent = pesananCount;
+      } catch (error) {
+        console.error('Failed to load summary:', error);
+      }
+    }
+
+    async function loadSumbanganReport() {
+      try {
+        const { data: hajatanData } = await getHajatanList(100);
+        const { data: sumbanganData } = await getSumbanganList({}, 1000);
+
+        const tbody = document.getElementById('sumbanganReportBody');
+        const footer = document.getElementById('sumbanganFooter');
+
+        if (!hajatanData || hajatanData.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">Belum ada data</td>
+            </tr>
+          `;
+          footer.style.display = 'none';
+          return;
+        }
+
+        // Group sumbangan by hajatan
+        const hajatanMap = {};
+        hajatanData.forEach(h => {
+          hajatanMap[h.id] = {
+            nama: h.nama_hajatan,
+            jenis: h.jenis_acara,
+            tanggal: h.tanggal,
+            count: 0,
+            total: 0
+          };
+        });
+
+        if (sumbanganData) {
+          sumbanganData.forEach(s => {
+            if (hajatanMap[s.id_hajatan]) {
+              hajatanMap[s.id_hajatan].count++;
+              hajatanMap[s.id_hajatan].total += s.nominal || 0;
+            }
+          });
+        }
+
+        let totalPenyumbang = 0;
+        let totalNominal = 0;
+
+        const rows = Object.values(hajatanMap).map(h => {
+          totalPenyumbang += h.count;
+          totalNominal += h.total;
+          return `
+            <tr>
+              <td>${h.nama}</td>
+              <td>${h.jenis}</td>
+              <td>${formatDate(h.tanggal)}</td>
+              <td>${h.count} orang</td>
+              <td class="text-success fw-semibold">${formatCurrency(h.total)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        tbody.innerHTML = rows;
+        document.getElementById('totalPenyumbang').textContent = totalPenyumbang;
+        document.getElementById('totalNominal').textContent = formatCurrency(totalNominal);
+        footer.style.display = 'table-footer-group';
+      } catch (error) {
+        console.error('Failed to load sumbangan report:', error);
+      }
+    }
+
+    async function loadGordenReport() {
+      try {
+        const { data: pelangganData } = await getPelangganList(1000);
+
+        const tbody = document.getElementById('gordenReportBody');
+        const footer = document.getElementById('gordenFooter');
+
+        if (!pelangganData || pelangganData.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">Belum ada data</td>
+            </tr>
+          `;
+          footer.style.display = 'none';
+          return;
+        }
+
+        let totalJendela = 0;
+        let totalKain = 0;
+        let totalNilai = 0;
+
+        const rows = pelangganData.map(p => {
+          const jendela = p.pesanan_jendela?.length || 0;
+          const kain = p.pesanan_jendela?.reduce((a, j) => a + (j.kebutuhan_kain_m || 0), 0) || 0;
+          const nilai = p.pesanan_jendela?.reduce((a, j) => a + (j.total_harga || 0), 0) || 0;
+
+          totalJendela += jendela;
+          totalKain += kain;
+          totalNilai += nilai;
+
+          return `
+            <tr>
+              <td>${p.nama_pelanggan}</td>
+              <td>${p.alamat || '-'}</td>
+              <td>${jendela} unit</td>
+              <td>${kain.toFixed(1)} m</td>
+              <td class="text-success fw-semibold">${formatCurrency(nilai)}</td>
+            </tr>
+          `;
+        }).join('');
+
+        tbody.innerHTML = rows;
+        document.getElementById('totalJendela').textContent = totalJendela;
+        document.getElementById('totalKain').textContent = totalKain.toFixed(1) + ' m';
+        document.getElementById('totalNilaiGorden').textContent = formatCurrency(totalNilai);
+        footer.style.display = 'table-footer-group';
+      } catch (error) {
+        console.error('Failed to load gorden report:', error);
+      }
+    }
+  </script>
+</body>
+</html>

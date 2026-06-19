@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator RAB Jendela - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .component-row {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    .component-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    /* Invoice print layout */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 12pt;
+      }
+      .sidebar, .bottom-nav, .page-header, .sidebar-overlay, .btn, .no-print, header, nav {
+        display: none !important;
+      }
+      .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      .page-content {
+        padding: 0 !important;
+      }
+      .card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+      }
+      .print-invoice {
+        display: block !important;
+      }
+      .print-hide {
+        display: none !important;
+      }
+      .table th {
+        background: #f1f5f9 !important;
+        color: #000000 !important;
+        border-bottom: 2px solid #000000 !important;
+      }
+      .table td {
+        border-bottom: 1px solid #e2e8f0 !important;
+      }
+    }
+    .print-invoice {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar print-hide" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard.html" class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="bi bi-house-heart"></i>
+        </div>
+        <div class="sidebar-brand-text">
+          Keluarga
+          <small>Manajemen Data</small>
+        </div>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-title">Menu Utama</p>
+      <a href="/dashboard.html" class="sidebar-link">
+        <i class="bi bi-grid-1x2"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
+        <i class="bi bi-cash-stack"></i>
+        <span>Data Sumbangan</span>
+      </a>
+      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
+        <i class="bi bi-calendar-event"></i>
+        <span>Data Hajatan</span>
+      </a>
+      <a href="/gorden/pelanggan.html" class="sidebar-link">
+        <i class="bi bi-window-split"></i>
+        <span>Data Gorden</span>
+      </a>
+      <a href="/gorden/kalkulator-rab.html" class="sidebar-link active">
+        <i class="bi bi-calculator"></i>
+        <span>Kalkulator RAB</span>
+      </a>
+      <a href="/gorden/katalog.html" class="sidebar-link">
+        <i class="bi bi-journal-richtext"></i>
+        <span>Katalog Produk</span>
+      </a>
+
+      <p class="nav-section-title mt-4">Lainnya</p>
+      <a href="/laporan.html" class="sidebar-link">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span>Laporan</span>
+      </a>
+      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
+        <i class="bi bi-images"></i>
+        <span>Kelola Promosi</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- Printable Invoice Header (Hidden on Screen, Shown on Print) -->
+    <div class="print-invoice container py-4">
+      <div class="row align-items-center mb-4 pb-3 border-bottom">
+        <div class="col-8">
+          <h2 class="fw-bold text-dark m-0" style="letter-spacing: -0.02em;">DUTA INTERIOR GORDEN</h2>
+          <p class="text-muted small m-0 mt-1">Penyedia Gorden, Vitrace, Blinds & Aksesoris Premium</p>
+          <p class="text-muted small m-0">Telp: 0812-3456-7890 | Alamat: Jln. Raya Duta No. 12</p>
+        </div>
+        <div class="col-4 text-end">
+          <h4 class="fw-bold m-0 text-primary">INVOICE RAB</h4>
+          <p class="text-muted small m-0 mt-1" id="printDate">Tanggal: -</p>
+          <p class="text-muted small m-0" id="printInvoiceNum">No: RAB-GORDEN-</p>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-6">
+          <p class="text-muted small mb-1">Dibuat Untuk Pelanggan:</p>
+          <h5 class="fw-bold text-dark m-0" id="printCustomerName">-</h5>
+          <p class="text-muted small m-0" id="printCustomerPhone">-</p>
+        </div>
+        <div class="col-6 text-end">
+          <p class="text-muted small mb-1">Spesifikasi Jendela:</p>
+          <h6 class="fw-bold text-dark m-0" id="printWindowLoc">-</h6>
+          <p class="text-muted small m-0" id="printWindowSize">Lebar: - cm | Tinggi: - cm</p>
+        </div>
+      </div>
+      
+      <table class="table table-bordered mb-4">
+        <thead>
+          <tr class="table-light">
+            <th>Deskripsi Komponen</th>
+            <th class="text-end">Ukuran Pemakaian</th>
+            <th class="text-end">Harga per Unit</th>
+            <th class="text-end">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="printInvoiceBody">
+          <!-- Populated dynamically during printing -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" class="text-end">Total Keseluruhan</th>
+            <th class="text-end text-primary fw-bold" id="printGrandTotal">Rp 0</th>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="row mt-5 pt-4">
+        <div class="col-4 text-center">
+          <p class="small text-muted mb-5 pb-3">Pelanggan</p>
+          <p class="small fw-bold m-0 border-top pt-2" id="printSignClient">-</p>
+        </div>
+        <div class="col-4 offset-4 text-center">
+          <p class="small text-muted mb-5 pb-3">Admin Duta Interior</p>
+          <p class="small fw-bold m-0 border-top pt-2">Duta Interior Gorden</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen UI Header -->
+    <header class="page-header print-hide">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Kalkulator RAB Jendela</h1>
+          <p class="page-subtitle">Hitung anggaran kebutuhan kain dan rell otomatis</p>
+        </div>
+        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Screen UI Content -->
+    <main class="page-content print-hide">
+
+      <div class="row g-4">
+        
+        <!-- Left: Form Input Ukuran & Komponen -->
+        <div class="col-12 col-lg-7">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3 class="card-title"><i class="bi bi-gear-fill me-2"></i>Parameter RAB & Ukuran</h3>
+            </div>
+            <div class="card-body p-4">
+              
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Nama Pelanggan / Referensi <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="customerName" required placeholder="Contoh: Budi (Kamar Utama)">
+                </div>
+                <div class="col-12 col-md-6">
+                  <label class="form-label">Nomor Telepon Pelanggan</label>
+                  <input type="tel" class="form-control" id="customerPhone" placeholder="08xxxxxxxxxx">
+                </div>
+              </div>
+
+              <div class="row g-3 mb-4 border-bottom pb-4">
+                <div class="col-12 col-md-4">
+                  <label class="form-label">Lokasi Jendela <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="windowLoc" required value="Jendela Utama" placeholder="Ruang Tamu">
+                </div>
+                <div class="col-6 col-md-4">
+                  <label class="form-label">Lebar Jendela (cm) <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="lebarCm" required placeholder="150">
+                </div>
+                <div class="col-6 col-md-4">
+                  <label class="form-label">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="tinggiCm" required placeholder="200">
+                </div>
+              </div>
+
+              <!-- Komponen 1: Kain Gorden Utama -->
+              <div class="component-row" id="gordenRow">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="gordenCheck" checked>
+                  <label class="form-check-label fw-bold text-dark" for="gordenCheck">Kain Gorden (Utama)</label>
+                </div>
+                <div class="row g-2" id="gordenInputs">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Nama Produk / Motif</label>
+                    <select class="form-select" id="gordenSelect"></select>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="gordenHarga" value="0">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Komponen 2: Vitrace (Daleman) -->
+              <div class="component-row" id="vitraceRow">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="vitraceCheck">
+                  <label class="form-check-label fw-bold text-dark" for="vitraceCheck">Kain Vitrace (Daleman)</label>
+                </div>
+                <div class="row g-2 d-none" id="vitraceInputs">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Nama Produk Vitrace</label>
+                    <select class="form-select" id="vitraceSelect"></select>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="vitraceHarga" value="0" disabled>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Komponen 3: Rell (Batang) -->
+              <div class="component-row" id="rellRow">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="rellCheck">
+                  <label class="form-check-label fw-bold text-dark" for="rellCheck">Rell / Batang Gorden</label>
+                </div>
+                <div class="row g-2 d-none" id="rellInputs">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Tipe Rell</label>
+                    <select class="form-select" id="rellSelect"></select>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small mb-1">Harga per Meter (Rp)</label>
+                    <input type="number" class="form-control" id="rellHarga" value="0" disabled>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Kalkulator RAB & Live Preview -->
+        <div class="col-12 col-lg-5">
+          <div class="card mb-4" style="border-color: var(--primary);">
+            <div class="card-header" style="background-color: var(--primary-light);">
+              <h3 class="card-title text-primary"><i class="bi bi-file-earmark-spreadsheet-fill me-2"></i>Rencana Anggaran Biaya (RAB)</h3>
+            </div>
+            <div class="card-body p-4">
+              
+              <div class="table-responsive mb-4">
+                <table class="table table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Detail</th>
+                      <th class="text-end">Kebutuhan</th>
+                      <th class="text-end">Harga</th>
+                      <th class="text-end">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rabTableBody">
+                    <tr>
+                      <td colspan="4" class="text-center py-4 text-muted">Masukkan lebar & tinggi jendela...</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-light">
+                      <th colspan="3" class="text-end fs-6">Grand Total</th>
+                      <th class="text-end text-primary fs-6 fw-bold" id="grandTotalText">Rp 0</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- Print button -->
+              <div class="d-grid">
+                <button class="btn btn-primary py-3 fs-6" id="printBtn" disabled>
+                  <i class="bi bi-printer me-2 fs-5"></i> Cetak RAB / Invoice
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <nav class="bottom-nav print-hide">
+    <a href="/dashboard.html" class="bottom-nav-item">
+      <i class="bi bi-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
+      <i class="bi bi-cash-stack"></i>
+      <span>Sumbangan</span>
+    </a>
+    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
+      <i class="bi bi-calendar-event"></i>
+      <span>Hajatan</span>
+    </a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+      <i class="bi bi-window-split"></i>
+      <span>Gorden</span>
+    </a>
+    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item active">
+      <i class="bi bi-calculator"></i>
+      <span>RAB</span>
+    </a>
+  </nav>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { checkAuth } from '/assets/js/auth.js';
+    import { getProdukKatalog, formatCurrency } from '/assets/js/app.js';
+
+    // DOM Elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+
+    const customerNameInput = document.getElementById('customerName');
+    const customerPhoneInput = document.getElementById('customerPhone');
+    const windowLocInput = document.getElementById('windowLoc');
+    const lebarInput = document.getElementById('lebarCm');
+    const tinggiInput = document.getElementById('tinggiCm');
+
+    // Component references
+    const gordenCheck = document.getElementById('gordenCheck');
+    const gordenSelect = document.getElementById('gordenSelect');
+    const gordenHarga = document.getElementById('gordenHarga');
+    const gordenInputs = document.getElementById('gordenInputs');
+
+    const vitraceCheck = document.getElementById('vitraceCheck');
+    const vitraceSelect = document.getElementById('vitraceSelect');
+    const vitraceHarga = document.getElementById('vitraceHarga');
+    const vitraceInputs = document.getElementById('vitraceInputs');
+
+    const rellCheck = document.getElementById('rellCheck');
+    const rellSelect = document.getElementById('rellSelect');
+    const rellHarga = document.getElementById('rellHarga');
+    const rellInputs = document.getElementById('rellInputs');
+
+    const rabTableBody = document.getElementById('rabTableBody');
+    const grandTotalText = document.getElementById('grandTotalText');
+    const printBtn = document.getElementById('printBtn');
+
+    // Print invoice elements
+    const printDate = document.getElementById('printDate');
+    const printInvoiceNum = document.getElementById('printInvoiceNum');
+    const printCustomerName = document.getElementById('printCustomerName');
+    const printCustomerPhone = document.getElementById('printCustomerPhone');
+    const printWindowLoc = document.getElementById('printWindowLoc');
+    const printWindowSize = document.getElementById('printWindowSize');
+    const printInvoiceBody = document.getElementById('printInvoiceBody');
+    const printGrandTotal = document.getElementById('printGrandTotal');
+    const printSignClient = document.getElementById('printSignClient');
+
+    // State variables
+    let produkKatalogDb = [];
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // 1. Guard check
+      await checkAuth();
+
+      // Mobile sidebar toggle
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+      });
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+      });
+
+      // 2. Fetch Catalog items from Supabase
+      try {
+        produkKatalogDb = await getProdukKatalog();
+      } catch (err) {
+        console.error("Gagal mengambil katalog di RAB:", err);
+      }
+
+      // 3. Populate Dropdowns from katalog database
+      populateDropdowns();
+
+      // 4. Setup event toggles
+      setupComponentToggle(gordenCheck, gordenInputs, gordenHarga, 'gordenRow');
+      setupComponentToggle(vitraceCheck, vitraceInputs, vitraceHarga, 'vitraceRow');
+      setupComponentToggle(rellCheck, rellInputs, rellHarga, 'rellRow');
+
+      // 5. Setup price autofills
+      setupAutofill(gordenSelect, gordenHarga);
+      setupAutofill(vitraceSelect, vitraceHarga);
+      setupAutofill(rellSelect, rellHarga);
+
+      // 6. Setup calculations change triggers
+      [customerNameInput, customerPhoneInput, windowLocInput, lebarInput, tinggiInput, gordenHarga, vitraceHarga, rellHarga].forEach(inp => {
+        inp.addEventListener('input', updateRABCalculations);
+      });
+      [gordenCheck, vitraceCheck, rellCheck].forEach(chk => {
+        chk.addEventListener('change', updateRABCalculations);
+      });
+
+      // 7. Setup print action
+      printBtn.addEventListener('click', handlePrint);
+
+      // Set initial prices
+      triggerSelectChange(gordenSelect, gordenHarga);
+      triggerSelectChange(vitraceSelect, vitraceHarga);
+      triggerSelectChange(rellSelect, rellHarga);
+
+      // Initial run
+      updateRABCalculations();
+    }
+
+    // Populate selects from shared dynamic database
+    function populateDropdowns() {
+      const gordenOptions = produkKatalogDb
+        .filter(p => p.kategori.includes('Gorden') || p.kategori.includes('Blind') || p.kategori.includes('Kaca Film'))
+        .map(p => `<option value="${p.id}" data-harga="${p.harga}">${p.nama} (${p.kategori} - Rp ${p.harga.toLocaleString('id-ID')}/${p.satuan})</option>`);
+      gordenSelect.innerHTML = gordenOptions.join('') + '<option value="custom" data-harga="0">Harga Kustom...</option>';
+
+      const vitraceOptions = produkKatalogDb
+        .filter(p => p.kategori.includes('Vitrace'))
+        .map(p => `<option value="${p.id}" data-harga="${p.harga}">${p.nama} (Rp ${p.harga.toLocaleString('id-ID')}/${p.satuan})</option>`);
+      vitraceSelect.innerHTML = vitraceOptions.join('') + '<option value="custom" data-harga="0">Harga Kustom...</option>';
+
+      const rellOptions = produkKatalogDb
+        .filter(p => p.kategori.includes('Rell') || p.kategori.includes('Aksesoris'))
+        .map(p => `<option value="${p.id}" data-harga="${p.harga}">${p.nama} (Rp ${p.harga.toLocaleString('id-ID')}/${p.satuan})</option>`);
+      rellSelect.innerHTML = rellOptions.join('') + '<option value="custom" data-harga="0">Harga Kustom...</option>';
+    }
+
+    function triggerSelectChange(selectEl, priceInput) {
+      const option = selectEl.options[selectEl.selectedIndex];
+      if (option) {
+        priceInput.value = parseInt(option.dataset.harga) || 0;
+      }
+    }
+
+    function setupComponentToggle(checkbox, inputsDiv, priceInput, rowId) {
+      const row = document.getElementById(rowId);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          inputsDiv.classList.remove('d-none');
+          priceInput.disabled = false;
+          row.style.opacity = '1';
+        } else {
+          inputsDiv.classList.add('d-none');
+          priceInput.disabled = true;
+          row.style.opacity = '0.6';
+        }
+        updateRABCalculations();
+      });
+    }
+
+    function setupAutofill(selectEl, priceInput) {
+      selectEl.addEventListener('change', () => {
+        const option = selectEl.options[selectEl.selectedIndex];
+        const price = parseInt(option.dataset.harga) || 0;
+
+        if (selectEl.value === 'custom') {
+          priceInput.value = '';
+          priceInput.focus();
+        } else {
+          priceInput.value = price;
+        }
+        updateRABCalculations();
+      });
+    }
+
+    // Perhitungan Anggaran RAB Utama
+    let activeCalculations = []; // stores active rows to share with printer
+
+    function updateRABCalculations() {
+      const name = customerNameInput.value.trim();
+      const lebar = parseFloat(lebarInput.value) || 0;
+      const tinggi = parseFloat(tinggiInput.value) || 0;
+
+      activeCalculations = [];
+
+      if (!name || lebar <= 0 || tinggi <= 0) {
+        rabTableBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center py-4 text-muted">
+              Lengkapi nama pelanggan, lebar & tinggi jendela untuk memicu kalkulator RAB...
+            </td>
+          </tr>
+        `;
+        grandTotalText.textContent = 'Rp 0';
+        printBtn.disabled = true;
+        return;
+      }
+
+      let grandTotal = 0;
+
+      // 1. Kain Gorden Utama
+      if (gordenCheck.checked) {
+        const selectedProdId = gordenSelect.value;
+        const matchedItem = produkKatalogDb.find(p => p.id === selectedProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
+        const nameLabel = gordenSelect.value === 'custom' ? 'Kustom' : gordenSelect.options[gordenSelect.selectedIndex].text.split(' (')[0];
+        
+        let qty = 0;
+        let desc = '';
+        
+        if (matchedItem.satuan === 'm²') {
+          qty = Math.max(1, (lebar / 100) * (tinggi / 100));
+          desc = `Bahan ${nameLabel} (${matchedItem.kategori} - Luas Jendela)`;
+        } else {
+          qty = (lebar / 100) * 2.5;
+          desc = `Bahan ${nameLabel} (${matchedItem.kategori} - Lebar x 2.5)`;
+        }
+
+        const harga = parseInt(gordenHarga.value) || 0;
+        const subtotal = Math.round(qty * harga);
+        grandTotal += subtotal;
+
+        activeCalculations.push({
+          item: desc,
+          qty: qty.toFixed(1) + ` ${matchedItem.satuan}`,
+          price: harga,
+          subtotal: subtotal
+        });
+      }
+
+      // 2. Vitrace
+      if (vitraceCheck.checked) {
+        const nameLabel = vitraceSelect.value === 'custom' ? 'Kustom' : vitraceSelect.options[vitraceSelect.selectedIndex].text.split(' (')[0];
+        const qty = (lebar / 100) * 2.5;
+        const harga = parseInt(vitraceHarga.value) || 0;
+        const subtotal = Math.round(qty * harga);
+        grandTotal += subtotal;
+
+        activeCalculations.push({
+          item: `Bahan ${nameLabel} (Vitrace - Lebar x 2.5)`,
+          qty: qty.toFixed(1) + ' m',
+          price: harga,
+          subtotal: subtotal
+        });
+      }
+
+      // 3. Rell / Batang (lebar + 30cm)
+      if (rellCheck.checked) {
+        const nameLabel = rellSelect.value === 'custom' ? 'Kustom' : rellSelect.options[rellSelect.selectedIndex].text.split(' (')[0];
+        const qty = (lebar + 30) / 100;
+        const harga = parseInt(rellHarga.value) || 0;
+        const subtotal = Math.round(qty * harga);
+        grandTotal += subtotal;
+
+        activeCalculations.push({
+          item: `Batang Rell ${nameLabel} (Rell - Lebar + 30cm)`,
+          qty: qty.toFixed(1) + ' m',
+          price: harga,
+          subtotal: subtotal
+        });
+      }
+
+      // Render table
+      if (activeCalculations.length === 0) {
+        rabTableBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center py-4 text-muted">
+              Pilih minimal satu komponen jendela...
+            </td>
+          </tr>
+        `;
+        grandTotalText.textContent = 'Rp 0';
+        printBtn.disabled = true;
+      } else {
+        rabTableBody.innerHTML = activeCalculations.map(c => `
+          <tr>
+            <td><strong class="text-dark small">${c.item}</strong></td>
+            <td class="text-end small">${c.qty}</td>
+            <td class="text-end small">${formatCurrency(c.price)}</td>
+            <td class="text-end text-success fw-semibold small">${formatCurrency(c.subtotal)}</td>
+          </tr>
+        `).join('');
+
+        grandTotalText.textContent = formatCurrency(grandTotal);
+        printBtn.disabled = false;
+      }
+    }
+
+    // Trigger Print Action & fill in invoice elements
+    function handlePrint() {
+      // Fill text fields
+      const today = new Date();
+      printDate.textContent = "Tanggal: " + new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(today);
+      printInvoiceNum.textContent = "No: RAB-GORDEN-" + Math.floor(1000 + Math.random() * 9000);
+      printCustomerName.textContent = customerNameInput.value.trim();
+      printCustomerPhone.textContent = customerPhoneInput.value.trim() || 'Tidak ada nomor telepon';
+      printWindowLoc.textContent = windowLocInput.value.trim();
+      printWindowSize.textContent = `Lebar: ${lebarInput.value} cm | Tinggi: ${tinggiInput.value} cm`;
+      printSignClient.textContent = customerNameInput.value.trim();
+
+      // Fill BoQ
+      printInvoiceBody.innerHTML = activeCalculations.map(c => `
+        <tr>
+          <td><strong>${c.item}</strong></td>
+          <td class="text-end">${c.qty}</td>
+          <td class="text-end">${formatCurrency(c.price)}</td>
+          <td class="text-end fw-semibold text-success">${formatCurrency(c.subtotal)}</td>
+        </tr>
+      `).join('');
+
+      printGrandTotal.textContent = grandTotalText.textContent;
+
+      // Trigger Print dialogue
+      window.print();
+    }
+  </script>
+</body>
+</html>
