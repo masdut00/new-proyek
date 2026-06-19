@@ -109,6 +109,55 @@
       color: var(--primary);
       background-color: rgba(92, 96, 245, 0.02);
     }
+
+    /* Window list table bisa di-scroll horizontal */
+    #windowTableContainer .table-responsive,
+    .table-responsive {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    #windowTableContainer table {
+      min-width: 500px;
+    }
+
+    /* Highlight edited row */
+    .window-row.editing-highlight td {
+      background-color: #fff9c4 !important;
+    }
+
+    /* === RESPONSIVE MOBILE === */
+    @media (max-width: 767.98px) {
+      .component-card {
+        padding: 0.85rem;
+      }
+      .preview-box {
+        padding: 0.85rem;
+      }
+      .preview-title {
+        font-size: 0.7rem;
+      }
+      .preview-value {
+        font-size: 0.875rem;
+      }
+
+      /* Preview grid: 2 kolom saja di mobile */
+      .preview-box .row .col-6.col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      /* Sticky bottom save bar compact */
+      .sticky-bottom-bar {
+        padding: 0.75rem 1rem !important;
+      }
+      .sticky-bottom-bar .btn {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>

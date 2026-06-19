@@ -114,6 +114,74 @@
     .print-invoice {
       display: none;
     }
+
+    /* Responsive: tabel jendela bisa di-scroll horizontal di mobile */
+    .table-responsive {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    #pesananBody tr td:nth-child(4) {
+      min-width: 160px;
+    }
+
+    @media (max-width: 767.98px) {
+      /* Summary stats: tampilkan lebih compact */
+      .display-6 {
+        font-size: 1.4rem !important;
+      }
+
+      /* Summary card border jadi baris bawah, bukan kanan */
+      .border-end {
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        padding-bottom: 0.85rem !important;
+        margin-bottom: 0.85rem;
+      }
+
+      /* Component cards di modal lebih compact */
+      .component-card {
+        padding: 0.85rem;
+      }
+
+      /* Preview box compact */
+      .preview-box {
+        padding: 0.85rem;
+      }
+      .preview-title {
+        font-size: 0.7rem;
+      }
+      .preview-value {
+        font-size: 0.9rem;
+      }
+
+      /* Tombol cetak invoice full width di mobile */
+      #printInvoiceBtn {
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
+      /* Grand total bigger touch area */
+      #grandTotalVal {
+        font-size: 1.25rem;
+      }
+
+      /* Table daftar jendela - set min-width agar bisa di-scroll */
+      .table {
+        min-width: 580px;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      /* Kolom aksi di tabel: susun tombol vertikal */
+      .btn-edit-grouped,
+      .btn-del-grouped {
+        display: block;
+        width: 100%;
+        margin-bottom: 4px;
+        margin-right: 0 !important;
+      }
+    }
+
     @media print {
       body {
         background: #ffffff !important;

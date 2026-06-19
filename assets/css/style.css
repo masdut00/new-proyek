@@ -558,7 +558,8 @@ body {
 
 .table-responsive {
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;  /* FIXED: was 'hidden' which broke mobile scrolling */
+  -webkit-overflow-scrolling: touch; /* smooth momentum scroll on iOS */
 }
 
 .table {
@@ -901,23 +902,125 @@ body {
 
 @media (max-width: 575.98px) {
   .page-header {
-    padding: 1.15rem 1.25rem;
+    padding: 1rem 1rem;
   }
 
   .page-content {
-    padding: 1.25rem;
+    padding: 1rem;
+    padding-bottom: 100px; /* extra space above bottom nav */
   }
 
   .page-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
   }
 
   .card-body {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+
+  .card-header {
+    padding: 0.9rem 1rem;
   }
 
   .btn {
-    padding: 0.65rem 1.2rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Stat numbers in summary cards - prevent overflow */
+  .display-6 {
+    font-size: 1.5rem !important;
+  }
+
+  /* Make table min-width so it scrolls instead of squishes */
+  .table {
+    min-width: 480px;
+  }
+
+  /* Table cells smaller on mobile */
+  .table th,
+  .table td {
+    padding: 0.85rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  /* Form labels smaller */
+  .form-label {
+    font-size: 0.8rem;
+  }
+
+  /* Input group on mobile */
+  .input-group-text {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.875rem;
+  }
+
+  /* Modal full screen on mobile */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-lg {
+    max-width: calc(100% - 1rem);
+  }
+
+  /* Activity items compact */
+  .activity-item {
+    padding: 0.85rem;
+    gap: 0.85rem;
+  }
+
+  .activity-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  /* Quick menu touch targets bigger */
+  .quick-menu-card {
+    padding: 1.15rem 1rem;
+  }
+
+  .quick-menu-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+  }
+
+  /* Bottom nav visible on small screens */
+  .bottom-nav {
+    bottom: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .bottom-nav-item {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.675rem;
+  }
+
+  .bottom-nav-item i {
+    font-size: 1.2rem;
+  }
+}
+
+/* Extra small screens (iPhone SE, etc) */
+@media (max-width: 374px) {
+  .page-content {
+    padding: 0.75rem;
+  }
+
+  .card-body {
+    padding: 0.85rem;
+  }
+
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .display-6 {
+    font-size: 1.25rem !important;
   }
 }
 

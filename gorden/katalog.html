@@ -54,6 +54,18 @@
       height: 100%;
       object-fit: cover;
     }
+
+    /* Responsive: katalog grid di mobile */
+    @media (max-width: 575.98px) {
+      .katalog-img-box {
+        height: 140px;
+      }
+      /* Pastikan col-6 di grid produk rapih di HP kecil */
+      .row-cols-2 > * {
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+      }
+    }
   </style>
 </head>
 <body>
