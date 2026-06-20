@@ -807,22 +807,55 @@
               </div>
             </div>
 
+            <!-- KOMPONEN 4: Blind (Roller / Vertical) -->
+            <div class="component-card" id="modalBlindBox">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="modalBlindChecked">
+                  <label class="form-check-label fw-bold text-dark" for="modalBlindChecked">
+                    Blind <small class="fw-normal text-muted">(Roller / Vertical)</small>
+                  </label>
+                </div>
+              </div>
+              <div class="row g-3 d-none" id="modalBlindFields">
+                <div class="col-12 col-md-7">
+                  <label class="form-label small">Tipe Blind</label>
+                  <div class="custom-select-container" id="modalBlindSelectContainer">
+                    <div class="custom-select-trigger-wrap">
+                      <input type="text" class="form-control custom-select-trigger" id="modalBlindSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                    </div>
+                    <div class="custom-select-dropdown shadow-lg d-none" id="modalBlindDropdown"></div>
+                  </div>
+                  <input type="hidden" id="modalBlindProduk" value="">
+                </div>
+                <div class="col-12 col-md-5">
+                  <label class="form-label small">Harga per m² (Rp)</label>
+                  <input type="text" class="form-control" id="modalBlindHarga" value="0" disabled>
+                  <div class="form-text text-muted small">Kalkulasi otomatis: Lebar × Tinggi (m²)</div>
+                </div>
+              </div>
+            </div>
+
             <!-- Live Preview calculations -->
             <div class="preview-box mt-4">
               <div class="row text-center g-2">
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                   <div class="preview-title">Kain Gorden</div>
                   <div class="preview-value" id="modalEstGorden">-</div>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                   <div class="preview-title">Kain Vitrace</div>
                   <div class="preview-value" id="modalEstVitrace">-</div>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                   <div class="preview-title">Batang Rell</div>
                   <div class="preview-value" id="modalEstRell">-</div>
                 </div>
                 <div class="col-6 col-md-3">
+                  <div class="preview-title">Blind (m²)</div>
+                  <div class="preview-value" id="modalEstBlind">-</div>
+                </div>
+                <div class="col-12 col-md-3">
                   <div class="preview-title">Total Jendela</div>
                   <div class="preview-value text-primary fs-6" id="modalEstTotal">-</div>
                 </div>
@@ -912,9 +945,16 @@
     const modalRellHargaInput = document.getElementById('modalRellHarga');
     const modalRellFields = document.getElementById('modalRellFields');
 
+    const modalBlindCheck = document.getElementById('modalBlindChecked');
+    const modalBlindHidden = document.getElementById('modalBlindProduk');
+    const modalBlindTrigger = document.getElementById('modalBlindSelectTrigger');
+    const modalBlindHargaInput = document.getElementById('modalBlindHarga');
+    const modalBlindFields = document.getElementById('modalBlindFields');
+
     const modalEstGorden = document.getElementById('modalEstGorden');
     const modalEstVitrace = document.getElementById('modalEstVitrace');
     const modalEstRell = document.getElementById('modalEstRell');
+    const modalEstBlind = document.getElementById('modalEstBlind');
     const modalEstTotal = document.getElementById('modalEstTotal');
 
     const diskonInput = document.getElementById('diskonInput');
@@ -964,7 +1004,7 @@
         'modalGordenProduk',
         'modalGordenHarga',
         produkKatalogDb,
-        (p) => p.kategori.includes('Gorden') || p.kategori.includes('Blind') || p.kategori.includes('Kaca Film')
+        (p) => p.kategori.includes('Gorden')
       );
 
       initSearchableSelect(
@@ -983,21 +1023,30 @@
         (p) => p.kategori.includes('Rell') || p.kategori.includes('Aksesoris')
       );
 
+      initSearchableSelect(
+        'modalBlindSelectContainer',
+        'modalBlindProduk',
+        'modalBlindHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Blind')
+      );
+
       // Setup checkbox visibility togglers inside the Modal
       setupCheckboxToggle(modalGordenCheck, modalGordenFields, modalGordenHargaInput, 'modalGordenBox');
       setupCheckboxToggle(modalVitraceCheck, modalVitraceFields, modalVitraceHargaInput, 'modalVitraceBox');
       setupCheckboxToggle(modalRellCheck, modalRellFields, modalRellHargaInput, 'modalRellBox');
+      setupCheckboxToggle(modalBlindCheck, modalBlindFields, modalBlindHargaInput, 'modalBlindBox');
 
       // Apply Rupiah currency input masks
-      [modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, diskonInput].forEach(inp => {
+      [modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, modalBlindHargaInput, diskonInput].forEach(inp => {
         applyRupiahMask(inp);
       });
 
       // Listeners for calculations inside the Modal
-      [modalLebarInput, modalTinggiInput, modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, modalGordenManualQtyInput, modalVitraceManualQtyInput].forEach(inp => {
+      [modalLebarInput, modalTinggiInput, modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, modalBlindHargaInput, modalGordenManualQtyInput, modalVitraceManualQtyInput].forEach(inp => {
         inp.addEventListener('input', runModalCalculations);
       });
-      [modalGordenCheck, modalVitraceCheck, modalRellCheck, modalGordenManualQtyCheck, modalVitraceManualQtyCheck].forEach(chk => {
+      [modalGordenCheck, modalVitraceCheck, modalRellCheck, modalBlindCheck, modalGordenManualQtyCheck, modalVitraceManualQtyCheck].forEach(chk => {
         chk.addEventListener('change', runModalCalculations);
       });
       // Lebar bahan radio change in modal
@@ -1096,6 +1145,14 @@
               const kainM = parseFloat(r.kebutuhan_kain_m) || 0;
               const hargaM = r.harga_per_m || 0;
               detailRows.push(`<div>Rell: <strong>${r.produk_nama || '-'}</strong> (${kainM.toFixed(1)}m × Rp ${hargaM.toLocaleString('id-ID')})</div>`);
+            }
+
+            if (win.components.blind) {
+              compLabels.push('<span class="badge bg-dark-light text-dark me-1">Blind</span>');
+              const b = win.components.blind;
+              const areaM2 = parseFloat(b.kebutuhan_kain_m) || 0;
+              const hargaM2 = b.harga_per_m || 0;
+              detailRows.push(`<div>Blind: <strong>${b.produk_nama || '-'}</strong> (${areaM2.toFixed(2)}m² × Rp ${hargaM2.toLocaleString('id-ID')})</div>`);
             }
 
             if (compLabels.length === 0) {
@@ -1358,6 +1415,18 @@
         } else {
           modalRellCheck.checked = false;
         }
+
+        // Blind
+        if (win.components.blind) {
+          modalBlindCheck.checked = true;
+          const matched = produkKatalogDb.find(p => p.nama.toLowerCase() === win.components.blind.produk_nama.toLowerCase());
+          modalBlindHidden.value = matched ? matched.id : 'custom';
+          modalBlindTrigger.value = win.components.blind.produk_nama;
+          modalBlindHargaInput.value = win.components.blind.harga_per_m;
+          modalBlindHargaInput.dispatchEvent(new Event('input'));
+        } else {
+          modalBlindCheck.checked = false;
+        }
       } else {
         editingGroupKey = null;
         document.getElementById('modalTitle').textContent = "Tambah Jendela Baru";
@@ -1368,6 +1437,7 @@
         modalGordenCheck.checked = true;
         modalVitraceCheck.checked = false;
         modalRellCheck.checked = false;
+        modalBlindCheck.checked = false;
 
         modalGordenManualQtyCheck.checked = false;
         modalVitraceManualQtyCheck.checked = false;
@@ -1383,6 +1453,7 @@
       modalGordenCheck.dispatchEvent(new Event('change'));
       modalVitraceCheck.dispatchEvent(new Event('change'));
       modalRellCheck.dispatchEvent(new Event('change'));
+      modalBlindCheck.dispatchEvent(new Event('change'));
 
       runModalCalculations();
       pesananModal.show();
@@ -1621,7 +1692,18 @@
         modalEstRell.textContent = '-';
       }
 
-      const total = gordenCost + vitraceCost + rellCost;
+      // Blind Calculation (m²)
+      let blindCost = 0;
+      if (modalBlindCheck.checked && lebar > 0 && tinggi > 0) {
+        const price = parseInt(modalBlindHargaInput.value.replace(/\D/g, '')) || 0;
+        const blindArea = lebarM * tinggiM;
+        blindCost = blindArea * price;
+        modalEstBlind.textContent = `${blindArea.toFixed(2)} m²`;
+      } else {
+        modalEstBlind.textContent = '-';
+      }
+
+      const total = gordenCost + vitraceCost + rellCost + blindCost;
       if (total > 0) {
         modalEstTotal.textContent = formatCurrency(Math.round(total));
       } else {
@@ -1643,8 +1725,9 @@
       const gordenChecked = modalGordenCheck.checked;
       const vitraceChecked = modalVitraceCheck.checked;
       const rellChecked = modalRellCheck.checked;
+      const blindChecked = modalBlindCheck.checked;
 
-      if (!gordenChecked && !vitraceChecked && !rellChecked) {
+      if (!gordenChecked && !vitraceChecked && !rellChecked && !blindChecked) {
         showToast('Centang minimal satu komponen jendela!', 'error');
         return;
       }
@@ -1760,6 +1843,25 @@
             total_harga: Math.round(rellQty * price),
             nama_jendela: lokasi,
             komponen: 'rell',
+            produk_nama: prodName,
+            window_group_id: activeGroupId
+          }));
+        }
+
+        if (blindChecked) {
+          const prodName = modalBlindTrigger.value.trim() || 'Custom Blind';
+          const price = parseInt(modalBlindHargaInput.value.replace(/\D/g, '')) || 0;
+          const blindArea = (lebar / 100) * (tinggi / 100);
+          promises.push(createPesananJendela({
+            id_pelanggan: pelangganId,
+            lokasi_jendela: `${lokasi} - Blind (${prodName})`,
+            tinggi_cm: tinggi,
+            lebar_cm: lebar,
+            kebutuhan_kain_m: blindArea,
+            harga_per_m: price,
+            total_harga: Math.round(blindArea * price),
+            nama_jendela: lokasi,
+            komponen: 'blind',
             produk_nama: prodName,
             window_group_id: activeGroupId
           }));

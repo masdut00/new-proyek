@@ -557,22 +557,55 @@
                 </div>
               </div>
 
+              <!-- KOMPONEN 4: Blind (Roller / Vertical) -->
+              <div class="component-card" id="blindBox">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="blindChecked">
+                    <label class="form-check-label fw-bold text-dark" for="blindChecked">
+                      Blind <small class="fw-normal text-muted">(Roller / Vertical)</small>
+                    </label>
+                  </div>
+                </div>
+                <div class="row g-3 d-none" id="blindFields">
+                  <div class="col-12 col-md-7">
+                    <label class="form-label small">Tipe Blind</label>
+                    <div class="custom-select-container" id="blindSelectContainer">
+                      <div class="custom-select-trigger-wrap">
+                        <input type="text" class="form-control custom-select-trigger" id="blindSelectTrigger" placeholder="Ketik untuk mencari produk...">
+                      </div>
+                      <div class="custom-select-dropdown shadow-lg d-none" id="blindDropdown"></div>
+                    </div>
+                    <input type="hidden" id="blindProduk" value="">
+                  </div>
+                  <div class="col-12 col-md-5">
+                    <label class="form-label small">Harga per m² (Rp)</label>
+                    <input type="text" class="form-control" id="blindHarga" value="0" disabled>
+                    <div class="form-text text-muted small">Kalkulasi otomatis: Lebar × Tinggi (m²)</div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Live Preview untuk Jendela yang Sedang Dibuat -->
               <div class="preview-box mt-4 mb-3">
                 <div class="row text-center g-2">
-                  <div class="col-6 col-md-3">
+                  <div class="col-6 col-md-2">
                     <div class="preview-title">Kain Gorden</div>
                     <div class="preview-value" id="estGordenKain">-</div>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-6 col-md-2">
                     <div class="preview-title">Kain Vitrace</div>
                     <div class="preview-value" id="estVitraceKain">-</div>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-6 col-md-2">
                     <div class="preview-title">Batang Rell</div>
                     <div class="preview-value" id="estRellBatang">-</div>
                   </div>
                   <div class="col-6 col-md-3">
+                    <div class="preview-title">Blind (m²)</div>
+                    <div class="preview-value" id="estBlindArea">-</div>
+                  </div>
+                  <div class="col-12 col-md-3">
                     <div class="preview-title">Subtotal</div>
                     <div class="preview-value text-primary fs-6" id="estTotalBiaya">-</div>
                   </div>
@@ -728,10 +761,17 @@
     const rellHargaInput = document.getElementById('rellHarga');
     const rellFields = document.getElementById('rellFields');
 
+    const blindCheck = document.getElementById('blindChecked');
+    const blindHidden = document.getElementById('blindProduk');
+    const blindTrigger = document.getElementById('blindSelectTrigger');
+    const blindHargaInput = document.getElementById('blindHarga');
+    const blindFields = document.getElementById('blindFields');
+
     // Live previews
     const estGordenKain = document.getElementById('estGordenKain');
     const estVitraceKain = document.getElementById('estVitraceKain');
     const estRellBatang = document.getElementById('estRellBatang');
+    const estBlindArea = document.getElementById('estBlindArea');
     const estTotalBiaya = document.getElementById('estTotalBiaya');
 
     // Action buttons
@@ -770,7 +810,7 @@
         'gordenProduk',
         'gordenHarga',
         produkKatalogDb,
-        (p) => p.kategori.includes('Gorden') || p.kategori.includes('Blind') || p.kategori.includes('Kaca Film')
+        (p) => p.kategori.includes('Gorden')
       );
 
       initSearchableSelect(
@@ -789,21 +829,30 @@
         (p) => p.kategori.includes('Rell') || p.kategori.includes('Aksesoris')
       );
 
+      initSearchableSelect(
+        'blindSelectContainer',
+        'blindProduk',
+        'blindHarga',
+        produkKatalogDb,
+        (p) => p.kategori.includes('Blind')
+      );
+
       // 4. Setup Checkbox visibility logic
       setupCheckboxToggle(gordenCheck, gordenFields, gordenHargaInput, 'gordenBox');
       setupCheckboxToggle(vitraceCheck, vitraceFields, vitraceHargaInput, 'vitraceBox');
       setupCheckboxToggle(rellCheck, rellFields, rellHargaInput, 'rellBox');
+      setupCheckboxToggle(blindCheck, blindFields, blindHargaInput, 'blindBox');
 
       // Apply Rupiah currency input masks
-      [gordenHargaInput, vitraceHargaInput, rellHargaInput].forEach(inp => {
+      [gordenHargaInput, vitraceHargaInput, rellHargaInput, blindHargaInput].forEach(inp => {
         applyRupiahMask(inp);
       });
 
       // 5. Setup Live calculations triggers
-      [lebarInput, tinggiInput, gordenHargaInput, vitraceHargaInput, rellHargaInput, gordenManualQtyInput, vitraceManualQtyInput].forEach(inp => {
+      [lebarInput, tinggiInput, gordenHargaInput, vitraceHargaInput, rellHargaInput, blindHargaInput, gordenManualQtyInput, vitraceManualQtyInput].forEach(inp => {
         inp.addEventListener('input', runCalculations);
       });
-      [gordenCheck, vitraceCheck, rellCheck, gordenManualQtyCheck, vitraceManualQtyCheck].forEach(chk => {
+      [gordenCheck, vitraceCheck, rellCheck, blindCheck, gordenManualQtyCheck, vitraceManualQtyCheck].forEach(chk => {
         chk.addEventListener('change', runCalculations);
       });
       // Lebar bahan radio change
@@ -822,42 +871,10 @@
       // 8. Submit all draft event
       submitAllBtn.addEventListener('click', submitAllData);
 
-      // 9. Load default product selections
-      initDefaultProductSelections();
-
-      // 10. Check if LocalStorage draft exists
+      // 9. Check if LocalStorage draft exists
       checkLocalStorageDraft();
 
       runCalculations();
-    }
-
-    function initDefaultProductSelections() {
-      // Gorden Default
-      const firstGorden = produkKatalogDb.find(p => p.kategori.includes('Gorden'));
-      if (firstGorden) {
-        gordenHidden.value = firstGorden.id;
-        gordenTrigger.value = firstGorden.nama;
-        gordenHargaInput.value = firstGorden.harga;
-        gordenHargaInput.dispatchEvent(new Event('input'));
-      }
-
-      // Vitrace Default
-      const firstVitrace = produkKatalogDb.find(p => p.kategori.includes('Vitrace'));
-      if (firstVitrace) {
-        vitraceHidden.value = firstVitrace.id;
-        vitraceTrigger.value = firstVitrace.nama;
-        vitraceHargaInput.value = firstVitrace.harga;
-        vitraceHargaInput.dispatchEvent(new Event('input'));
-      }
-
-      // Rell Default
-      const firstRell = produkKatalogDb.find(p => p.kategori.includes('Rell'));
-      if (firstRell) {
-        rellHidden.value = firstRell.id;
-        rellTrigger.value = firstRell.nama;
-        rellHargaInput.value = firstRell.harga;
-        rellHargaInput.dispatchEvent(new Event('input'));
-      }
     }
 
     // Check LocalStorage Draft
@@ -942,29 +959,52 @@
       const priceInput = document.getElementById(priceInputId);
 
       const filteredProducts = products.filter(categoryFilter);
+      // Track if "Lihat lebih banyak" sudah diklik
+      let showAll = false;
 
       function renderOptions(searchTerm = '') {
         dropdown.innerHTML = '';
         const term = searchTerm.toLowerCase().trim();
 
-        filteredProducts.forEach(prod => {
-          if (prod.nama.toLowerCase().includes(term) || prod.kategori.toLowerCase().includes(term)) {
-            const opt = document.createElement('div');
-            opt.className = 'custom-select-option';
-            opt.innerHTML = `
-              <div>
-                <div class="fw-semibold">${prod.nama}</div>
-                <div class="text-muted small">${prod.kategori}</div>
-              </div>
-              <span class="option-price">Rp ${prod.harga.toLocaleString('id-ID')}/${prod.satuan}</span>
-            `;
-            opt.addEventListener('click', () => selectProduct(prod.id, prod.nama, prod.harga));
-            dropdown.appendChild(opt);
-          }
+        // Filter berdasarkan search term
+        const matched = filteredProducts.filter(prod =>
+          prod.nama.toLowerCase().includes(term) || prod.kategori.toLowerCase().includes(term)
+        );
+
+        // Saat belum search (term kosong) dan belum showAll: tampilkan 1 produk saja
+        const isSearching = term.length > 0;
+        const toShow = (isSearching || showAll) ? matched : matched.slice(0, 1);
+
+        toShow.forEach(prod => {
+          const opt = document.createElement('div');
+          opt.className = 'custom-select-option';
+          opt.innerHTML = `
+            <div>
+              <div class="fw-semibold">${prod.nama}</div>
+              <div class="text-muted small">${prod.kategori}</div>
+            </div>
+            <span class="option-price">Rp ${prod.harga.toLocaleString('id-ID')}/${prod.satuan}</span>
+          `;
+          opt.addEventListener('click', () => selectProduct(prod.id, prod.nama, prod.harga));
+          dropdown.appendChild(opt);
         });
 
-        // Custom fabric option
-        if (term.length > 0) {
+        // Tombol "Lihat lebih banyak" — tampil kalau belum showAll dan ada lebih dari 1 produk dan tidak sedang search
+        if (!isSearching && !showAll && matched.length > 1) {
+          const moreBtn = document.createElement('div');
+          moreBtn.className = 'custom-select-option';
+          moreBtn.style.cssText = 'justify-content: center; color: var(--primary, #5c60f5); font-weight: 600; font-size: 0.875rem; border-top: 1px solid rgba(92,96,245,0.12); background: rgba(92,96,245,0.03);';
+          moreBtn.innerHTML = `<i class="bi bi-chevron-down me-1"></i>Lihat lebih banyak (${matched.length - 1} lainnya)`;
+          moreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showAll = true;
+            renderOptions(triggerInput.value);
+          });
+          dropdown.appendChild(moreBtn);
+        }
+
+        // Custom fabric option — selalu di paling bawah
+        if (isSearching) {
           const customOpt = document.createElement('div');
           customOpt.className = 'custom-select-option custom-add-option';
           customOpt.innerHTML = `
@@ -977,7 +1017,6 @@
           customOpt.addEventListener('click', () => selectProduct('custom', searchTerm, 0));
           dropdown.appendChild(customOpt);
         } else {
-          // Default custom option
           const customOpt = document.createElement('div');
           customOpt.className = 'custom-select-option custom-add-option';
           customOpt.innerHTML = `
@@ -1012,7 +1051,7 @@
       }
 
       function openDropdown() {
-        // Close all other dropdowns first
+        // Close all other dropdowns first (juga reset showAll mereka)
         document.querySelectorAll('.custom-select-container').forEach(c => {
           if (c.id !== containerId) {
             c.classList.remove('open');
@@ -1028,6 +1067,8 @@
       function closeDropdown() {
         container.classList.remove('open');
         dropdown.classList.add('d-none');
+        // Reset showAll saat dropdown ditutup
+        showAll = false;
       }
 
       triggerInput.addEventListener('focus', () => {
@@ -1036,6 +1077,8 @@
       });
 
       triggerInput.addEventListener('input', () => {
+        // Saat user mengetik, tampilkan semua hasil
+        showAll = false;
         openDropdown();
         // Check exact match
         const exactMatch = filteredProducts.find(p => p.nama.toLowerCase() === triggerInput.value.toLowerCase());
@@ -1157,7 +1200,18 @@
         estRellBatang.textContent = '-';
       }
 
-      const total = gordenCost + vitraceCost + rellCost;
+      // 4. Blind (m²)
+      let blindCost = 0;
+      if (blindCheck.checked && lebar > 0 && tinggi > 0) {
+        const blindPrice = parseInt(blindHargaInput.value.replace(/\D/g, '')) || 0;
+        const blindAreaNeeded = lebarM * tinggiM;
+        blindCost = blindAreaNeeded * blindPrice;
+        estBlindArea.textContent = `${blindAreaNeeded.toFixed(2)} m²`;
+      } else {
+        estBlindArea.textContent = '-';
+      }
+
+      const total = gordenCost + vitraceCost + rellCost + blindCost;
       if (total > 0) {
         estTotalBiaya.textContent = formatCurrency(Math.round(total));
       } else {
@@ -1183,8 +1237,8 @@
         return;
       }
 
-      if (!gordenCheck.checked && !vitraceCheck.checked && !rellCheck.checked) {
-        showToast('Centang minimal satu komponen jendela (Gorden / Vitrace / Rell)', 'error');
+      if (!gordenCheck.checked && !vitraceCheck.checked && !rellCheck.checked && !blindCheck.checked) {
+        showToast('Centang minimal satu komponen jendela (Gorden / Vitrace / Rell / Blind)', 'error');
         return;
       }
 
@@ -1225,6 +1279,9 @@
       
       const rellQty = (lebar + 30) / 100;
 
+      // Blind qty calculation (m²)
+      const blindAreaQty = blindCheck.checked ? lebarM * tinggiM : 0;
+
       // Construct components info
       const windowItem = {
         id: editingWindowId || ('win_' + Date.now() + '_' + Math.floor(Math.random() * 1000)),
@@ -1258,6 +1315,14 @@
             harga: parseInt(rellHargaInput.value.replace(/\D/g, '')) || 0,
             qty: rellQty,
             subtotal: 0
+          },
+          blind: {
+            enabled: blindCheck.checked,
+            productId: blindHidden.value,
+            productName: blindTrigger.value.trim() || 'Custom Blind',
+            harga: parseInt(blindHargaInput.value.replace(/\D/g, '')) || 0,
+            qty: blindAreaQty,
+            subtotal: 0
           }
         },
         totalHarga: 0
@@ -1276,6 +1341,10 @@
       if (windowItem.components.rell.enabled) {
         windowItem.components.rell.subtotal = Math.round(rellQty * windowItem.components.rell.harga);
         windowTotal += windowItem.components.rell.subtotal;
+      }
+      if (windowItem.components.blind.enabled) {
+        windowItem.components.blind.subtotal = Math.round(blindAreaQty * windowItem.components.blind.harga);
+        windowTotal += windowItem.components.blind.subtotal;
       }
       windowItem.totalHarga = windowTotal;
 
@@ -1312,6 +1381,7 @@
       gordenCheck.checked = true;
       vitraceCheck.checked = false;
       rellCheck.checked = false;
+      blindCheck.checked = false;
       
       gordenManualQtyCheck.checked = false;
       vitraceManualQtyCheck.checked = false;
@@ -1320,11 +1390,28 @@
       gordenManualQtyInput.disabled = true;
       vitraceManualQtyInput.disabled = true;
 
+      // Kosongkan semua pilihan produk (tidak auto-pilih)
+      gordenHidden.value = '';
+      gordenTrigger.value = '';
+      gordenHargaInput.value = '0';
+
+      vitraceHidden.value = '';
+      vitraceTrigger.value = '';
+      vitraceHargaInput.value = '0';
+
+      rellHidden.value = '';
+      rellTrigger.value = '';
+      rellHargaInput.value = '0';
+
+      blindHidden.value = '';
+      blindTrigger.value = '';
+      blindHargaInput.value = '0';
+
       gordenCheck.dispatchEvent(new Event('change'));
       vitraceCheck.dispatchEvent(new Event('change'));
       rellCheck.dispatchEvent(new Event('change'));
+      blindCheck.dispatchEvent(new Event('change'));
 
-      initDefaultProductSelections();
       runCalculations();
     }
 
@@ -1387,6 +1474,12 @@
           detailRows.push(`<div>Rell: <strong>${win.components.rell.productName}</strong> (${win.components.rell.qty.toFixed(1)}m x Rp ${win.components.rell.harga.toLocaleString('id-ID')})</div>`);
           totalRell += win.components.rell.qty;
           grandTotal += win.components.rell.subtotal;
+        }
+
+        if (win.components.blind && win.components.blind.enabled) {
+          componentNames.push('<span class="badge bg-dark-light text-dark me-1">Blind</span>');
+          detailRows.push(`<div>Blind: <strong>${win.components.blind.productName}</strong> (${win.components.blind.qty.toFixed(2)}m² x Rp ${win.components.blind.harga.toLocaleString('id-ID')})</div>`);
+          grandTotal += win.components.blind.subtotal;
         }
 
         const isEditing = editingWindowId === win.id;
@@ -1475,9 +1568,17 @@
         rellHargaInput.value = win.components.rell.harga;
         rellHargaInput.dispatchEvent(new Event('input'));
 
+        const blindComp = win.components.blind || {};
+        blindCheck.checked = !!blindComp.enabled;
+        blindHidden.value = blindComp.productId || '';
+        blindTrigger.value = blindComp.productName || '';
+        blindHargaInput.value = blindComp.harga || 0;
+        blindHargaInput.dispatchEvent(new Event('input'));
+
         gordenCheck.dispatchEvent(new Event('change'));
         vitraceCheck.dispatchEvent(new Event('change'));
         rellCheck.dispatchEvent(new Event('change'));
+        blindCheck.dispatchEvent(new Event('change'));
 
         const currentLebarBahan = win.lebarBahan || 280;
         const radioBtn = document.getElementById(`bahan${currentLebarBahan}`);
@@ -1613,6 +1714,23 @@
               nama_jendela: lokasi,
               komponen: 'rell',
               produk_nama: win.components.rell.productName,
+              window_group_id: groupId
+            }));
+          }
+
+          // Blind Insert
+          if (win.components.blind && win.components.blind.enabled) {
+            promises.push(createPesananJendela({
+              id_pelanggan: customer.id,
+              lokasi_jendela: `${lokasi} - Blind (${win.components.blind.productName})`,
+              tinggi_cm: tinggi,
+              lebar_cm: lebar,
+              kebutuhan_kain_m: win.components.blind.qty,
+              harga_per_m: win.components.blind.harga,
+              total_harga: win.components.blind.subtotal,
+              nama_jendela: lokasi,
+              komponen: 'blind',
+              produk_nama: win.components.blind.productName,
               window_group_id: groupId
             }));
           }
