@@ -10,37 +10,189 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="/assets/css/style.css" rel="stylesheet">
 
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
   <style>
+    /* Premium visual enhancements */
+    body {
+      background-color: #f6f8fd;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(92, 96, 245, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+    
+    /* Page Header styles matching our best floating card style */
+    .page-header {
+      background: white;
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.02));
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color, #f1f5f9);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-gradient, linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%));
+    }
+
+    .card {
+      border: 1px solid var(--border-color, #f1f5f9);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: 0 10px 25px -5px rgba(92, 96, 245, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      transition: var(--transition-smooth, all 0.3s ease);
+    }
+    
+    /* Give Profile card an elegant purple gradient top line */
+    .card-profile-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(92, 96, 245, 0.15);
+    }
+    .card-profile-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #5c60f5 0%, #a855f7 100%);
+    }
+    .card-profile-glow .card-header {
+      background: linear-gradient(135deg, rgba(92, 96, 245, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+      border-bottom: 1px solid rgba(92, 96, 245, 0.15);
+    }
+    
+    /* Give Spec card an elegant teal gradient top line */
+    .card-spec-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(16, 185, 129, 0.15);
+    }
+    .card-spec-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+    }
+    .card-spec-glow .card-header {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    /* Give Draft card an elegant cyan/indigo gradient top line */
+    .card-draft-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(92, 96, 245, 0.15);
+    }
+    .card-draft-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #5c60f5 0%, #06b6d4 100%);
+    }
+    .card-draft-glow .card-header {
+      background: linear-gradient(135deg, rgba(92, 96, 245, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border-bottom: 1px solid rgba(92, 96, 245, 0.15);
+    }
+
+    .summary-stats-val {
+      font-size: 1.35rem !important;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    @media (max-width: 767.98px) {
+      .summary-stats-val {
+        font-size: 1.15rem !important;
+      }
+    }
+
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--text-dark, #0f172a);
+    }
+    
+    /* Customize inputs focus ring */
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary, #5c60f5);
+      box-shadow: 0 0 0 4px rgba(92, 96, 245, 0.12);
+    }
+
     .component-card {
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color, #f1f5f9);
+      border-radius: var(--radius-md, 12px);
       padding: 1.25rem;
-      background: var(--secondary);
-      transition: var(--transition-smooth);
+      background: var(--secondary, #f8fafc);
+      transition: var(--transition-smooth, all 0.3s ease);
       margin-bottom: 1rem;
     }
-    .component-card.active {
-      border-color: var(--primary);
-      background: #ffffff;
-      box-shadow: var(--shadow-sm);
+    
+    .component-card.active#modalGordenBox {
+      border-color: rgba(92, 96, 245, 0.4);
+      background: rgba(92, 96, 245, 0.04);
+      box-shadow: 0 4px 15px rgba(92, 96, 245, 0.08);
     }
+    
+    .component-card.active#modalVitraceBox {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(6, 182, 212, 0.04);
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.08);
+    }
+    
+    .component-card.active#modalRellBox {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.04);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.08);
+    }
+    
     .preview-box {
-      background: var(--primary-light);
-      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #f0f1ff 0%, #f5f3ff 100%);
+      border: 1px dashed rgba(92, 96, 245, 0.25);
+      border-radius: var(--radius-md, 12px);
       padding: 1.25rem;
-      color: var(--text-dark);
+      color: var(--text-dark, #0f172a);
     }
     .preview-title {
       font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
       margin-bottom: 0.5rem;
     }
     .preview-value {
       font-weight: 800;
-      color: var(--primary-dark);
+      color: var(--primary-dark, #4347d9);
     }
 
     /* Custom Searchable Select Dropdown Styles */
@@ -59,12 +211,12 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: var(--text-muted);
-      transition: var(--transition-smooth);
+      color: var(--text-muted, #64748b);
+      transition: var(--transition-smooth, all 0.3s ease);
     }
     .custom-select-container.open .custom-select-trigger-wrap::after {
       transform: translateY(-50%) rotate(180deg);
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
     }
     .custom-select-dropdown {
       position: absolute;
@@ -72,47 +224,52 @@
       left: 0;
       right: 0;
       background: white;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg) !important;
+      border: 1px solid var(--border-color, #f1f5f9);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.08)) !important;
       z-index: 1060;
       max-height: 180px;
       overflow-y: auto;
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth, all 0.3s ease);
     }
     .custom-select-option {
       padding: 0.65rem 1rem;
       cursor: pointer;
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth, all 0.2s ease);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.875rem;
-      color: var(--text-body);
+      color: var(--text-body, #334155);
       border-bottom: 1px solid rgba(241, 245, 249, 0.5);
     }
     .custom-select-option:last-child {
       border-bottom: none;
     }
     .custom-select-option:hover {
-      background-color: var(--primary-light);
-      color: var(--primary-dark);
+      background-color: var(--primary-light, #f0f1ff);
+      color: var(--primary-dark, #4347d9);
     }
     .custom-select-option .option-price {
       font-weight: 700;
-      color: var(--success);
+      color: var(--success, #10b981);
       font-size: 0.8rem;
     }
     .custom-select-option.custom-add-option {
-      border-top: 1px dashed var(--border-color);
+      border-top: 1px dashed var(--border-color, #f1f5f9);
       font-weight: 600;
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
       background-color: rgba(92, 96, 245, 0.02);
     }
 
     /* Print invoice layout */
     .print-invoice {
       display: none;
+    }
+
+    /* Dropdown caret hiding */
+    .dropdown-toggle.no-caret::after {
+      display: none !important;
     }
 
     /* Responsive: tabel jendela bisa di-scroll horizontal di mobile */
@@ -123,6 +280,38 @@
     #pesananBody tr td:nth-child(4) {
       min-width: 160px;
     }
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
 
     @media (max-width: 767.98px) {
       /* Summary stats: tampilkan lebih compact */
@@ -172,7 +361,6 @@
     }
 
     @media (max-width: 575.98px) {
-      /* Kolom aksi di tabel: susun tombol vertikal */
       .btn-edit-grouped,
       .btn-del-grouped {
         display: block;
@@ -214,61 +402,8 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay print-hide" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar print-hide" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link active">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar print-hide" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -343,15 +478,20 @@
     </div>
 
     <!-- Screen UI Header -->
-    <header class="page-header print-hide">
-      <div class="d-flex justify-content-between align-items-center">
+    <header class="page-header print-hide animate-slide-in-left">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title" id="pageTitle">Detail Pelanggan</h1>
-          <p class="page-subtitle">Informasi lengkap pesanan jendela per pelanggan</p>
+          <h1 class="page-title m-0" id="pageTitle">Detail Pelanggan</h1>
+          <p class="page-subtitle d-none d-md-block m-0">Informasi lengkap pesanan jendela per pelanggan</p>
         </div>
-        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-          <i class="bi bi-list fs-4"></i>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <a href="/gorden/pelanggan.html" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" title="Kembali">
+            <i class="bi bi-arrow-left"></i> <span class="d-none d-md-inline">Kembali</span>
+          </a>
+          <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -360,8 +500,8 @@
       <div class="row">
         
         <!-- Left: Customer Info Card -->
-        <div class="col-12 col-lg-4 mb-4">
-          <div class="card">
+        <div class="col-12 col-lg-4 mb-4 animate-fade-in-up">
+          <div class="card card-profile-glow">
             <div class="card-header">
               <h3 class="card-title">Informasi Pelanggan</h3>
             </div>
@@ -399,22 +539,22 @@
         </div>
 
         <!-- Right: Grouped Windows & Summary -->
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8 animate-fade-in-up delay-100">
           
           <!-- Summary & Discount Card -->
-          <div class="card mb-4">
+          <div class="card card-spec-glow mb-4">
             <div class="card-body p-4">
-              <div class="row text-center mb-4">
-                <div class="col-4 border-end">
-                  <p class="display-6 text-primary mb-1" id="jumlahJendela">0</p>
+              <div class="row text-center mb-4 g-3">
+                <div class="col-12 col-md-4 border-end">
+                  <p class="summary-stats-val text-primary mb-1" id="jumlahJendela">0</p>
                   <p class="text-muted small mb-0">Total Jendela</p>
                 </div>
-                <div class="col-4 border-end">
-                  <p class="display-6 text-success mb-1" id="totalKain">0.0</p>
+                <div class="col-12 col-md-4 border-end">
+                  <p class="summary-stats-val text-success mb-1" id="totalKain">0.0</p>
                   <p class="text-muted small mb-0">Meter Kain</p>
                 </div>
-                <div class="col-4">
-                  <p class="display-6 text-warning mb-1" id="totalNilai">Rp 0</p>
+                <div class="col-12 col-md-4">
+                  <p class="summary-stats-val text-warning mb-1" id="totalNilai">Rp 0</p>
                   <p class="text-muted small mb-0">Total Nilai (Kotor)</p>
                 </div>
               </div>
@@ -424,9 +564,10 @@
                   <label class="form-label small mb-1">Potongan Diskon Akhir (Rp)</label>
                   <div class="input-group">
                     <span class="input-group-text">Rp</span>
-                    <input type="number" class="form-control" id="diskonInput" value="0" placeholder="Contoh: 50000">
+                    <input type="text" class="form-control" id="diskonInput" value="0" placeholder="Contoh: 50.000">
                   </div>
                 </div>
+
                 <div class="col-6 col-md-4 text-center text-md-start">
                   <span class="text-muted small d-block">Grand Total Pembayaran</span>
                   <strong class="fs-4 text-success" id="grandTotalVal">Rp 0</strong>
@@ -441,7 +582,7 @@
           </div>
 
           <!-- Grouped Windows List -->
-          <div class="card">
+          <div class="card card-draft-glow" id="groupedWindowsCard">
             <div class="card-header d-flex justify-content-between align-items-center">
               <h3 class="card-title"><i class="bi bi-window-split me-2"></i>Daftar Jendela</h3>
               <button class="btn btn-sm btn-primary action-btn d-none" id="addPesananBtn">
@@ -483,20 +624,20 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
     </a>
     <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
@@ -526,6 +667,32 @@
               </div>
             </div>
 
+            <!-- Lebar Bahan Selector -->
+            <div class="row g-3 mb-3 border-bottom pb-3">
+              <div class="col-12">
+                <label class="form-label fw-semibold">Lebar Bahan Kain</label>
+                <div class="d-flex gap-2 flex-wrap">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="modalLebarBahan" id="modalBahan280" value="280" checked>
+                    <label class="form-check-label" for="modalBahan280">
+                      <strong>280 cm</strong> <small class="text-muted">(perlu sambung jika tinggi &gt; 2,8m)</small>
+                    </label>
+                  </div>
+                  <div class="form-check ms-md-4">
+                    <input class="form-check-input" type="radio" name="modalLebarBahan" id="modalBahan320" value="320">
+                    <label class="form-check-label" for="modalBahan320">
+                      <strong>320 cm</strong> <small class="text-muted">(aman tanpa sambung sampai 3,2m)</small>
+                    </label>
+                  </div>
+                </div>
+                <!-- Sambung warning -->
+                <div class="alert alert-warning py-2 px-3 mt-2 small d-none" id="modalSambungAlert">
+                  <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                  <strong>Perlu disambung!</strong> Tinggi jendela melebihi lebar bahan. Biaya kain akan ditambah <strong>+20 cm</strong> per jalur untuk kelim sambungan.
+                </div>
+              </div>
+            </div>
+
             <!-- KOMPONEN 1: Kain Gorden -->
             <div class="component-card active" id="modalGordenBox">
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -549,7 +716,22 @@
                 </div>
                 <div class="col-12 col-md-5">
                   <label class="form-label small">Harga per Meter (Rp)</label>
-                  <input type="number" class="form-control" id="modalGordenHarga" value="0">
+                  <input type="text" class="form-control" id="modalGordenHarga" value="0">
+                </div>
+              </div>
+              <!-- Manual override for Curtain fabric quantity inside Modal -->
+              <div class="row g-3 mt-1 align-items-end" id="modalGordenFieldsManual">
+                <div class="col-7">
+                  <div class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="modalGordenManualQtyCheck">
+                    <label class="form-check-label small text-muted" for="modalGordenManualQtyCheck">Ubah pemakaian kain manual</label>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div class="input-group input-group-sm" id="modalGordenManualQtyGroup">
+                    <input type="number" step="0.1" class="form-control form-control-sm" id="modalGordenManualQtyInput" placeholder="Contoh: 5.5" disabled>
+                    <span class="input-group-text bg-light text-muted small" id="modalGordenManualQtyUnit">m</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -577,7 +759,22 @@
                 </div>
                 <div class="col-12 col-md-5">
                   <label class="form-label small">Harga per Meter (Rp)</label>
-                  <input type="number" class="form-control" id="modalVitraceHarga" value="0" disabled>
+                  <input type="text" class="form-control" id="modalVitraceHarga" value="0" disabled>
+                </div>
+              </div>
+              <!-- Manual override for Vitrace fabric quantity inside Modal -->
+              <div class="row g-3 mt-1 align-items-end" id="modalVitraceFieldsManual">
+                <div class="col-7">
+                  <div class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="modalVitraceManualQtyCheck">
+                    <label class="form-check-label small text-muted" for="modalVitraceManualQtyCheck">Ubah pemakaian kain manual</label>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div class="input-group input-group-sm" id="modalVitraceManualQtyGroup">
+                    <input type="number" step="0.1" class="form-control form-control-sm" id="modalVitraceManualQtyInput" placeholder="Contoh: 5.5" disabled>
+                    <span class="input-group-text bg-light text-muted small">m</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -605,7 +802,7 @@
                 </div>
                 <div class="col-12 col-md-5">
                   <label class="form-label small">Harga per Meter (Rp)</label>
-                  <input type="number" class="form-control" id="modalRellHarga" value="0" disabled>
+                  <input type="text" class="form-control" id="modalRellHarga" value="0" disabled>
                 </div>
               </div>
             </div>
@@ -665,7 +862,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { isLoggedIn } from '/assets/js/auth.js';
+    import { isLoggedIn, logout } from '/assets/js/auth.js';
     import { 
       getPelangganById, 
       deletePelanggan, 
@@ -698,12 +895,16 @@
     const modalGordenTrigger = document.getElementById('modalGordenSelectTrigger');
     const modalGordenHargaInput = document.getElementById('modalGordenHarga');
     const modalGordenFields = document.getElementById('modalGordenFields');
+    const modalGordenManualQtyCheck = document.getElementById('modalGordenManualQtyCheck');
+    const modalGordenManualQtyInput = document.getElementById('modalGordenManualQtyInput');
 
     const modalVitraceCheck = document.getElementById('modalVitraceChecked');
     const modalVitraceHidden = document.getElementById('modalVitraceProduk');
     const modalVitraceTrigger = document.getElementById('modalVitraceSelectTrigger');
     const modalVitraceHargaInput = document.getElementById('modalVitraceHarga');
     const modalVitraceFields = document.getElementById('modalVitraceFields');
+    const modalVitraceManualQtyCheck = document.getElementById('modalVitraceManualQtyCheck');
+    const modalVitraceManualQtyInput = document.getElementById('modalVitraceManualQtyInput');
 
     const modalRellCheck = document.getElementById('modalRellChecked');
     const modalRellHidden = document.getElementById('modalRellProduk');
@@ -723,20 +924,22 @@
     document.addEventListener('DOMContentLoaded', init);
 
     async function init() {
-      // Mobile menu toggle
-      document.getElementById('menuToggle').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('show');
-        document.getElementById('sidebarOverlay').classList.toggle('show');
-      });
-      document.getElementById('sidebarOverlay').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.remove('show');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-      });
-
       // Check auth
       loggedIn = await isLoggedIn();
       if (loggedIn) {
         document.querySelectorAll('.action-btn').forEach(btn => btn.classList.remove('d-none'));
+      }
+
+      // Logout click handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'error');
+          }
+        });
       }
 
       // Get ID from URL
@@ -785,12 +988,21 @@
       setupCheckboxToggle(modalVitraceCheck, modalVitraceFields, modalVitraceHargaInput, 'modalVitraceBox');
       setupCheckboxToggle(modalRellCheck, modalRellFields, modalRellHargaInput, 'modalRellBox');
 
+      // Apply Rupiah currency input masks
+      [modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, diskonInput].forEach(inp => {
+        applyRupiahMask(inp);
+      });
+
       // Listeners for calculations inside the Modal
-      [modalLebarInput, modalTinggiInput, modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput].forEach(inp => {
+      [modalLebarInput, modalTinggiInput, modalGordenHargaInput, modalVitraceHargaInput, modalRellHargaInput, modalGordenManualQtyInput, modalVitraceManualQtyInput].forEach(inp => {
         inp.addEventListener('input', runModalCalculations);
       });
-      [modalGordenCheck, modalVitraceCheck, modalRellCheck].forEach(chk => {
+      [modalGordenCheck, modalVitraceCheck, modalRellCheck, modalGordenManualQtyCheck, modalVitraceManualQtyCheck].forEach(chk => {
         chk.addEventListener('change', runModalCalculations);
+      });
+      // Lebar bahan radio change in modal
+      document.querySelectorAll('input[name="modalLebarBahan"]').forEach(r => {
+        r.addEventListener('change', runModalCalculations);
       });
 
       // Load data
@@ -825,6 +1037,7 @@
         document.getElementById('teleponPelanggan').textContent = pelangganData.telepon || '-';
         document.getElementById('alamatLengkap').textContent = pelangganData.alamat || '-';
         diskonInput.value = pelangganData.diskon || 0;
+        diskonInput.dispatchEvent(new Event('input'));
 
         // Group window orders
         groupedWindows = groupPesananByWindow(pelangganData.pesanan_jendela || []);
@@ -843,13 +1056,20 @@
 
         // Render grouped table
         const tbody = document.getElementById('pesananBody');
+        const groupedCard = document.getElementById('groupedWindowsCard');
         if (groupedWindows.length === 0) {
+          if (groupedCard) {
+            groupedCard.classList.add('d-none');
+          }
           tbody.innerHTML = `
             <tr>
               <td colspan="6" class="text-center py-4 text-muted">Belum ada pesanan jendela terdaftar</td>
             </tr>
           `;
         } else {
+          if (groupedCard) {
+            groupedCard.classList.remove('d-none');
+          }
           tbody.innerHTML = groupedWindows.map(win => {
             const compLabels = [];
             const detailRows = [];
@@ -892,12 +1112,23 @@
                 <td class="text-end small text-muted">${detailRows.join('') || '-'}</td>
                 <td class="text-end text-success fw-semibold">${formatCurrency(win.totalHarga)}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-outline-primary btn-edit-grouped action-btn d-none me-1" data-key="${key}" title="Edit Jendela">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger btn-del-grouped action-btn d-none" data-key="${key}" title="Hapus Jendela">
-                    <i class="bi bi-trash"></i>
-                  </button>
+                  <div class="dropdown">
+                    <button class="btn btn-link text-secondary btn-sm p-0 border-0 dropdown-toggle no-caret action-btn d-none" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport" data-bs-strategy="fixed" aria-expanded="false">
+                      <i class="bi bi-three-dots-vertical fs-5"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 120px;">
+                      <li>
+                        <a class="dropdown-item py-2 text-primary btn-edit-grouped" href="#" data-key="${key}">
+                          <i class="bi bi-pencil me-2"></i> Edit
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item py-2 text-danger btn-del-grouped" href="#" data-key="${key}">
+                          <i class="bi bi-trash me-2"></i> Hapus
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </td>
               </tr>
             `;
@@ -910,11 +1141,15 @@
 
           // Attach click listeners
           document.querySelectorAll('.btn-edit-grouped').forEach(btn => {
-            btn.addEventListener('click', () => openEditModal(btn.dataset.key));
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openEditModal(btn.dataset.key);
+            });
           });
 
           document.querySelectorAll('.btn-del-grouped').forEach(btn => {
-            btn.addEventListener('click', async () => {
+            btn.addEventListener('click', async (e) => {
+              e.preventDefault();
               const key = btn.dataset.key;
               const win = groupedWindows.find(w => w.id === key);
               if (win && confirm(`Apakah Anda yakin ingin menghapus seluruh spesifikasi untuk jendela "${win.nama_jendela}"?`)) {
@@ -997,6 +1232,25 @@
       return Object.values(grouped);
     }
 
+    function guessLebarBahan(lebarCm, tinggiCm, kebutuhanKainM) {
+      if (!kebutuhanKainM) return 280;
+      const lebarM = lebarCm / 100;
+      const tinggiM = tinggiCm / 100;
+      
+      const numJalur320 = Math.ceil((lebarM * 2.5) / 3.2);
+      const tinggiEfektif320 = (tinggiM > 3.2) ? (tinggiM + 0.20) : tinggiM;
+      const qty320 = numJalur320 * tinggiEfektif320;
+      
+      const numJalur280 = Math.ceil((lebarM * 2.5) / 2.8);
+      const tinggiEfektif280 = (tinggiM > 2.8) ? (tinggiM + 0.20) : tinggiM;
+      const qty280 = numJalur280 * tinggiEfektif280;
+      
+      if (Math.abs(kebutuhanKainM - qty320) < Math.abs(kebutuhanKainM - qty280)) {
+        return 320;
+      }
+      return 280;
+    }
+
     // Modal Edit Opening and Prefill
     function openEditModal(key = null) {
       document.getElementById('pesananForm').reset();
@@ -1011,6 +1265,16 @@
         modalLebarInput.value = win.lebar_cm;
         modalTinggiInput.value = win.tinggi_cm;
 
+        // Guess and set lebarBahan
+        let guessedLebar = 280;
+        if (win.components.gorden) {
+          guessedLebar = guessLebarBahan(win.lebar_cm, win.tinggi_cm, win.components.gorden.kebutuhan_kain_m);
+        } else if (win.components.vitrace) {
+          guessedLebar = guessLebarBahan(win.lebar_cm, win.tinggi_cm, win.components.vitrace.kebutuhan_kain_m);
+        }
+        const radioBtn = document.getElementById(`modalBahan${guessedLebar}`);
+        if (radioBtn) radioBtn.checked = true;
+
         // Gorden
         if (win.components.gorden) {
           modalGordenCheck.checked = true;
@@ -1018,8 +1282,36 @@
           modalGordenHidden.value = matched ? matched.id : 'custom';
           modalGordenTrigger.value = win.components.gorden.produk_nama;
           modalGordenHargaInput.value = win.components.gorden.harga_per_m;
+          modalGordenHargaInput.dispatchEvent(new Event('input'));
+          
+          // Heuristic to check if manual qty was used
+          const storedQty = parseFloat(win.components.gorden.kebutuhan_kain_m) || 0;
+          const unit = (matched && matched.satuan) ? matched.satuan : 'm';
+          let calculatedQty = 0;
+          if (unit === 'm²') {
+            calculatedQty = Math.max(1, (win.lebar_cm / 100) * (win.tinggi_cm / 100));
+          } else {
+            const lebarBahanM = guessedLebar / 100;
+            const needsSambung = win.tinggi_cm / 100 > lebarBahanM;
+            const tinggiEfektifM = needsSambung ? ((win.tinggi_cm / 100) + 0.20) : (win.tinggi_cm / 100);
+            const numJalur = Math.ceil(((win.lebar_cm / 100) * 2.5) / lebarBahanM);
+            calculatedQty = numJalur * tinggiEfektifM;
+          }
+          
+          if (Math.abs(storedQty - calculatedQty) > 0.05) {
+            modalGordenManualQtyCheck.checked = true;
+            modalGordenManualQtyInput.value = storedQty.toFixed(1);
+            modalGordenManualQtyInput.disabled = false;
+          } else {
+            modalGordenManualQtyCheck.checked = false;
+            modalGordenManualQtyInput.value = '';
+            modalGordenManualQtyInput.disabled = true;
+          }
         } else {
           modalGordenCheck.checked = false;
+          modalGordenManualQtyCheck.checked = false;
+          modalGordenManualQtyInput.value = '';
+          modalGordenManualQtyInput.disabled = true;
         }
 
         // Vitrace
@@ -1029,8 +1321,30 @@
           modalVitraceHidden.value = matched ? matched.id : 'custom';
           modalVitraceTrigger.value = win.components.vitrace.produk_nama;
           modalVitraceHargaInput.value = win.components.vitrace.harga_per_m;
+          modalVitraceHargaInput.dispatchEvent(new Event('input'));
+          
+          // Heuristic to check if manual qty was used for vitrace
+          const storedQty = parseFloat(win.components.vitrace.kebutuhan_kain_m) || 0;
+          const lebarBahanM = guessedLebar / 100;
+          const numJalur = Math.ceil(((win.lebar_cm / 100) * 2.5) / lebarBahanM);
+          const sambungVitrace = (win.tinggi_cm / 100) > lebarBahanM;
+          const tinggiVitM = sambungVitrace ? ((win.tinggi_cm / 100) + 0.20) : (win.tinggi_cm / 100);
+          const calculatedQty = numJalur * tinggiVitM;
+
+          if (Math.abs(storedQty - calculatedQty) > 0.05) {
+            modalVitraceManualQtyCheck.checked = true;
+            modalVitraceManualQtyInput.value = storedQty.toFixed(1);
+            modalVitraceManualQtyInput.disabled = false;
+          } else {
+            modalVitraceManualQtyCheck.checked = false;
+            modalVitraceManualQtyInput.value = '';
+            modalVitraceManualQtyInput.disabled = true;
+          }
         } else {
           modalVitraceCheck.checked = false;
+          modalVitraceManualQtyCheck.checked = false;
+          modalVitraceManualQtyInput.value = '';
+          modalVitraceManualQtyInput.disabled = true;
         }
 
         // Rell
@@ -1040,12 +1354,13 @@
           modalRellHidden.value = matched ? matched.id : 'custom';
           modalRellTrigger.value = win.components.rell.produk_nama;
           modalRellHargaInput.value = win.components.rell.harga_per_m;
+          modalRellHargaInput.dispatchEvent(new Event('input'));
         } else {
           modalRellCheck.checked = false;
         }
       } else {
         editingGroupKey = null;
-        document.getElementById('modalTitle').textContent = "Tambah Pesanan Jendela Baru";
+        document.getElementById('modalTitle').textContent = "Tambah Jendela Baru";
         modalLokasiInput.value = 'Jendela ' + (groupedWindows.length + 1);
         modalLebarInput.value = '';
         modalTinggiInput.value = '';
@@ -1053,6 +1368,13 @@
         modalGordenCheck.checked = true;
         modalVitraceCheck.checked = false;
         modalRellCheck.checked = false;
+
+        modalGordenManualQtyCheck.checked = false;
+        modalVitraceManualQtyCheck.checked = false;
+        modalGordenManualQtyInput.value = '';
+        modalVitraceManualQtyInput.value = '';
+        modalGordenManualQtyInput.disabled = true;
+        modalVitraceManualQtyInput.disabled = true;
 
         initDefaultModalProductSelections();
       }
@@ -1073,6 +1395,7 @@
         modalGordenHidden.value = firstGorden.id;
         modalGordenTrigger.value = firstGorden.nama;
         modalGordenHargaInput.value = firstGorden.harga;
+        modalGordenHargaInput.dispatchEvent(new Event('input'));
       }
       // Vitrace Default
       const firstVitrace = produkKatalogDb.find(p => p.kategori.includes('Vitrace'));
@@ -1080,6 +1403,7 @@
         modalVitraceHidden.value = firstVitrace.id;
         modalVitraceTrigger.value = firstVitrace.nama;
         modalVitraceHargaInput.value = firstVitrace.harga;
+        modalVitraceHargaInput.dispatchEvent(new Event('input'));
       }
       // Rell Default
       const firstRell = produkKatalogDb.find(p => p.kategori.includes('Rell'));
@@ -1087,6 +1411,7 @@
         modalRellHidden.value = firstRell.id;
         modalRellTrigger.value = firstRell.nama;
         modalRellHargaInput.value = firstRell.harga;
+        modalRellHargaInput.dispatchEvent(new Event('input'));
       }
     }
 
@@ -1205,27 +1530,91 @@
       let vitraceCost = 0;
       let rellCost = 0;
 
-      const kainQty = lebar > 0 ? (lebar / 100) * 2.5 : 0;
+      const getModalLebarBahan = () => {
+        const checked = document.querySelector('input[name="modalLebarBahan"]:checked');
+        return checked ? parseInt(checked.value) : 280;
+      };
+
+      const lebarBahanCm = getModalLebarBahan();
+      const lebarBahanM = lebarBahanCm / 100;
+      const lebarM = lebar / 100;
+      const tinggiM = tinggi / 100;
+
+      // Sambung check
+      const needsSambung = lebar > 0 && tinggi > 0 && (tinggiM > lebarBahanM);
+      const modalSambungAlert = document.getElementById('modalSambungAlert');
+      if (modalSambungAlert) {
+        modalSambungAlert.classList.toggle('d-none', !needsSambung);
+      }
+
+      const tinggiEfektifM = needsSambung ? (tinggiM + 0.20) : tinggiM;
       const rellQty = lebar > 0 ? (lebar + 30) / 100 : 0;
 
-      if (modalGordenCheck.checked && lebar > 0) {
-        const price = parseInt(modalGordenHargaInput.value) || 0;
-        gordenCost = kainQty * price;
-        modalEstGorden.textContent = `${kainQty.toFixed(1)} m`;
+      // Gorden Calculation
+      let gordenQty = 0;
+      if (modalGordenCheck.checked && lebar > 0 && tinggi > 0) {
+        const price = parseInt(modalGordenHargaInput.value.replace(/\D/g, '')) || 0;
+        const selectedProdId = modalGordenHidden.value;
+        const matchedItem = produkKatalogDb.find(p => p.id === selectedProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
+        const unit = matchedItem.satuan || 'm';
+
+        const unitLabel = document.getElementById('modalGordenManualQtyUnit');
+        if (unitLabel) unitLabel.textContent = unit;
+
+        if (modalGordenManualQtyCheck.checked) {
+          modalGordenManualQtyInput.disabled = false;
+          gordenQty = parseFloat(modalGordenManualQtyInput.value) || 0;
+        } else {
+          modalGordenManualQtyInput.disabled = true;
+          if (matchedItem.satuan === 'm²') {
+            gordenQty = Math.max(1, lebarM * tinggiM);
+          } else {
+            const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+            gordenQty = numJalur * tinggiEfektifM;
+          }
+          modalGordenManualQtyInput.value = gordenQty.toFixed(1);
+        }
+
+        gordenCost = gordenQty * price;
+        modalEstGorden.textContent = `${gordenQty.toFixed(1)} ${unit}`;
       } else {
         modalEstGorden.textContent = '-';
+        modalGordenManualQtyInput.disabled = true;
+        if (!modalGordenManualQtyCheck.checked) {
+          modalGordenManualQtyInput.value = '';
+        }
       }
 
-      if (modalVitraceCheck.checked && lebar > 0) {
-        const price = parseInt(modalVitraceHargaInput.value) || 0;
-        vitraceCost = kainQty * price;
-        modalEstVitrace.textContent = `${kainQty.toFixed(1)} m`;
+      // Vitrace Calculation
+      let vitraceQty = 0;
+      if (modalVitraceCheck.checked && lebar > 0 && tinggi > 0) {
+        const price = parseInt(modalVitraceHargaInput.value.replace(/\D/g, '')) || 0;
+
+        if (modalVitraceManualQtyCheck.checked) {
+          modalVitraceManualQtyInput.disabled = false;
+          vitraceQty = parseFloat(modalVitraceManualQtyInput.value) || 0;
+        } else {
+          modalVitraceManualQtyInput.disabled = true;
+          const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+          const sambungVitrace = tinggiM > lebarBahanM;
+          const tinggiVitM = sambungVitrace ? (tinggiM + 0.20) : tinggiM;
+          vitraceQty = numJalur * tinggiVitM;
+          modalVitraceManualQtyInput.value = vitraceQty.toFixed(1);
+        }
+
+        vitraceCost = vitraceQty * price;
+        modalEstVitrace.textContent = `${vitraceQty.toFixed(1)} m`;
       } else {
         modalEstVitrace.textContent = '-';
+        modalVitraceManualQtyInput.disabled = true;
+        if (!modalVitraceManualQtyCheck.checked) {
+          modalVitraceManualQtyInput.value = '';
+        }
       }
 
+      // Rell Calculation
       if (modalRellCheck.checked && lebar > 0) {
-        const price = parseInt(modalRellHargaInput.value) || 0;
+        const price = parseInt(modalRellHargaInput.value.replace(/\D/g, '')) || 0;
         rellCost = rellQty * price;
         modalEstRell.textContent = `${rellQty.toFixed(1)} m`;
       } else {
@@ -1281,20 +1670,58 @@
         }
 
         const promises = [];
-        const kainQty = (lebar / 100) * 2.5;
+        
+        const getModalLebarBahan = () => {
+          const checked = document.querySelector('input[name="modalLebarBahan"]:checked');
+          return checked ? parseInt(checked.value) : 280;
+        };
+
+        const lebarBahanCm = getModalLebarBahan();
+        const lebarBahanM = lebarBahanCm / 100;
+        const lebarM = lebar / 100;
+        const tinggiM = tinggi / 100;
+
+        const needsSambung = tinggiM > lebarBahanM;
+        const tinggiEfektifM = needsSambung ? (tinggiM + 0.20) : tinggiM;
+
+        let gordenQty = 0;
+        if (gordenChecked) {
+          if (modalGordenManualQtyCheck.checked) {
+            gordenQty = parseFloat(modalGordenManualQtyInput.value) || 0;
+          } else {
+            const selectedProdId = modalGordenHidden.value;
+            const matchedGorden = produkKatalogDb.find(p => p.id === selectedProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
+            if (matchedGorden.satuan === 'm²') {
+              gordenQty = Math.max(1, lebarM * tinggiM);
+            } else {
+              const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+              gordenQty = numJalur * tinggiEfektifM;
+            }
+          }
+        }
+
+        let vitraceQty = 0;
+        if (vitraceChecked) {
+          if (modalVitraceManualQtyCheck.checked) {
+            vitraceQty = parseFloat(modalVitraceManualQtyInput.value) || 0;
+          } else {
+            const vitraceNumJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+            vitraceQty = vitraceNumJalur * (tinggiM > lebarBahanM ? (tinggiM + 0.20) : tinggiM);
+          }
+        }
         const rellQty = (lebar + 30) / 100;
 
         if (gordenChecked) {
           const prodName = modalGordenTrigger.value.trim() || 'Custom Gorden';
-          const price = parseInt(modalGordenHargaInput.value) || 0;
+          const price = parseInt(modalGordenHargaInput.value.replace(/\D/g, '')) || 0;
           promises.push(createPesananJendela({
             id_pelanggan: pelangganId,
             lokasi_jendela: `${lokasi} - Gorden (${prodName})`,
             tinggi_cm: tinggi,
             lebar_cm: lebar,
-            kebutuhan_kain_m: kainQty,
+            kebutuhan_kain_m: gordenQty,
             harga_per_m: price,
-            total_harga: Math.round(kainQty * price),
+            total_harga: Math.round(gordenQty * price),
             nama_jendela: lokasi,
             komponen: 'gorden',
             produk_nama: prodName,
@@ -1304,15 +1731,15 @@
 
         if (vitraceChecked) {
           const prodName = modalVitraceTrigger.value.trim() || 'Custom Vitrace';
-          const price = parseInt(modalVitraceHargaInput.value) || 0;
+          const price = parseInt(modalVitraceHargaInput.value.replace(/\D/g, '')) || 0;
           promises.push(createPesananJendela({
             id_pelanggan: pelangganId,
             lokasi_jendela: `${lokasi} - Vitrace (${prodName})`,
             tinggi_cm: tinggi,
             lebar_cm: lebar,
-            kebutuhan_kain_m: kainQty,
+            kebutuhan_kain_m: vitraceQty,
             harga_per_m: price,
-            total_harga: Math.round(kainQty * price),
+            total_harga: Math.round(vitraceQty * price),
             nama_jendela: lokasi,
             komponen: 'vitrace',
             produk_nama: prodName,
@@ -1322,7 +1749,7 @@
 
         if (rellChecked) {
           const prodName = modalRellTrigger.value.trim() || 'Custom Rell';
-          const price = parseInt(modalRellHargaInput.value) || 0;
+          const price = parseInt(modalRellHargaInput.value.replace(/\D/g, '')) || 0;
           promises.push(createPesananJendela({
             id_pelanggan: pelangganId,
             lokasi_jendela: `${lokasi} - Rell (${prodName})`,
@@ -1353,8 +1780,9 @@
 
     // Save Discount to Database
     async function handleDiscountChange() {
-      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      const disc = Math.max(0, parseInt(diskonInput.value.replace(/\D/g, '')) || 0);
       diskonInput.value = disc;
+      diskonInput.dispatchEvent(new Event('input'));
       
       try {
         await updatePelangganDiscount(pelangganId, disc);
@@ -1369,7 +1797,7 @@
     function updateGrandTotalDisplay() {
       const rawPesanan = pelangganData?.pesanan_jendela || [];
       const totalKotor = rawPesanan.reduce((a, p) => a + (p.total_harga || 0), 0);
-      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      const disc = Math.max(0, parseInt(diskonInput.value.replace(/\D/g, '')) || 0);
       const grandTotal = Math.max(0, totalKotor - disc);
       
       grandTotalVal.textContent = formatCurrency(grandTotal);
@@ -1400,7 +1828,7 @@
       // Subtotal & Grand calculations
       const rawPesanan = pelangganData.pesanan_jendela || [];
       const totalKotor = rawPesanan.reduce((a, p) => a + (p.total_harga || 0), 0);
-      const disc = Math.max(0, parseInt(diskonInput.value) || 0);
+      const disc = Math.max(0, parseInt(diskonInput.value.replace(/\D/g, '')) || 0);
       const grandTotal = Math.max(0, totalKotor - disc);
 
       document.getElementById('printSubtotal').textContent = formatCurrency(totalKotor);
@@ -1455,6 +1883,24 @@
 
       // Open browser Print dialog
       window.print();
+    }
+
+    function applyRupiahMask(inputEl) {
+      if (!inputEl) return;
+      inputEl.addEventListener('input', (e) => {
+        let cursorPosition = inputEl.selectionStart;
+        let originalLength = inputEl.value.length;
+        let cleanVal = inputEl.value.replace(/\D/g, '');
+        if (cleanVal === '') {
+          inputEl.value = '';
+          return;
+        }
+        let formattedVal = parseInt(cleanVal, 10).toLocaleString('id-ID');
+        inputEl.value = formattedVal;
+        let newLength = formattedVal.length;
+        let newCursorPosition = cursorPosition + (newLength - originalLength);
+        inputEl.setSelectionRange(newCursorPosition, newCursorPosition);
+      });
     }
   </script>
 </body>

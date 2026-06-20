@@ -21,6 +21,7 @@ export default defineConfig({
         dashboard: resolve(__dirname, 'dashboard.html'),
         gordenKalkulator: resolve(__dirname, 'gorden/kalkulator-rab.html'),
         gordenKelolaPromosi: resolve(__dirname, 'gorden/kelola-promosi.html'),
+        katalog: resolve(__dirname, 'katalog.html'),
       },
     },
   },

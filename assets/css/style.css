@@ -902,34 +902,34 @@ body {
 
 @media (max-width: 575.98px) {
   .page-header {
-    padding: 1rem 1rem;
+    padding: 0.85rem 0.75rem;
   }
 
   .page-content {
-    padding: 1rem;
-    padding-bottom: 100px; /* extra space above bottom nav */
+    padding: 0.75rem;
+    padding-bottom: 90px; /* extra space above bottom nav */
   }
 
   .page-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   .card-body {
-    padding: 1rem;
+    padding: 0.85rem;
   }
 
   .card-header {
-    padding: 0.9rem 1rem;
+    padding: 0.75rem 0.85rem;
   }
 
   .btn {
-    padding: 0.65rem 1rem;
-    font-size: 0.875rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
   }
 
   /* Stat numbers in summary cards - prevent overflow */
   .display-6 {
-    font-size: 1.5rem !important;
+    font-size: 1.35rem !important;
   }
 
   /* Make table min-width so it scrolls instead of squishes */
@@ -940,13 +940,13 @@ body {
   /* Table cells smaller on mobile */
   .table th,
   .table td {
-    padding: 0.85rem 0.9rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.5rem !important;
+    font-size: 0.75rem !important;
   }
 
   /* Form labels smaller */
   .form-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   /* Input group on mobile */
@@ -978,13 +978,23 @@ body {
 
   /* Quick menu touch targets bigger */
   .quick-menu-card {
-    padding: 1.15rem 1rem;
+    padding: 0.85rem 0.75rem;
+    gap: 0.65rem;
   }
 
   .quick-menu-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.4rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
+    border-radius: 12px;
+  }
+
+  .quick-menu-text h4 {
+    font-size: 0.8rem;
+  }
+
+  .quick-menu-text p {
+    font-size: 0.7rem;
   }
 
   /* Bottom nav visible on small screens */
@@ -1002,6 +1012,20 @@ body {
 
   .bottom-nav-item i {
     font-size: 1.2rem;
+  }
+
+  /* Smaller table min-width for sumbangan-style tables */
+  .sumbangan-table { min-width: 0 !important; }
+
+  /* Form controls more compact on mobile */
+  .form-control, .form-select {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+  }
+
+  /* Sidebar show: full-width overlay */
+  .sidebar.show {
+    width: 240px;
   }
 }
 
@@ -1094,4 +1118,133 @@ body {
     padding-bottom: 0;
     background: white;
   }
+}
+
+/* Shared Footer Styles */
+.footer-section {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 2.5rem 0 1.5rem 0;
+  border-top: 4px solid var(--primary);
+}
+.footer-title {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+.footer-link {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+.footer-link:hover {
+  color: white;
+}
+
+/* ============================================
+   ANIMATED MESH BLOB BACKGROUND
+   ============================================ */
+
+.blob-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: #f8faff;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.blob-1 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(92, 96, 245, 0.22) 0%, transparent 70%);
+  top: -120px;
+  left: -100px;
+  animation: blob-drift-1 18s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.18) 0%, transparent 70%);
+  top: 30%;
+  right: -80px;
+  animation: blob-drift-2 22s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, transparent 70%);
+  bottom: 10%;
+  left: 20%;
+  animation: blob-drift-3 16s ease-in-out infinite alternate;
+}
+
+.blob-4 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(196, 181, 253, 0.2) 0%, transparent 70%);
+  bottom: -60px;
+  right: 15%;
+  animation: blob-drift-4 20s ease-in-out infinite alternate;
+}
+
+@keyframes blob-drift-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 80px) scale(1.12); }
+}
+@keyframes blob-drift-2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-70px, 50px) scale(0.9); }
+}
+@keyframes blob-drift-3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(50px, -60px) scale(1.08); }
+}
+@keyframes blob-drift-4 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-40px, -50px) scale(1.15); }
+}
+
+/* ============================================
+   SCROLL REVEAL (IntersectionObserver)
+   ============================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+
+/* ============================================
+   CARD HOVER (public pages)
+   ============================================ */
+.card-hover {
+  transition: var(--transition-spring);
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg) !important;
 }

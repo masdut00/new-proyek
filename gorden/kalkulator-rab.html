@@ -10,6 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="/assets/css/style.css" rel="stylesheet">
 
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
   <style>
     .component-row {
       border-bottom: 1px solid var(--border-color);
@@ -65,61 +68,8 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar print-hide" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link active">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar print-hide" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -186,14 +136,16 @@
 
     <!-- Screen UI Header -->
     <header class="page-header print-hide">
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Kalkulator RAB Jendela</h1>
-          <p class="page-subtitle">Hitung anggaran kebutuhan kain dan rell otomatis</p>
+          <h1 class="page-title m-0">Kalkulator RAB Jendela</h1>
+          <p class="page-subtitle d-none d-md-block m-0">Hitung anggaran kebutuhan kain dan rell otomatis</p>
         </div>
-        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-          <i class="bi bi-list fs-4"></i>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -221,7 +173,7 @@
                 </div>
               </div>
 
-              <div class="row g-3 mb-4 border-bottom pb-4">
+              <div class="row g-3 mb-3">
                 <div class="col-12 col-md-4">
                   <label class="form-label">Lokasi Jendela <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="windowLoc" required value="Jendela Utama" placeholder="Ruang Tamu">
@@ -233,6 +185,32 @@
                 <div class="col-6 col-md-4">
                   <label class="form-label">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
                   <input type="number" class="form-control" id="tinggiCm" required placeholder="200">
+                </div>
+              </div>
+
+              <!-- Lebar Bahan Selector -->
+              <div class="row g-3 mb-4 border-bottom pb-4">
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Lebar Bahan Kain</label>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lebarBahan" id="bahan280" value="280" checked>
+                      <label class="form-check-label" for="bahan280">
+                        <strong>280 cm</strong> <small class="text-muted">(perlu sambung jika tinggi &gt; 2,8m)</small>
+                      </label>
+                    </div>
+                    <div class="form-check ms-md-4">
+                      <input class="form-check-input" type="radio" name="lebarBahan" id="bahan320" value="320">
+                      <label class="form-check-label" for="bahan320">
+                        <strong>320 cm</strong> <small class="text-muted">(aman tanpa sambung sampai 3,2m)</small>
+                      </label>
+                    </div>
+                  </div>
+                  <!-- Sambung warning -->
+                  <div class="alert alert-warning py-2 px-3 mt-2 small d-none" id="sambungAlert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                    <strong>Perlu disambung!</strong> Tinggi jendela melebihi lebar bahan. Biaya kain akan ditambah <strong>+20 cm</strong> per jalur untuk kelim sambungan.
+                  </div>
                 </div>
               </div>
 
@@ -350,20 +328,20 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
     </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
-    </a>
-    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item active">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
@@ -371,13 +349,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { checkAuth } from '/assets/js/auth.js';
-    import { getProdukKatalog, formatCurrency } from '/assets/js/app.js';
+    import { checkAuth, logout } from '/assets/js/auth.js';
+    import { getProdukKatalog, formatCurrency, showToast } from '/assets/js/app.js';
 
     // DOM Elements
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
 
     const customerNameInput = document.getElementById('customerName');
     const customerPhoneInput = document.getElementById('customerPhone');
@@ -426,15 +401,17 @@
       // 1. Guard check
       await checkAuth();
 
-      // Mobile sidebar toggle
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-      });
-      sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('show');
-        sidebarOverlay.classList.remove('show');
-      });
+      // Logout handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'danger');
+          }
+        });
+      }
 
       // 2. Fetch Catalog items from Supabase
       try {
@@ -462,6 +439,10 @@
       });
       [gordenCheck, vitraceCheck, rellCheck].forEach(chk => {
         chk.addEventListener('change', updateRABCalculations);
+      });
+      // Lebar bahan radio change
+      document.querySelectorAll('input[name="lebarBahan"]').forEach(r => {
+        r.addEventListener('change', updateRABCalculations);
       });
 
       // 7. Setup print action
@@ -533,27 +514,39 @@
     }
 
     // Perhitungan Anggaran RAB Utama
-    let activeCalculations = []; // stores active rows to share with printer
+    let activeCalculations = [];
+
+    function getLebarBahan() {
+      const checked = document.querySelector('input[name="lebarBahan"]:checked');
+      return checked ? parseInt(checked.value) : 280;
+    }
 
     function updateRABCalculations() {
-      const name = customerNameInput.value.trim();
-      const lebar = parseFloat(lebarInput.value) || 0;
-      const tinggi = parseFloat(tinggiInput.value) || 0;
+      const name   = customerNameInput.value.trim();
+      const lebar  = parseFloat(lebarInput.value)  || 0; // cm
+      const tinggi = parseFloat(tinggiInput.value) || 0; // cm
+      const lebarBahanCm = getLebarBahan(); // 280 or 320
+      const lebarBahanM  = lebarBahanCm / 100; // 2.8 or 3.2
+      const lebarM  = lebar  / 100;
+      const tinggiM = tinggi / 100;
 
       activeCalculations = [];
 
-      if (!name || lebar <= 0 || tinggi <= 0) {
-        rabTableBody.innerHTML = `
-          <tr>
-            <td colspan="4" class="text-center py-4 text-muted">
-              Lengkapi nama pelanggan, lebar & tinggi jendela untuk memicu kalkulator RAB...
-            </td>
-          </tr>
-        `;
+      if (!name || lebarM <= 0 || tinggiM <= 0) {
+        rabTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">Lengkapi nama pelanggan, lebar &amp; tinggi jendela...</td></tr>`;
         grandTotalText.textContent = 'Rp 0';
         printBtn.disabled = true;
+        document.getElementById('sambungAlert').classList.add('d-none');
         return;
       }
+
+      // ── Sambung check ──
+      const needsSambung = tinggiM > lebarBahanM;
+      const sambungAlert = document.getElementById('sambungAlert');
+      sambungAlert.classList.toggle('d-none', !needsSambung);
+
+      // tinggi efektif per jalur (tambah 20cm kelim jika sambung)
+      const tinggiEfektifM = needsSambung ? (tinggiM + 0.20) : tinggiM;
 
       let grandTotal = 0;
 
@@ -562,44 +555,40 @@
         const selectedProdId = gordenSelect.value;
         const matchedItem = produkKatalogDb.find(p => p.id === selectedProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
         const nameLabel = gordenSelect.value === 'custom' ? 'Kustom' : gordenSelect.options[gordenSelect.selectedIndex].text.split(' (')[0];
-        
+
         let qty = 0;
         let desc = '';
-        
+
         if (matchedItem.satuan === 'm²') {
-          qty = Math.max(1, (lebar / 100) * (tinggi / 100));
-          desc = `Bahan ${nameLabel} (${matchedItem.kategori} - Luas Jendela)`;
+          qty = Math.max(1, lebarM * tinggiM);
+          desc = `Bahan ${nameLabel} (${matchedItem.kategori} — Luas Jendela)`;
         } else {
-          qty = (lebar / 100) * 2.5;
-          desc = `Bahan ${nameLabel} (${matchedItem.kategori} - Lebar x 2.5)`;
+          // Hitung jumlah jalur: lebar jendela × 2.5 ÷ lebar bahan
+          const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+          qty = numJalur * tinggiEfektifM;
+          const sambungNote = needsSambung ? ` ⚠ sambung` : '';
+          desc = `Bahan ${nameLabel} (${matchedItem.kategori} — ${numJalur} jalur × ${tinggiEfektifM.toFixed(2)}m${sambungNote})`;
         }
 
         const harga = parseInt(gordenHarga.value) || 0;
         const subtotal = Math.round(qty * harga);
         grandTotal += subtotal;
-
-        activeCalculations.push({
-          item: desc,
-          qty: qty.toFixed(1) + ` ${matchedItem.satuan}`,
-          price: harga,
-          subtotal: subtotal
-        });
+        activeCalculations.push({ item: desc, qty: qty.toFixed(2) + ` ${matchedItem.satuan}`, price: harga, subtotal });
       }
 
       // 2. Vitrace
       if (vitraceCheck.checked) {
         const nameLabel = vitraceSelect.value === 'custom' ? 'Kustom' : vitraceSelect.options[vitraceSelect.selectedIndex].text.split(' (')[0];
-        const qty = (lebar / 100) * 2.5;
+        // Vitrace biasanya lebar 280; pakai lebar bahan yg sama
+        const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+        const sambungVitrace = tinggiM > lebarBahanM;
+        const tinggiVitM = sambungVitrace ? (tinggiM + 0.20) : tinggiM;
+        const qty = numJalur * tinggiVitM;
         const harga = parseInt(vitraceHarga.value) || 0;
         const subtotal = Math.round(qty * harga);
         grandTotal += subtotal;
-
-        activeCalculations.push({
-          item: `Bahan ${nameLabel} (Vitrace - Lebar x 2.5)`,
-          qty: qty.toFixed(1) + ' m',
-          price: harga,
-          subtotal: subtotal
-        });
+        const sambungNote = sambungVitrace ? ' ⚠ sambung' : '';
+        activeCalculations.push({ item: `Bahan ${nameLabel} (Vitrace — ${numJalur} jalur × ${tinggiVitM.toFixed(2)}m${sambungNote})`, qty: qty.toFixed(2) + ' m', price: harga, subtotal });
       }
 
       // 3. Rell / Batang (lebar + 30cm)
@@ -609,24 +598,12 @@
         const harga = parseInt(rellHarga.value) || 0;
         const subtotal = Math.round(qty * harga);
         grandTotal += subtotal;
-
-        activeCalculations.push({
-          item: `Batang Rell ${nameLabel} (Rell - Lebar + 30cm)`,
-          qty: qty.toFixed(1) + ' m',
-          price: harga,
-          subtotal: subtotal
-        });
+        activeCalculations.push({ item: `Batang Rell ${nameLabel} (Lebar + 30cm)`, qty: qty.toFixed(1) + ' m', price: harga, subtotal });
       }
 
-      // Render table
+      // Render
       if (activeCalculations.length === 0) {
-        rabTableBody.innerHTML = `
-          <tr>
-            <td colspan="4" class="text-center py-4 text-muted">
-              Pilih minimal satu komponen jendela...
-            </td>
-          </tr>
-        `;
+        rabTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">Pilih minimal satu komponen...</td></tr>`;
         grandTotalText.textContent = 'Rp 0';
         printBtn.disabled = true;
       } else {
@@ -638,7 +615,6 @@
             <td class="text-end text-success fw-semibold small">${formatCurrency(c.subtotal)}</td>
           </tr>
         `).join('');
-
         grandTotalText.textContent = formatCurrency(grandTotal);
         printBtn.disabled = false;
       }

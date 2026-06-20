@@ -11,79 +11,160 @@
 
   <!-- Custom CSS -->
   <link href="/assets/css/style.css" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Premium Styles -->
+  <style>
+    /* Entrance Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    
+    /* Delay utilities */
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    
+    /* Page Header styles */
+    .page-header {
+      background: white;
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.02));
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color, #f1f5f9);
+    }
+    
+    /* Responsive title styling */
+    .page-title {
+      font-weight: 700;
+      color: var(--text-dark, #0f172a);
+      letter-spacing: -0.02em;
+    }
+    
+    /* Chart Styles */
+    .chart-timeframe-btn-group {
+      background: var(--bg-main, #f8fafc);
+      padding: 4px;
+      border-radius: var(--radius-sm, 8px);
+      border: 1px solid var(--border-color, #f1f5f9);
+    }
+    .chart-timeframe-btn-group .btn-check + .btn {
+      border: none;
+      border-radius: 6px;
+      color: var(--text-muted, #64748b);
+      font-weight: 600;
+      transition: var(--transition-smooth, all 0.3s ease);
+      background: transparent;
+    }
+    .chart-timeframe-btn-group .btn-check:checked + .btn {
+      background: white;
+      color: var(--primary, #5c60f5);
+      box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.05));
+    }
+    
+    /* Custom Sleek Pagination */
+    .custom-pagination {
+      display: flex;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .custom-pagination li .page-link {
+      border: 1px solid var(--border-color, #f1f5f9);
+      background: white;
+      color: var(--text-body, #334155);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: var(--transition-smooth, all 0.2s ease);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 38px;
+      text-decoration: none;
+    }
+    .custom-pagination li .page-link:hover {
+      background: var(--primary-light, #f0f1ff);
+      color: var(--primary, #5c60f5);
+      border-color: var(--primary, #5c60f5);
+    }
+    .custom-pagination li.active .page-link {
+      background: var(--primary, #5c60f5);
+      color: white;
+      border-color: var(--primary, #5c60f5);
+      box-shadow: 0 4px 10px rgba(92, 96, 245, 0.25);
+    }
+    .custom-pagination li.disabled .page-link {
+      background: var(--bg-main, #f8fafc);
+      color: var(--text-light, #94a3b8);
+      border-color: var(--border-color, #f1f5f9);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    /* Badge Enhancements */
+    .bg-primary-light {
+      background-color: var(--primary-light, #f0f1ff);
+      color: var(--primary, #5c60f5);
+    }
+  </style>
+
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link active">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Page Header -->
-    <header class="page-header">
-      <div class="d-flex justify-content-between align-items-center">
+    <header class="page-header animate-slide-in-left">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Data Pelanggan Gorden</h1>
-          <p class="page-subtitle">Kelola pesanan gorden pelanggan</p>
+          <h1 class="page-title m-0">
+            <span class="d-md-none">Pelanggan</span>
+            <span class="d-none d-md-inline">Data Pelanggan Gorden</span>
+          </h1>
+          <p class="page-subtitle d-none d-md-block m-0">Kelola pesanan gorden pelanggan</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <a href="/gorden/tambah-pelanggan.html" class="btn btn-primary add-data-btn d-none">
-            <i class="bi bi-plus-circle me-1"></i> Tambah
+          <a href="/gorden/tambah-pelanggan.html" class="btn btn-primary btn-sm add-data-btn d-none align-items-center gap-1">
+            <i class="bi bi-plus-circle"></i> Tambah
           </a>
-          <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-            <i class="bi bi-list fs-4"></i>
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
           </button>
         </div>
       </div>
@@ -91,8 +172,40 @@
 
     <!-- Page Content -->
     <main class="page-content">
+      <!-- Sales Chart Card -->
+      <div class="card mb-4 animate-fade-in-up delay-100">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start align-items-sm-center gap-3 mb-4">
+            <div>
+              <h5 class="card-title mb-1 fw-bold text-dark">Grafik Penjualan</h5>
+              <p class="text-muted small mb-0">Total pendapatan dari pesanan gorden</p>
+            </div>
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+              <div class="text-sm-end me-sm-2">
+                <span class="text-muted small d-block">Total Nominal Transaksi</span>
+                <span class="fw-bold text-success fs-5" id="chartTotalAmount">Rp 0</span>
+              </div>
+              <!-- Timeframe Filter Buttons -->
+              <div class="btn-group chart-timeframe-btn-group" role="group" aria-label="Timeframe">
+                <input type="radio" class="btn-check" name="chartTimeframe" id="timeframeDaily" value="daily" checked autocomplete="off">
+                <label class="btn btn-sm px-3" for="timeframeDaily">Harian</label>
+                
+                <input type="radio" class="btn-check" name="chartTimeframe" id="timeframeWeekly" value="weekly" autocomplete="off">
+                <label class="btn btn-sm px-3" for="timeframeWeekly">Mingguan</label>
+                
+                <input type="radio" class="btn-check" name="chartTimeframe" id="timeframeMonthly" value="monthly" autocomplete="off">
+                <label class="btn btn-sm px-3" for="timeframeMonthly">Bulanan</label>
+              </div>
+            </div>
+          </div>
+          <div style="position: relative; height: 260px; width: 100%;">
+            <canvas id="salesChart"></canvas>
+          </div>
+        </div>
+      </div>
+
       <!-- Search -->
-      <div class="card mb-4">
+      <div class="card mb-4 animate-fade-in-up delay-200">
         <div class="card-body">
           <div class="row g-3">
             <div class="col-12 col-md-6">
@@ -118,7 +231,7 @@
       </div>
 
       <!-- Data Table -->
-      <div class="card">
+      <div class="card animate-fade-in-up delay-300">
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -142,9 +255,14 @@
         </div>
       </div>
 
-      <!-- Info -->
-      <div class="d-flex justify-content-between align-items-center mt-3">
+      <!-- Pagination and Info -->
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4 animate-fade-in-up delay-300">
         <p class="text-muted small mb-0" id="dataInfo">Menampilkan 0 data</p>
+        <nav aria-label="Navigasi halaman">
+          <ul class="custom-pagination" id="paginationControl">
+            <!-- Will be populated dynamically -->
+          </ul>
+        </nav>
       </div>
     </main>
   </div>
@@ -156,87 +274,68 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
     </a>
     <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
-  <!-- Delete Confirmation Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header border-0">
-          <h5 class="modal-title">Hapus Pelanggan</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Apakah Anda yakin ingin menghapus pelanggan <strong id="deleteName"></strong>?</p>
-          <p class="text-muted small mb-0">Data pesanan jendela terkait juga akan ikut terhapus.</p>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Delete Confirmation Modal removed (delete is handled from detail page) -->
 
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { isLoggedIn } from '/assets/js/auth.js';
+    import { isLoggedIn, logout } from '/assets/js/auth.js';
     import { getPelangganList, deletePelanggan, formatCurrency, showToast } from '/assets/js/app.js';
 
     // State
     let pelangganData = [];
-    let deleteId = null;
+    let filteredData = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let chartInstance = null;
+    let activeTimeframe = 'daily';
 
     // DOM Elements
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
     const tableBody = document.getElementById('tableBody');
     const searchInput = document.getElementById('searchInput');
     const filterJumlah = document.getElementById('filterJumlah');
     const resetFilter = document.getElementById('resetFilter');
     const dataInfo = document.getElementById('dataInfo');
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    const deleteName = document.getElementById('deleteName');
-    const confirmDelete = document.getElementById('confirmDelete');
+    const paginationControl = document.getElementById('paginationControl');
 
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
 
     async function init() {
-      // Mobile menu toggle
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-      });
-
-      sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('show');
-        sidebarOverlay.classList.remove('show');
-      });
-
       // Check auth
       const loggedIn = await isLoggedIn();
       if (loggedIn) {
         document.querySelectorAll('.add-data-btn').forEach(btn => btn.classList.remove('d-none'));
-        document.querySelectorAll('.btn-delete').forEach(btn => btn.classList.remove('d-none'));
+      }
+
+      // Logout handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'danger');
+          }
+        });
       }
 
       // Load data
@@ -251,7 +350,13 @@
         filterAndRender();
       });
 
-      confirmDelete.addEventListener('click', handleDelete);
+      // Chart timeframe change listener
+      document.querySelectorAll('input[name="chartTimeframe"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          activeTimeframe = e.target.value;
+          renderChart(activeTimeframe);
+        });
+      });
     }
 
     async function loadData() {
@@ -274,7 +379,7 @@
       const search = searchInput.value.toLowerCase();
       const hasPesanan = filterJumlah.value;
 
-      let filtered = pelangganData.filter(p => {
+      filteredData = pelangganData.filter(p => {
         const matchSearch = !search ||
           p.nama_pelanggan?.toLowerCase().includes(search) ||
           p.alamat?.toLowerCase().includes(search);
@@ -287,7 +392,32 @@
         return matchSearch && matchJumlah;
       });
 
-      renderTable(filtered);
+      currentPage = 1;
+      
+      // Update chart dynamically based on current filtered data
+      renderChart(activeTimeframe);
+      
+      paginateAndRender();
+    }
+
+    function paginateAndRender() {
+      const totalItems = filteredData.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      
+      // Clamp currentPage
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+      if (currentPage < 1) {
+        currentPage = 1;
+      }
+      
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+      const pageData = filteredData.slice(startIndex, endIndex);
+      
+      renderTable(pageData);
+      renderPagination(totalItems, totalPages);
     }
 
     function renderTable(data) {
@@ -299,7 +429,6 @@
             </td>
           </tr>
         `;
-        dataInfo.textContent = 'Menampilkan 0 data';
         return;
       }
 
@@ -323,41 +452,325 @@
             <td class="text-success fw-semibold">${formatCurrency(totalNilai)}</td>
             <td>
               <div class="d-flex gap-1">
-                <a href="/gorden/detail-pelanggan.html?id=${p.id}" class="btn btn-sm btn-outline-primary" title="Detail">
-                  <i class="bi bi-eye"></i>
+                <a href="/gorden/detail-pelanggan.html?id=${p.id}" class="btn btn-sm btn-outline-primary" title="Edit">
+                  <i class="bi bi-pencil"></i>
                 </a>
-                <button class="btn btn-sm btn-outline-danger btn-delete d-none" data-id="${p.id}" data-name="${p.nama_pelanggan}" title="Hapus">
-                  <i class="bi bi-trash"></i>
-                </button>
               </div>
             </td>
           </tr>
         `;
       }).join('');
+    }
 
-      dataInfo.textContent = `Menampilkan ${data.length} data`;
-
-      // Add delete handlers
-      tableBody.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', () => {
-          deleteId = btn.dataset.id;
-          deleteName.textContent = btn.dataset.name;
-          deleteModal.show();
+    function renderPagination(totalItems, totalPages) {
+      if (totalItems === 0) {
+        paginationControl.innerHTML = '';
+        dataInfo.textContent = 'Menampilkan 0 data';
+        return;
+      }
+      
+      const startIndex = (currentPage - 1) * itemsPerPage + 1;
+      const endIndex = Math.min(startIndex + itemsPerPage - 1, totalItems);
+      
+      dataInfo.textContent = `Menampilkan ${startIndex}-${endIndex} dari ${totalItems} data`;
+      
+      let html = '';
+      
+      // Prev Button
+      html += `
+        <li class="${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" data-page="${currentPage - 1}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+      `;
+      
+      // Page Numbers
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = startPage + maxVisiblePages - 1;
+      
+      if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        html += `
+          <li class="${currentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" data-page="${i}">${i}</a>
+          </li>
+        `;
+      }
+      
+      // Next Button
+      html += `
+        <li class="${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" data-page="${currentPage + 1}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+      `;
+      
+      paginationControl.innerHTML = html;
+      
+      // Add event listeners
+      paginationControl.querySelectorAll('.page-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetPage = parseInt(link.dataset.page);
+          if (targetPage && targetPage !== currentPage && targetPage >= 1 && targetPage <= totalPages) {
+            currentPage = targetPage;
+            paginateAndRender();
+          }
         });
       });
     }
 
-    async function handleDelete() {
-      if (!deleteId) return;
+    // Deletion is now handled from the customer detail page
 
-      try {
-        await deletePelanggan(deleteId);
-        showToast('Pelanggan berhasil dihapus', 'success');
-        deleteModal.hide();
-        await loadData();
-      } catch (error) {
-        showToast(error.message, 'error');
+    // Chart.js processing logic
+    const INDO_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    function formatDateIndo(date, type = 'daily') {
+      const d = new Date(date);
+      const day = d.getDate();
+      const monthIdx = d.getMonth();
+      const year = d.getFullYear();
+      
+      if (type === 'monthly') {
+        return `${INDO_MONTHS[monthIdx]} ${year}`;
+      } else if (type === 'weekly') {
+        const dayOfWeek = d.getDay();
+        const diff = d.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+        const monday = new Date(d.setDate(diff));
+        return `W/C ${monday.getDate()} ${INDO_MONTHS[monday.getMonth()]}`;
+      } else {
+        return `${day} ${INDO_MONTHS[monthIdx]}`;
       }
+    }
+
+    function getAllOrders() {
+      const orders = [];
+      filteredData.forEach(p => {
+        if (p.pesanan_jendela && Array.isArray(p.pesanan_jendela)) {
+          p.pesanan_jendela.forEach(pj => {
+            if (pj.created_at) {
+              orders.push({
+                id: pj.id,
+                total_harga: pj.total_harga || 0,
+                date: new Date(pj.created_at),
+                customerName: p.nama_pelanggan
+              });
+            }
+          });
+        }
+      });
+      orders.sort((a, b) => a.date - b.date);
+      return orders;
+    }
+
+    function getChartData(timeframe) {
+      const orders = getAllOrders();
+      if (orders.length === 0) {
+        return { labels: [], data: [] };
+      }
+
+      const salesMap = {};
+      
+      if (timeframe === 'daily') {
+        orders.forEach(order => {
+          const key = order.date.toISOString().split('T')[0];
+          salesMap[key] = (salesMap[key] || 0) + order.total_harga;
+        });
+        
+        const dates = Object.keys(salesMap).sort();
+        if (dates.length === 0) return { labels: [], data: [] };
+        
+        const latestDate = new Date(dates[dates.length - 1]);
+        const chartData = [];
+        const labels = [];
+        
+        for (let i = 14; i >= 0; i--) {
+          const d = new Date(latestDate);
+          d.setDate(latestDate.getDate() - i);
+          const key = d.toISOString().split('T')[0];
+          labels.push(formatDateIndo(d, 'daily'));
+          chartData.push(salesMap[key] || 0);
+        }
+        return { labels, data: chartData };
+        
+      } else if (timeframe === 'weekly') {
+        orders.forEach(order => {
+          const d = new Date(order.date);
+          const day = d.getDay();
+          const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+          const monday = new Date(d.setDate(diff));
+          const key = monday.toISOString().split('T')[0];
+          salesMap[key] = (salesMap[key] || 0) + order.total_harga;
+        });
+        
+        const weeks = Object.keys(salesMap).sort();
+        if (weeks.length === 0) return { labels: [], data: [] };
+        
+        const latestWeek = new Date(weeks[weeks.length - 1]);
+        const chartData = [];
+        const labels = [];
+        
+        for (let i = 7; i >= 0; i--) {
+          const d = new Date(latestWeek);
+          d.setDate(latestWeek.getDate() - (i * 7));
+          const key = d.toISOString().split('T')[0];
+          labels.push(formatDateIndo(d, 'weekly'));
+          chartData.push(salesMap[key] || 0);
+        }
+        return { labels, data: chartData };
+        
+      } else {
+        orders.forEach(order => {
+          const key = `${order.date.getFullYear()}-${String(order.date.getMonth() + 1).padStart(2, '0')}`;
+          salesMap[key] = (salesMap[key] || 0) + order.total_harga;
+        });
+        
+        const months = Object.keys(salesMap).sort();
+        if (months.length === 0) return { labels: [], data: [] };
+        
+        const [latestYear, latestMonth] = months[months.length - 1].split('-').map(Number);
+        const chartData = [];
+        const labels = [];
+        
+        for (let i = 5; i >= 0; i--) {
+          let m = latestMonth - i;
+          let y = latestYear;
+          if (m <= 0) {
+            m += 12;
+            y -= 1;
+          }
+          const key = `${y}-${String(m).padStart(2, '0')}`;
+          const d = new Date(y, m - 1, 1);
+          labels.push(formatDateIndo(d, 'monthly'));
+          chartData.push(salesMap[key] || 0);
+        }
+        return { labels, data: chartData };
+      }
+    }
+
+    function renderChart(timeframe = 'daily') {
+      const canvas = document.getElementById('salesChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const chartData = getChartData(timeframe);
+      
+      // Calculate total nominal transactions for display
+      const totalTransactionSum = chartData.data ? chartData.data.reduce((a, b) => a + b, 0) : 0;
+      const amountEl = document.getElementById('chartTotalAmount');
+      if (amountEl) {
+        amountEl.textContent = formatCurrency(totalTransactionSum);
+      }
+      
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+      
+      if (chartData.labels.length === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#64748b';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Belum ada data transaksi penjualan', canvas.width / 2, canvas.height / 2);
+        return;
+      }
+      
+      const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+      gradient.addColorStop(0, 'rgba(92, 96, 245, 0.25)');
+      gradient.addColorStop(1, 'rgba(92, 96, 245, 0.00)');
+      
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [{
+            label: 'Pendapatan',
+            data: chartData.data,
+            borderColor: '#5c60f5',
+            borderWidth: 3,
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.35,
+            pointBackgroundColor: '#5c60f5',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#5c60f5',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              padding: 10,
+              cornerRadius: 8,
+              displayColors: false,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(context.parsed.y);
+                  }
+                  return label;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#64748b',
+                font: {
+                  family: "'Plus Jakarta Sans', sans-serif",
+                  size: 11
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: '#f1f5f9'
+              },
+              ticks: {
+                color: '#64748b',
+                font: {
+                  family: "'Plus Jakarta Sans', sans-serif",
+                  size: 11
+                },
+                callback: function(value) {
+                  if (value >= 1000000) {
+                    return (value / 1000000).toFixed(1) + ' jt';
+                  } else if (value >= 1000) {
+                    return (value / 1000).toFixed(0) + ' rb';
+                  }
+                  return value;
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
     function debounce(func, wait) {

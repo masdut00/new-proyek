@@ -3,119 +3,190 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Sumbangan - Manajemen Keluarga</title>
-
-  <!-- Bootstrap 5 CSS -->
+  <title>Catatan Sumbangan - Manajemen Keluarga</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
   <link href="/assets/css/style.css" rel="stylesheet">
+
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
+  <style>
+    /* Page Header styling with left accent border and shadow */
+    .page-header {
+      background: white;
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.02));
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color, #f1f5f9);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-gradient, linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%));
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* ── Stats Mini Cards ── */
+    .stat-mini {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .stat-mini-icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .stat-mini-icon.green { background: rgba(34,197,94,0.12); color: #16a34a; }
+    .stat-mini-icon.blue  { background: var(--primary-light); color: var(--primary); }
+    .stat-mini-val { font-size: 1.05rem; font-weight: 800; color: var(--text-dark); line-height: 1.2; }
+    .stat-mini-lbl { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ── Table compact on mobile ── */
+    @media (max-width: 575.98px) {
+      .sumbangan-table th, .sumbangan-table td { font-size: 0.78rem; padding: 0.55rem 0.5rem !important; }
+      .sumbangan-table .col-nama { max-width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .sumbangan-table .col-nominal { white-space: nowrap; }
+    }
+
+    /* ── FAB (mobile add button) ── */
+    .fab-add {
+      position: fixed;
+      bottom: calc(60px + 1rem); /* above bottom-nav */
+      right: 1rem;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 16px rgba(92,96,245,0.4);
+      font-size: 1.4rem;
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 900;
+      transition: transform 0.2s;
+    }
+    .fab-add:hover { transform: scale(1.08); }
+    @media (max-width: 767.98px) { .fab-add { display: flex; } }
+
+    /* ── Jenis Acara badge colors ── */
+    .badge-acara {
+      font-size: 0.7rem; font-weight: 700;
+      padding: 0.3em 0.65em;
+      border-radius: 100px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+  </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link active">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Page Header -->
-    <header class="page-header">
-      <div class="d-flex justify-content-between align-items-center">
+    <header class="page-header animate-slide-in-left">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Data Sumbangan</h1>
-          <p class="page-subtitle">Daftar penyumbang hajatan</p>
+          <h1 class="page-title m-0">
+            <span class="d-md-none">Sumbangan</span>
+            <span class="d-none d-md-inline">Catatan Sumbangan</span>
+          </h1>
+          <p class="page-subtitle d-none d-md-block m-0">Siapa saja yang datang dan menyumbang di hajatan</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <a href="/sumbangan/tambah-sumbangan.html" class="btn btn-primary add-data-btn d-none">
-            <i class="bi bi-plus-circle me-1"></i> Tambah
-          </a>
-          <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-            <i class="bi bi-list fs-4"></i>
+          <button class="btn btn-primary btn-sm add-data-btn d-none d-md-flex align-items-center gap-1" id="btnTambah">
+            <i class="bi bi-plus-circle"></i> Tambah
+          </button>
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
           </button>
         </div>
       </div>
     </header>
 
     <!-- Page Content -->
-    <main class="page-content">
+    <main class="page-content animate-fade-in-up">
+
+      <!-- Stats Row -->
+      <div class="row g-3 mb-3">
+        <div class="col-6 col-md-3">
+          <div class="stat-mini">
+            <div class="stat-mini-icon blue"><i class="bi bi-people-fill"></i></div>
+            <div>
+              <div class="stat-mini-val" id="statTotal">–</div>
+              <div class="stat-mini-lbl">Total Tamu</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-mini">
+            <div class="stat-mini-icon green"><i class="bi bi-cash-stack"></i></div>
+            <div>
+              <div class="stat-mini-val" id="statNominal">–</div>
+              <div class="stat-mini-lbl">Total Nominal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Search & Filter -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-12 col-md-3">
+      <div class="card mb-3">
+        <div class="card-body py-2 px-3">
+          <div class="row g-2 align-items-center">
+            <div class="col-8 col-md-5">
               <div class="search-container">
-                <input type="text" class="form-control" id="searchInput" placeholder="Cari nama...">
+                <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Cari nama...">
                 <i class="bi bi-search search-icon"></i>
               </div>
             </div>
-            <div class="col-6 col-md-3">
-              <select class="form-select" id="filterHajatan">
-                <option value="">Semua Hajatan</option>
+            <div class="col-4 col-md-3">
+              <select class="form-select form-select-sm" id="filterJenis">
+                <option value="">Semua Acara</option>
               </select>
-            </div>
-            <div class="col-6 col-md-2">
-              <select class="form-select" id="filterStatus">
-                <option value="">Semua Status</option>
-              </select>
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="date" class="form-control" id="filterDari" title="Dari Tanggal">
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="date" class="form-control" id="filterSampai" title="Sampai Tanggal">
             </div>
           </div>
         </div>
@@ -125,264 +196,474 @@
       <div class="card">
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0 sumbangan-table">
               <thead>
                 <tr>
+                  <th style="width:44px;" class="ps-3">#</th>
                   <th>Nama</th>
                   <th>Nominal</th>
-                  <th>Jenis Acara</th>
-                  <th>Tanggal</th>
-                  <th>Hajatan</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
+                  <th class="d-none d-sm-table-cell">Jenis Acara</th>
+                  <th style="width:80px;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="tableBody">
-                <tr>
-                  <td colspan="7" class="text-center py-4 text-muted">Memuat data...</td>
-                </tr>
+                <tr><td colspan="5" class="text-center py-4 text-muted">Memuat data...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- Pagination & Info -->
-      <div class="d-flex justify-content-between align-items-center mt-3">
-        <p class="text-muted small mb-0" id="dataInfo">Menampilkan 0 data</p>
-        <nav id="pagination"></nav>
+      <!-- Footer Info & Pagination -->
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-3 px-1">
+        <p class="text-muted small mb-0" id="dataInfo">–</p>
+        <nav aria-label="Navigasi Halaman" id="paginationNav">
+          <!-- Rendered dynamically -->
+        </nav>
       </div>
+
     </main>
   </div>
 
-  <!-- Bottom Navigation (Mobile) -->
+  <!-- FAB Mobile -->
+  <button class="fab-add add-data-btn d-none" id="fabTambah" title="Tambah Sumbangan">
+    <i class="bi bi-plus-lg"></i>
+  </button>
+
+  <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <a href="/dashboard.html" class="bottom-nav-item">
-      <i class="bi bi-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item active">
-      <i class="bi bi-cash-stack"></i>
-      <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
-    </a>
-    <a href="/gorden/pelanggan.html" class="bottom-nav-item">
-      <i class="bi bi-window-split"></i>
-      <span>Gorden</span>
-    </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
-    </a>
+    <a href="/dashboard.html" class="bottom-nav-item"><i class="bi bi-house"></i><span>Home</span></a>
+    <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item active"><i class="bi bi-people"></i><span>Sumbangan</span></a>
+    <a href="/gorden/pelanggan.html" class="bottom-nav-item"><i class="bi bi-window-split"></i><span>Gorden</span></a>
+    <a href="/gorden/katalog.html" class="bottom-nav-item"><i class="bi bi-journal-richtext"></i><span>Katalog</span></a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item"><i class="bi bi-images"></i><span>Promosi</span></a>
   </nav>
 
-  <!-- Delete Confirmation Modal -->
-  <div class="modal fade" id="deleteModal" tabindex="-1">
+  <!-- ── MODAL: Tambah / Edit ── -->
+  <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header border-0">
-          <h5 class="modal-title">Hapus Sumbangan</h5>
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="formModalLabel">Tambah Sumbangan</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
-          <p>Apakah Anda yakin ingin menghapus sumbangan dari <strong id="deleteName"></strong>?</p>
+        <form id="sumbanganForm" novalidate>
+          <div class="modal-body pt-3">
+            <input type="hidden" id="editId">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="inputNama">Nama <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputNama" placeholder="Nama tamu / penyumbang" required autocomplete="off">
+              <div class="invalid-feedback">Nama wajib diisi.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="inputNominal">Nominal Sumbangan <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text text-muted">Rp</span>
+                <input type="number" class="form-control" id="inputNominal" placeholder="0" min="0" required>
+              </div>
+              <div class="invalid-feedback">Nominal wajib diisi.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="inputHajatan">Hajatan / Acara <span class="text-danger">*</span></label>
+              <select class="form-select" id="inputHajatan" required>
+                <option value="">-- Pilih Hajatan --</option>
+              </select>
+              <div class="invalid-feedback">Pilih hajatan.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="inputCatatan">Catatan</label>
+              <textarea class="form-control" id="inputCatatan" rows="2" placeholder="Catatan tambahan (opsional)"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 pt-0 d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-danger" id="btnHapus" style="display: none;">
+              <i class="bi bi-trash me-1"></i> Hapus
+            </button>
+            <div class="d-flex gap-2 ms-auto">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-primary px-4" id="btnSimpan">
+                <i class="bi bi-check-circle me-1"></i> Simpan
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-body text-center p-4">
+          <div class="fs-1 mb-2 text-danger"><i class="bi bi-trash3"></i></div>
+          <p class="mb-1 fw-bold">Hapus sumbangan dari</p>
+          <p class="fw-bold text-primary" id="deleteName"></p>
+          <p class="text-muted small">Tindakan ini tidak bisa dibatalkan.</p>
         </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-danger" id="confirmDelete">Hapus</button>
+        <div class="modal-footer border-0 pt-0 justify-content-center gap-2">
+          <button class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-danger px-4" id="confirmDelete">Hapus</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bootstrap 5 JS -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { isLoggedIn, logout } from '/assets/js/auth.js';
-    import { getSumbanganList, deleteSumbangan, getHajatanList, formatDate, formatCurrency, showToast } from '/assets/js/app.js';
+    import { checkAuth, isLoggedIn, logout } from '/assets/js/auth.js';
+    import { getSumbanganList, createSumbangan, updateSumbangan, deleteSumbangan, formatCurrency, showToast, getHajatanList } from '/assets/js/app.js';
 
-    // State
-    let sumbanganData = [];
-    let filteredData = [];
+    // ── DOM Refs ──
+    const tableBody         = document.getElementById('tableBody');
+    const searchInput       = document.getElementById('searchInput');
+    const filterJenis       = document.getElementById('filterJenis');
+    const dataInfo          = document.getElementById('dataInfo');
+    const statTotal         = document.getElementById('statTotal');
+    const statNominal       = document.getElementById('statNominal');
+    const formModal         = new bootstrap.Modal(document.getElementById('formModal'));
+    const deleteModal       = new bootstrap.Modal(document.getElementById('deleteModal'));
+    const sumbanganForm     = document.getElementById('sumbanganForm');
+    const editId            = document.getElementById('editId');
+    const inputNama         = document.getElementById('inputNama');
+    const inputNominal      = document.getElementById('inputNominal');
+    const inputHajatan      = document.getElementById('inputHajatan');
+    const inputCatatan      = document.getElementById('inputCatatan');
+    const btnHapus          = document.getElementById('btnHapus');
+    const deleteName        = document.getElementById('deleteName');
+    const confirmDelete     = document.getElementById('confirmDelete');
+
+    // ── State ──
+    let allData     = [];
+    let filtered    = [];
+    let deleteId    = null;
+    let isAdmin     = false;
+    let hajatanList = [];
     let currentPage = 1;
-    let deleteId = null;
-    const limit = 20;
+    const rowsPerPage = 10;
 
-    // DOM Elements
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
-    const tableBody = document.getElementById('tableBody');
-    const searchInput = document.getElementById('searchInput');
-    const filterHajatan = document.getElementById('filterHajatan');
-    const filterStatus = document.getElementById('filterStatus');
-    const filterDari = document.getElementById('filterDari');
-    const filterSampai = document.getElementById('filterSampai');
-    const dataInfo = document.getElementById('dataInfo');
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    const deleteName = document.getElementById('deleteName');
-    const confirmDelete = document.getElementById('confirmDelete');
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Bind event listeners immediately (no block by async auth/fetch)
+      searchInput.addEventListener('input', debounce(applyFilter, 250));
+      filterJenis.addEventListener('change', applyFilter);
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', init);
+      // Open form modal
+      const btnTambah = document.getElementById('btnTambah');
+      const fabTambah = document.getElementById('fabTambah');
+      if (btnTambah) btnTambah.addEventListener('click', () => openModal());
+      if (fabTambah) fabTambah.addEventListener('click', () => openModal());
 
-    async function init() {
-      // Mobile menu toggle
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-      });
+      // Form submit
+      sumbanganForm.addEventListener('submit', handleSubmit);
 
-      sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('show');
-        sidebarOverlay.classList.remove('show');
-      });
-
-      // Check auth
-      const loggedIn = await isLoggedIn();
-      if (loggedIn) {
-        document.querySelectorAll('.add-data-btn').forEach(btn => btn.classList.remove('d-none'));
-        document.querySelectorAll('.btn-delete').forEach(btn => btn.classList.remove('d-none'));
+      // Logout handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'danger');
+          }
+        });
       }
 
-      // Get URL params
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('search')) searchInput.value = params.get('search');
-      if (params.get('hajatan')) filterHajatan.dataset.selected = params.get('hajatan');
+      // Delete button inside edit modal
+      btnHapus.addEventListener('click', () => {
+        const item = allData.find(s => s.id === editId.value);
+        if (item) {
+          deleteId = item.id;
+          deleteName.textContent = item.nama_penyumbang;
+          formModal.hide();
+          deleteModal.show();
+        }
+      });
 
-      // Load hajatan options
-      await loadHajatanOptions();
-
-      // Load data
-      await loadData();
-
-      // Event listeners
-      searchInput.addEventListener('input', debounce(filterAndRender, 300));
-      filterHajatan.addEventListener('change', filterAndRender);
-      filterStatus.addEventListener('change', filterAndRender);
-      filterDari.addEventListener('change', filterAndRender);
-      filterSampai.addEventListener('change', filterAndRender);
-
+      // Delete confirm
       confirmDelete.addEventListener('click', handleDelete);
+
+      // 2. Perform async Auth check & Load Data
+      (async () => {
+        try {
+          await checkAuth();
+          isAdmin = await isLoggedIn();
+          if (isAdmin) {
+            document.querySelectorAll('.add-data-btn').forEach(b => b.classList.remove('d-none'));
+          }
+          await loadHajatanFilterOptions();
+          await loadData();
+        } catch (err) {
+          console.error("Initialization error:", err);
+        }
+      })();
+    });
+
+    // ── Load Data ──
+    async function loadData() {
+      tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Memuat...</td></tr>`;
+      try {
+        const { data } = await getSumbanganList({}, 1000);
+        allData = data || [];
+        applyFilter(false);
+        updateStats();
+      } catch (err) {
+        console.error("Error loading sumbangan data:", err);
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-danger">Gagal memuat data.</td></tr>`;
+      }
     }
 
-    async function loadHajatanOptions() {
+    async function loadHajatanFilterOptions() {
       try {
         const { data } = await getHajatanList(100);
-        if (data && data.length > 0) {
-          filterHajatan.innerHTML = '<option value="">Semua Hajatan</option>' +
-            data.map(h => `<option value="${h.id}" ${h.id === filterHajatan.dataset.selected ? 'selected' : ''}>${h.nama_hajatan}</option>`).join('');
+        hajatanList = data || [];
+        
+        // Populate filter dropdown
+        filterJenis.innerHTML = '<option value="">Semua Acara</option>' +
+          hajatanList.map(h => `<option value="${h.id}">${esc(h.nama_hajatan)}</option>`).join('');
+
+        // Populate modal dropdown
+        inputHajatan.innerHTML = '<option value="">-- Pilih Hajatan --</option>' +
+          hajatanList.map(h => `<option value="${h.id}">${esc(h.nama_hajatan)}</option>`).join('');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramHajatanId = urlParams.get('hajatan');
+        if (paramHajatanId && hajatanList.some(h => h.id === paramHajatanId)) {
+          filterJenis.value = paramHajatanId;
         }
       } catch (error) {
-        console.error('Failed to load hajatan options:', error);
+        console.error('Failed to load hajatan filter options:', error);
       }
     }
 
-    async function loadData() {
-      try {
-        const { data, count } = await getSumbanganList({}, 500);
-        sumbanganData = data || [];
-        filterAndRender();
-      } catch (error) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="7" class="text-center py-4 text-danger">
-              Gagal memuat data
-            </td>
-          </tr>
-        `;
-      }
+    function updateStats() {
+      const total = allData.length;
+      const totalNom = allData.reduce((sum, s) => sum + (s.nominal || 0), 0);
+      statTotal.textContent = total.toLocaleString('id-ID') + ' orang';
+      statNominal.textContent = formatCurrency(totalNom);
     }
 
-    function filterAndRender() {
-      const search = searchInput.value.toLowerCase();
-      const hajatanId = filterHajatan.value;
-      const dari = filterDari.value;
-      const sampai = filterSampai.value;
+    // ── Filter & Render ──
+    function applyFilter(resetPage = true) {
+      const q = searchInput.value.toLowerCase().trim();
+      const selectedHajatanId = filterJenis.value;
 
-      filteredData = sumbanganData.filter(s => {
-        const matchSearch = !search || s.nama_penyumbang.toLowerCase().includes(search);
-        const matchHajatan = !hajatanId || s.id_hajatan === hajatanId;
-        const matchDari = !dari || s.tanggal >= dari;
-        const matchSampai = !sampai || s.tanggal <= sampai;
-        return matchSearch && matchHajatan && matchDari && matchSampai;
+      filtered = allData.filter(s => {
+        const matchName  = !q || (s.nama_penyumbang || '').toLowerCase().includes(q);
+        const matchHajatan = !selectedHajatanId || s.id_hajatan === selectedHajatanId;
+        return matchName && matchHajatan;
       });
 
+      if (resetPage === true || typeof resetPage === 'object') {
+        currentPage = 1;
+      }
       renderTable();
     }
 
     function renderTable() {
-      if (filteredData.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="7" class="text-center py-4 text-muted">
-              ${sumbanganData.length === 0 ? 'Belum ada data sumbangan' : 'Tidak ada data yang cocok'}
-            </td>
-          </tr>
-        `;
-        dataInfo.textContent = 'Menampilkan 0 data';
+      const totalPages = Math.ceil(filtered.length / rowsPerPage);
+
+      // Clamp currentPage
+      if (currentPage > totalPages && totalPages > 0) {
+        currentPage = totalPages;
+      }
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">${allData.length === 0 ? 'Belum ada catatan sumbangan.' : 'Tidak ada yang cocok.'}</td></tr>`;
+        dataInfo.textContent = '–';
+        const nav = document.getElementById('paginationNav');
+        if (nav) nav.innerHTML = '';
         return;
       }
 
-      const start = (currentPage - 1) * limit;
-      const pageData = filteredData.slice(start, start + limit);
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      const paginatedData = filtered.slice(startIndex, endIndex);
 
-      tableBody.innerHTML = pageData.map(s => `
-        <tr>
-          <td><strong>${s.nama_penyumbang}</strong></td>
-          <td class="text-success fw-semibold">${formatCurrency(s.nominal)}</td>
-          <td>${s.hajatan?.jenis_acara || '-'}</td>
-          <td>${formatDate(s.tanggal)}</td>
-          <td>${s.hajatan?.nama_hajatan || '-'}</td>
-          <td><span class="badge bg-success-light text-success">${s.status || 'tercatat'}</span></td>
-          <td>
-            <div class="d-flex gap-1">
-              <a href="/sumbangan/detail-sumbangan.html?id=${s.id}" class="btn btn-sm btn-outline-primary" title="Detail">
-                <i class="bi bi-eye"></i>
-              </a>
-              <button class="btn btn-sm btn-outline-danger btn-delete d-none" data-id="${s.id}" data-name="${s.nama_penyumbang}" title="Hapus">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
+      tableBody.innerHTML = paginatedData.map((s, i) => {
+        const jenis = s.hajatan?.nama_hajatan || '–';
+        const nominal = formatCurrency(s.nominal || 0);
+        return `
+          <tr>
+            <td class="ps-3 text-muted small">${startIndex + i + 1}</td>
+            <td class="col-nama fw-semibold">${esc(s.nama_penyumbang)}</td>
+            <td class="col-nominal text-success fw-bold">${nominal}</td>
+            <td class="d-none d-sm-table-cell"><span class="badge-acara">${esc(jenis)}</span></td>
+            <td>
+              ${isAdmin ? `
+                <button class="btn btn-sm btn-outline-primary btn-edit" data-id="${s.id}" title="Edit" style="padding:0.2rem 0.5rem;">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
+              ` : '–'}
+            </td>
+          </tr>
+        `;
+      }).join('');
 
-      dataInfo.textContent = `Menampilkan ${start + 1}-${Math.min(start + pageData.length, filteredData.length)} dari ${filteredData.length} data`;
+      dataInfo.textContent = `Menampilkan ${startIndex + 1}-${Math.min(endIndex, filtered.length)} dari ${filtered.length} entri`;
 
-      // Add click handlers for delete buttons
-      tableBody.querySelectorAll('.btn-delete').forEach(btn => {
+      // Render navigation buttons
+      renderPagination(totalPages);
+
+      // Bind edit button
+      tableBody.querySelectorAll('.btn-edit').forEach(btn => {
         btn.addEventListener('click', () => {
-          deleteId = btn.dataset.id;
-          deleteName.textContent = btn.dataset.name;
-          deleteModal.show();
+          const item = allData.find(s => s.id === btn.dataset.id);
+          if (item) openModal(item);
         });
       });
     }
 
-    async function handleDelete() {
-      if (!deleteId) return;
+    function renderPagination(totalPages) {
+      const nav = document.getElementById('paginationNav');
+      if (!nav) return;
+
+      if (totalPages <= 1) {
+        nav.innerHTML = '';
+        return;
+      }
+
+      let html = '<ul class="pagination pagination-sm mb-0 justify-content-center">';
+      
+      // Prev Button
+      const prevDisabled = currentPage === 1 ? 'disabled' : '';
+      html += `<li class="page-item ${prevDisabled}"><a class="page-link" href="#" data-page="${currentPage - 1}"><i class="bi bi-chevron-left"></i></a></li>`;
+
+      // Page numbers (max 5 buttons)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+      }
+
+      for (let p = startPage; p <= endPage; p++) {
+        const activeClass = p === currentPage ? 'active' : '';
+        html += `<li class="page-item ${activeClass}"><a class="page-link" href="#" data-page="${p}">${p}</a></li>`;
+      }
+
+      // Next Button
+      const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+      html += `<li class="page-item ${nextDisabled}"><a class="page-link" href="#" data-page="${currentPage + 1}"><i class="bi bi-chevron-right"></i></a></li>`;
+
+      html += '</ul>';
+      nav.innerHTML = html;
+
+      // Add click listeners to page links
+      nav.querySelectorAll('.page-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetPage = parseInt(link.dataset.page);
+          if (targetPage >= 1 && targetPage <= totalPages) {
+            currentPage = targetPage;
+            renderTable();
+          }
+        });
+      });
+    }
+
+    // ── Modal Open ──
+    function openModal(item = null) {
+      console.log('openModal called with item:', item);
+
+      sumbanganForm.classList.remove('was-validated');
+      editId.value       = item?.id || '';
+      inputNama.value    = item?.nama_penyumbang || '';
+      inputNominal.value = item?.nominal || '';
+      inputHajatan.value = item?.id_hajatan || filterJenis.value || '';
+      inputCatatan.value = item?.catatan || '';
+
+      // Show Hapus button only when editing an existing item
+      if (item) {
+        btnHapus.style.display = 'inline-block';
+      } else {
+        btnHapus.style.display = 'none';
+      }
+
+      document.getElementById('formModalLabel').textContent = item ? 'Edit Sumbangan' : 'Tambah Sumbangan';
+      try {
+        formModal.show();
+      } catch (modalErr) {
+        console.error('Error showing modal:', modalErr);
+      }
+      setTimeout(() => {
+        try {
+          inputNama.focus();
+        } catch (fErr) {}
+      }, 350);
+    }
+
+    // ── Save ──
+    async function handleSubmit(e) {
+      e.preventDefault();
+      sumbanganForm.classList.add('was-validated');
+      if (!sumbanganForm.checkValidity()) return;
+
+      const selectedHajatanId = inputHajatan.value;
+      const activeHajatan = hajatanList.find(h => h.id === selectedHajatanId);
+      const tanggal = activeHajatan ? activeHajatan.tanggal : new Date().toISOString().split('T')[0];
+
+      const payload = {
+        nama_penyumbang: inputNama.value.trim(),
+        nominal: parseInt(inputNominal.value) || 0,
+        id_hajatan: selectedHajatanId,
+        tanggal: tanggal,
+        catatan: inputCatatan.value.trim() || null
+      };
+
+      const btn = document.getElementById('btnSimpan');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
 
       try {
-        await deleteSumbangan(deleteId);
-        showToast('Sumbangan berhasil dihapus', 'success');
-        deleteModal.hide();
+        if (editId.value) {
+          await updateSumbangan(editId.value, payload);
+          showToast('Sumbangan diperbarui!', 'success');
+        } else {
+          await createSumbangan(payload);
+          showToast('Sumbangan ditambahkan!', 'success');
+        }
+        formModal.hide();
         await loadData();
-      } catch (error) {
-        showToast(error.message, 'error');
+      } catch (err) {
+        showToast(err.message || 'Gagal menyimpan.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-circle me-1"></i> Simpan';
+        sumbanganForm.classList.remove('was-validated');
       }
     }
 
-    function debounce(func, wait) {
-      let timeout;
-      return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
+    // ── Delete ──
+    async function handleDelete() {
+      if (!deleteId) return;
+      confirmDelete.disabled = true;
+      try {
+        await deleteSumbangan(deleteId);
+        showToast('Dihapus.', 'success');
+        deleteModal.hide();
+        await loadData();
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        confirmDelete.disabled = false;
+        deleteId = null;
+      }
+    }
+
+    // ── Utils ──
+    function esc(str) {
+      return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function debounce(fn, ms) {
+      let t;
+      return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
     }
   </script>
 </body>

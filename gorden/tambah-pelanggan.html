@@ -8,39 +8,182 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
   <link href="/assets/css/style.css" rel="stylesheet">
 
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
   <style>
+    /* Premium visual enhancements */
+    body {
+      background-color: #f6f8fd;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(92, 96, 245, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+    
+    /* Page Header styles matching our best floating card style */
+    .page-header {
+      background: white;
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.02));
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color, #f1f5f9);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-gradient, linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%));
+    }
+    
+    .card {
+      border: 1px solid var(--border-color, #f1f5f9);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: 0 10px 25px -5px rgba(92, 96, 245, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      transition: var(--transition-smooth, all 0.3s ease);
+    }
+    
+    /* Give Profile card an elegant purple gradient top line */
+    .card-profile-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(92, 96, 245, 0.15);
+    }
+    .card-profile-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #5c60f5 0%, #a855f7 100%);
+    }
+    .card-profile-glow .card-header {
+      background: linear-gradient(135deg, rgba(92, 96, 245, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+      border-bottom: 1px solid rgba(92, 96, 245, 0.15);
+    }
+    
+    /* Give Spec card an elegant teal gradient top line */
+    .card-spec-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(16, 185, 129, 0.15);
+    }
+    .card-spec-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+    }
+    .card-spec-glow .card-header {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    /* Give Draft card an elegant cyan/indigo gradient top line */
+    .card-draft-glow {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(92, 96, 245, 0.15);
+    }
+    .card-draft-glow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #5c60f5 0%, #06b6d4 100%);
+    }
+    .card-draft-glow .card-header {
+      background: linear-gradient(135deg, rgba(92, 96, 245, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border-bottom: 1px solid rgba(92, 96, 245, 0.15);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--text-dark, #0f172a);
+    }
+    
+    /* Customize inputs focus ring */
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary, #5c60f5);
+      box-shadow: 0 0 0 4px rgba(92, 96, 245, 0.12);
+    }
+    
+    /* Component card visual design */
     .component-card {
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color, #f1f5f9);
+      background: var(--secondary, #f8fafc);
+      border-radius: var(--radius-md, 12px);
       padding: 1.25rem;
-      background: var(--secondary);
-      transition: var(--transition-smooth);
       margin-bottom: 1rem;
+      transition: var(--transition-smooth, all 0.3s cubic-bezier(0.4, 0, 0.2, 1));
     }
-    .component-card.active {
-      border-color: var(--primary);
-      background: #ffffff;
-      box-shadow: var(--shadow-sm);
+    
+    .component-card.active#gordenBox {
+      border-color: rgba(92, 96, 245, 0.4);
+      background: rgba(92, 96, 245, 0.04);
+      box-shadow: 0 4px 15px rgba(92, 96, 245, 0.08);
     }
+    
+    .component-card.active#vitraceBox {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(6, 182, 212, 0.04);
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.08);
+    }
+    
+    .component-card.active#rellBox {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.04);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.08);
+    }
+    
+    /* Live preview styling */
     .preview-box {
-      background: var(--primary-light);
-      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #f0f1ff 0%, #f5f3ff 100%);
+      border: 1px dashed rgba(92, 96, 245, 0.25);
+      border-radius: var(--radius-md, 12px);
       padding: 1.25rem;
-      color: var(--text-dark);
     }
+    
     .preview-title {
       font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
       margin-bottom: 0.5rem;
     }
+    
     .preview-value {
       font-weight: 800;
-      color: var(--primary-dark);
+      color: var(--primary-dark, #4347d9);
     }
 
     /* Custom Searchable Select Dropdown Styles */
@@ -59,12 +202,12 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: var(--text-muted);
-      transition: var(--transition-smooth);
+      color: var(--text-muted, #64748b);
+      transition: var(--transition-smooth, all 0.3s ease);
     }
     .custom-select-container.open .custom-select-trigger-wrap::after {
       transform: translateY(-50%) rotate(180deg);
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
     }
     .custom-select-dropdown {
       position: absolute;
@@ -72,58 +215,87 @@
       left: 0;
       right: 0;
       background: white;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg) !important;
+      border: 1px solid var(--border-color, #f1f5f9);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.08)) !important;
       z-index: 1050;
       max-height: 240px;
       overflow-y: auto;
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth, all 0.3s ease);
     }
     .custom-select-option {
       padding: 0.75rem 1.15rem;
       cursor: pointer;
-      transition: var(--transition-smooth);
+      transition: var(--transition-smooth, all 0.2s ease);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.925rem;
-      color: var(--text-body);
+      color: var(--text-body, #334155);
       border-bottom: 1px solid rgba(241, 245, 249, 0.5);
     }
     .custom-select-option:last-child {
       border-bottom: none;
     }
     .custom-select-option:hover, .custom-select-option.highlighted {
-      background-color: var(--primary-light);
-      color: var(--primary-dark);
+      background-color: var(--primary-light, #f0f1ff);
+      color: var(--primary-dark, #4347d9);
     }
     .custom-select-option .option-price {
       font-weight: 700;
-      color: var(--success);
+      color: var(--success, #10b981);
       font-size: 0.85rem;
     }
     .custom-select-option.custom-add-option {
-      border-top: 1px dashed var(--border-color);
+      border-top: 1px dashed var(--border-color, #f1f5f9);
       font-weight: 600;
-      color: var(--primary);
+      color: var(--primary, #5c60f5);
       background-color: rgba(92, 96, 245, 0.02);
     }
 
-    /* Window list table bisa di-scroll horizontal */
+    /* Window list table horizontal scrolling */
     #windowTableContainer .table-responsive,
     .table-responsive {
       overflow-x: auto !important;
       -webkit-overflow-scrolling: touch;
     }
-    #windowTableContainer table {
-      min-width: 500px;
+    
+    /* Dropdown caret hiding */
+    .dropdown-toggle.no-caret::after {
+      display: none !important;
     }
 
-    /* Highlight edited row */
-    .window-row.editing-highlight td {
-      background-color: #fff9c4 !important;
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
 
     /* === RESPONSIVE MOBILE === */
     @media (max-width: 767.98px) {
@@ -140,95 +312,39 @@
         font-size: 0.875rem;
       }
 
-      /* Preview grid: 2 kolom saja di mobile */
+      /* Preview grid: 2 columns in mobile */
       .preview-box .row .col-6.col-md-3 {
         flex: 0 0 50%;
         max-width: 50%;
         margin-bottom: 0.5rem;
       }
     }
-
-    @media (max-width: 575.98px) {
-      /* Sticky bottom save bar compact */
-      .sticky-bottom-bar {
-        padding: 0.75rem 1rem !important;
-      }
-      .sticky-bottom-bar .btn {
-        font-size: 0.85rem;
-        padding: 0.6rem 0.9rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link active">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Page Header -->
-    <header class="page-header">
-      <div class="d-flex justify-content-between align-items-center">
+    <header class="page-header animate-slide-in-left">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Tambah Pelanggan Gorden</h1>
-          <p class="page-subtitle">Daftarkan pelanggan baru dan spesifikasi seluruh jendela</p>
+          <h1 class="page-title m-0">
+            <span class="d-md-none">Tambah Pelanggan</span>
+            <span class="d-none d-md-inline">Tambah Pelanggan Gorden</span>
+          </h1>
+          <p class="page-subtitle d-none d-md-block m-0">Daftarkan pelanggan baru dan spesifikasi seluruh jendela</p>
         </div>
-        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-          <i class="bi bi-list fs-4"></i>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <a href="/gorden/pelanggan.html" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" title="Daftar Pelanggan">
+            <i class="bi bi-arrow-left"></i> <span class="d-none d-md-inline">Daftar Pelanggan</span>
+          </a>
+          <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -253,24 +369,24 @@
       <div class="row g-4">
         
         <!-- Kolom Kiri: Profil Pelanggan -->
-        <div class="col-12 col-lg-5">
-          <div class="card h-100">
+        <div class="col-12 col-lg-5 animate-fade-in-up">
+          <div class="card card-profile-glow h-100">
             <div class="card-header">
-              <h3 class="card-title"><i class="bi bi-person-fill me-2"></i>Profil Pelanggan</h3>
+              <h3 class="card-title"><i class="bi bi-person-fill me-2 text-primary"></i>Profil Pelanggan</h3>
             </div>
             <div class="card-body p-4">
               <div class="mb-3">
-                <label class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
+                <label class="form-label fw-semibold">Nama Pelanggan <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="namaPelanggan" required placeholder="Nama pemilik rumah">
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Nomor Telepon</label>
+                <label class="form-label fw-semibold">Nomor Telepon</label>
                 <input type="tel" class="form-control" id="telepon" placeholder="08xxxxxxxxxx">
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Alamat Lengkap</label>
+                <label class="form-label fw-semibold">Alamat Lengkap</label>
                 <textarea class="form-control" id="alamat" rows="4" placeholder="Alamat lengkap pemasangan gorden"></textarea>
               </div>
             </div>
@@ -278,26 +394,52 @@
         </div>
 
         <!-- Kolom Kanan: Input Spesifikasi Jendela -->
-        <div class="col-12 col-lg-7">
-          <div class="card">
+        <div class="col-12 col-lg-7 animate-fade-in-up delay-100">
+          <div class="card card-spec-glow">
             <div class="card-header">
-              <h3 class="card-title"><i class="bi bi-window-split me-2"></i>Tambah Spesifikasi Jendela</h3>
+              <h3 class="card-title"><i class="bi bi-window-split me-2 text-success"></i>Tambah Spesifikasi Jendela</h3>
             </div>
             <div class="card-body p-4">
               
               <!-- Info Ukuran Jendela -->
               <div class="row g-3 mb-4">
                 <div class="col-12 col-md-4">
-                  <label class="form-label">Lokasi Jendela <span class="text-danger">*</span></label>
+                  <label class="form-label fw-semibold">Lokasi Jendela <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="lokasiJendela" value="Jendela 1" placeholder="Kamar Utama, Ruang Tamu">
                 </div>
                 <div class="col-6 col-md-4">
-                  <label class="form-label">Lebar Jendela (cm) <span class="text-danger">*</span></label>
+                  <label class="form-label fw-semibold">Lebar Jendela (cm) <span class="text-danger">*</span></label>
                   <input type="number" class="form-control" id="lebarCm" placeholder="100">
                 </div>
                 <div class="col-6 col-md-4">
-                  <label class="form-label">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
+                  <label class="form-label fw-semibold">Tinggi Jendela (cm) <span class="text-danger">*</span></label>
                   <input type="number" class="form-control" id="tinggiCm" placeholder="200">
+                </div>
+              </div>
+
+              <!-- Lebar Bahan Selector -->
+              <div class="row g-3 mb-3 border-bottom pb-3">
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Lebar Bahan Kain</label>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="lebarBahan" id="bahan280" value="280" checked>
+                      <label class="form-check-label" for="bahan280">
+                        <strong>280 cm</strong> <small class="text-muted">(perlu sambung jika tinggi &gt; 2,8m)</small>
+                      </label>
+                    </div>
+                    <div class="form-check ms-md-4">
+                      <input class="form-check-input" type="radio" name="lebarBahan" id="bahan320" value="320">
+                      <label class="form-check-label" for="bahan320">
+                        <strong>320 cm</strong> <small class="text-muted">(aman tanpa sambung sampai 3,2m)</small>
+                      </label>
+                    </div>
+                  </div>
+                  <!-- Sambung warning -->
+                  <div class="alert alert-warning py-2 px-3 mt-2 small d-none" id="sambungAlert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                    <strong>Perlu disambung!</strong> Tinggi jendela melebihi lebar bahan. Biaya kain akan ditambah <strong>+20 cm</strong> per jalur untuk kelim sambungan.
+                  </div>
                 </div>
               </div>
 
@@ -324,7 +466,22 @@
                   </div>
                   <div class="col-12 col-md-5">
                     <label class="form-label small">Harga per Meter (Rp)</label>
-                    <input type="number" class="form-control" id="gordenHarga" value="0">
+                    <input type="text" class="form-control" id="gordenHarga" value="0">
+                  </div>
+                </div>
+                <!-- Manual override for Curtain fabric quantity -->
+                <div class="row g-3 mt-1 align-items-end" id="gordenFieldsManual">
+                  <div class="col-7">
+                    <div class="form-check form-switch mb-1">
+                      <input class="form-check-input" type="checkbox" id="gordenManualQtyCheck">
+                      <label class="form-check-label small text-muted" for="gordenManualQtyCheck">Ubah pemakaian kain manual</label>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="input-group input-group-sm" id="gordenManualQtyGroup">
+                      <input type="number" step="0.1" class="form-control form-control-sm" id="gordenManualQtyInput" placeholder="Contoh: 5.5" disabled>
+                      <span class="input-group-text bg-light text-muted small" id="gordenManualQtyUnit">m</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -352,7 +509,22 @@
                   </div>
                   <div class="col-12 col-md-5">
                     <label class="form-label small">Harga per Meter (Rp)</label>
-                    <input type="number" class="form-control" id="vitraceHarga" value="0" disabled>
+                    <input type="text" class="form-control" id="vitraceHarga" value="0" disabled>
+                  </div>
+                </div>
+                <!-- Manual override for Vitrace fabric quantity -->
+                <div class="row g-3 mt-1 align-items-end" id="vitraceFieldsManual">
+                  <div class="col-7">
+                    <div class="form-check form-switch mb-1">
+                      <input class="form-check-input" type="checkbox" id="vitraceManualQtyCheck">
+                      <label class="form-check-label small text-muted" for="vitraceManualQtyCheck">Ubah pemakaian kain manual</label>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="input-group input-group-sm" id="vitraceManualQtyGroup">
+                      <input type="number" step="0.1" class="form-control form-control-sm" id="vitraceManualQtyInput" placeholder="Contoh: 5.5" disabled>
+                      <span class="input-group-text bg-light text-muted small">m</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -380,7 +552,7 @@
                   </div>
                   <div class="col-12 col-md-5">
                     <label class="form-label small">Harga per Meter (Rp)</label>
-                    <input type="number" class="form-control" id="rellHarga" value="0" disabled>
+                    <input type="text" class="form-control" id="rellHarga" value="0" disabled>
                   </div>
                 </div>
               </div>
@@ -409,7 +581,7 @@
 
               <!-- Tambah Jendela ke Draf Button -->
               <div class="d-grid">
-                <button type="button" class="btn btn-outline-primary py-3" id="addWindowBtn">
+                <button type="button" class="btn btn-outline-primary py-3 fw-semibold" id="addWindowBtn">
                   <i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar
                 </button>
               </div>
@@ -420,11 +592,11 @@
 
       </div>
 
-      <!-- Section Bawah: Daftar Tabel Jendela Draf -->
-      <div class="card mt-4">
+      <!-- Section Bawah: Daftar Tabel Jendela Draf (Hidden when empty) -->
+      <div class="card card-draft-glow mt-4 animate-fade-in-up delay-200 d-none" id="draftWindowsCard">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="card-title"><i class="bi bi-card-list me-2"></i>Daftar Jendela dalam Draf</h3>
-          <span class="badge bg-primary" id="draftWindowCountBadge">0 Jendela</span>
+          <h3 class="card-title"><i class="bi bi-card-list text-primary me-2"></i>Daftar Jendela dalam Draf</h3>
+          <span class="badge bg-primary px-3 py-2" id="draftWindowCountBadge">0 Jendela</span>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -436,13 +608,11 @@
                   <th>Komponen Dipilih</th>
                   <th class="text-end">Detail Pemakaian & Harga</th>
                   <th class="text-end">Subtotal Jendela</th>
-                  <th class="text-center" style="width: 80px;">Aksi</th>
+                  <th class="text-center" style="width: 100px;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="draftWindowsBody">
-                <tr>
-                  <td colspan="6" class="text-center py-4 text-muted">Belum ada jendela yang ditambahkan ke draf. Isi parameter jendela di atas lalu klik "Tambahkan Jendela ke Draf Daftar"</td>
-                </tr>
+                <!-- Rendered dynamically -->
               </tbody>
             </table>
           </div>
@@ -474,7 +644,7 @@
                 <a href="/gorden/pelanggan.html" class="btn btn-outline-secondary py-3 px-4">
                   Batal
                 </a>
-                <button type="button" class="btn btn-success py-3 px-4" id="submitAllBtn" disabled>
+                <button type="button" class="btn btn-success py-3 px-4 fw-semibold" id="submitAllBtn" disabled>
                   <i class="bi bi-check-all me-1"></i> Simpan Pelanggan & Semua Jendela
                 </button>
               </div>
@@ -493,20 +663,20 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
     </a>
     <a href="/gorden/pelanggan.html" class="bottom-nav-item active">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
@@ -514,7 +684,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { checkAuth } from '/assets/js/auth.js';
+    import { checkAuth, logout } from '/assets/js/auth.js';
     import { createPelanggan, createPesananJendela, getProdukKatalog, showToast, formatCurrency } from '/assets/js/app.js';
 
     // Global States
@@ -537,12 +707,20 @@
     const gordenTrigger = document.getElementById('gordenSelectTrigger');
     const gordenHargaInput = document.getElementById('gordenHarga');
     const gordenFields = document.getElementById('gordenFields');
+    
+    // Manual inputs
+    const gordenManualQtyCheck = document.getElementById('gordenManualQtyCheck');
+    const gordenManualQtyInput = document.getElementById('gordenManualQtyInput');
 
     const vitraceCheck = document.getElementById('vitraceChecked');
     const vitraceHidden = document.getElementById('vitraceProduk');
     const vitraceTrigger = document.getElementById('vitraceSelectTrigger');
     const vitraceHargaInput = document.getElementById('vitraceHarga');
     const vitraceFields = document.getElementById('vitraceFields');
+    
+    // Manual inputs
+    const vitraceManualQtyCheck = document.getElementById('vitraceManualQtyCheck');
+    const vitraceManualQtyInput = document.getElementById('vitraceManualQtyInput');
 
     const rellCheck = document.getElementById('rellChecked');
     const rellHidden = document.getElementById('rellProduk');
@@ -565,20 +743,21 @@
     document.addEventListener('DOMContentLoaded', init);
 
     async function init() {
-      // 1. Guard check
+      // 1. Guard check & Fetch catalog
       await checkAuth();
 
-      // Mobile Menu
-      document.getElementById('menuToggle').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('show');
-        document.getElementById('sidebarOverlay').classList.toggle('show');
-      });
-      document.getElementById('sidebarOverlay').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.remove('show');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-      });
+      // Logout click handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'error');
+          }
+        });
+      }
 
-      // 2. Fetch Catalog items from Supabase
       try {
         produkKatalogDb = await getProdukKatalog();
       } catch (err) {
@@ -615,12 +794,21 @@
       setupCheckboxToggle(vitraceCheck, vitraceFields, vitraceHargaInput, 'vitraceBox');
       setupCheckboxToggle(rellCheck, rellFields, rellHargaInput, 'rellBox');
 
+      // Apply Rupiah currency input masks
+      [gordenHargaInput, vitraceHargaInput, rellHargaInput].forEach(inp => {
+        applyRupiahMask(inp);
+      });
+
       // 5. Setup Live calculations triggers
-      [lebarInput, tinggiInput, gordenHargaInput, vitraceHargaInput, rellHargaInput].forEach(inp => {
+      [lebarInput, tinggiInput, gordenHargaInput, vitraceHargaInput, rellHargaInput, gordenManualQtyInput, vitraceManualQtyInput].forEach(inp => {
         inp.addEventListener('input', runCalculations);
       });
-      [gordenCheck, vitraceCheck, rellCheck].forEach(chk => {
+      [gordenCheck, vitraceCheck, rellCheck, gordenManualQtyCheck, vitraceManualQtyCheck].forEach(chk => {
         chk.addEventListener('change', runCalculations);
+      });
+      // Lebar bahan radio change
+      document.querySelectorAll('input[name="lebarBahan"]').forEach(r => {
+        r.addEventListener('change', runCalculations);
       });
 
       // 6. Setup LocalStorage auto-save listeners on customer profile fields
@@ -643,7 +831,6 @@
       runCalculations();
     }
 
-    // Set default select selections
     function initDefaultProductSelections() {
       // Gorden Default
       const firstGorden = produkKatalogDb.find(p => p.kategori.includes('Gorden'));
@@ -651,6 +838,7 @@
         gordenHidden.value = firstGorden.id;
         gordenTrigger.value = firstGorden.nama;
         gordenHargaInput.value = firstGorden.harga;
+        gordenHargaInput.dispatchEvent(new Event('input'));
       }
 
       // Vitrace Default
@@ -659,6 +847,7 @@
         vitraceHidden.value = firstVitrace.id;
         vitraceTrigger.value = firstVitrace.nama;
         vitraceHargaInput.value = firstVitrace.harga;
+        vitraceHargaInput.dispatchEvent(new Event('input'));
       }
 
       // Rell Default
@@ -667,6 +856,7 @@
         rellHidden.value = firstRell.id;
         rellTrigger.value = firstRell.nama;
         rellHargaInput.value = firstRell.harga;
+        rellHargaInput.dispatchEvent(new Event('input'));
       }
     }
 
@@ -865,6 +1055,11 @@
       });
     }
 
+    function getLebarBahan() {
+      const checked = document.querySelector('input[name="lebarBahan"]:checked');
+      return checked ? parseInt(checked.value) : 280;
+    }
+
     // Live Calculations
     function runCalculations() {
       const lebar = parseFloat(lebarInput.value) || 0;
@@ -874,32 +1069,88 @@
       let vitraceCost = 0;
       let rellCost = 0;
 
-      // Formula: kain needed = lebar * 2.5
-      const kainNeeded = lebar > 0 ? (lebar / 100) * 2.5 : 0;
+      const lebarBahanCm = getLebarBahan();
+      const lebarBahanM = lebarBahanCm / 100;
+      const lebarM = lebar / 100;
+      const tinggiM = tinggi / 100;
+
+      // Sambung check
+      const needsSambung = lebar > 0 && tinggi > 0 && (tinggiM > lebarBahanM);
+      const sambungAlert = document.getElementById('sambungAlert');
+      if (sambungAlert) {
+        sambungAlert.classList.toggle('d-none', !needsSambung);
+      }
+
+      const tinggiEfektifM = needsSambung ? (tinggiM + 0.20) : tinggiM;
+
       // Formula: Rell needed = lebar + 30cm
       const rellNeeded = lebar > 0 ? (lebar + 30) / 100 : 0;
 
       // 1. Gorden
-      if (gordenCheck.checked && lebar > 0) {
-        const gordenPrice = parseInt(gordenHargaInput.value) || 0;
-        gordenCost = kainNeeded * gordenPrice;
-        estGordenKain.textContent = `${kainNeeded.toFixed(1)} m`;
+      let gordenKainNeeded = 0;
+      if (gordenCheck.checked && lebar > 0 && tinggi > 0) {
+        const gordenPrice = parseInt(gordenHargaInput.value.replace(/\D/g, '')) || 0;
+        const selectedProdId = gordenHidden.value;
+        const matchedItem = produkKatalogDb.find(p => p.id === selectedProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
+        const unit = matchedItem.satuan || 'm';
+        
+        const unitLabel = document.getElementById('gordenManualQtyUnit');
+        if (unitLabel) unitLabel.textContent = unit;
+
+        if (gordenManualQtyCheck.checked) {
+          gordenManualQtyInput.disabled = false;
+          gordenKainNeeded = parseFloat(gordenManualQtyInput.value) || 0;
+        } else {
+          gordenManualQtyInput.disabled = true;
+          if (matchedItem.satuan === 'm²') {
+            gordenKainNeeded = Math.max(1, lebarM * tinggiM);
+          } else {
+            const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+            gordenKainNeeded = numJalur * tinggiEfektifM;
+          }
+          gordenManualQtyInput.value = gordenKainNeeded.toFixed(1);
+        }
+
+        gordenCost = gordenKainNeeded * gordenPrice;
+        estGordenKain.textContent = `${gordenKainNeeded.toFixed(1)} ${unit}`;
       } else {
         estGordenKain.textContent = '-';
+        gordenManualQtyInput.disabled = true;
+        if (!gordenManualQtyCheck.checked) {
+          gordenManualQtyInput.value = '';
+        }
       }
 
       // 2. Vitrace
-      if (vitraceCheck.checked && lebar > 0) {
-        const vitracePrice = parseInt(vitraceHargaInput.value) || 0;
-        vitraceCost = kainNeeded * vitracePrice;
-        estVitraceKain.textContent = `${kainNeeded.toFixed(1)} m`;
+      let vitraceKainNeeded = 0;
+      if (vitraceCheck.checked && lebar > 0 && tinggi > 0) {
+        const vitracePrice = parseInt(vitraceHargaInput.value.replace(/\D/g, '')) || 0;
+
+        if (vitraceManualQtyCheck.checked) {
+          vitraceManualQtyInput.disabled = false;
+          vitraceKainNeeded = parseFloat(vitraceManualQtyInput.value) || 0;
+        } else {
+          vitraceManualQtyInput.disabled = true;
+          const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+          const sambungVitrace = tinggiM > lebarBahanM;
+          const tinggiVitM = sambungVitrace ? (tinggiM + 0.20) : tinggiM;
+          vitraceKainNeeded = numJalur * tinggiVitM;
+          vitraceManualQtyInput.value = vitraceKainNeeded.toFixed(1);
+        }
+
+        vitraceCost = vitraceKainNeeded * vitracePrice;
+        estVitraceKain.textContent = `${vitraceKainNeeded.toFixed(1)} m`;
       } else {
         estVitraceKain.textContent = '-';
+        vitraceManualQtyInput.disabled = true;
+        if (!vitraceManualQtyCheck.checked) {
+          vitraceManualQtyInput.value = '';
+        }
       }
 
       // 3. Rell
       if (rellCheck.checked && lebar > 0) {
-        const rellPrice = parseInt(rellHargaInput.value) || 0;
+        const rellPrice = parseInt(rellHargaInput.value.replace(/\D/g, '')) || 0;
         rellCost = rellNeeded * rellPrice;
         estRellBatang.textContent = `${rellNeeded.toFixed(1)} m`;
       } else {
@@ -938,7 +1189,40 @@
       }
 
       // Fabric / Rell Needs
-      const kainQty = (lebar / 100) * 2.5;
+      const lebarBahanCm = getLebarBahan();
+      const lebarBahanM = lebarBahanCm / 100;
+      const lebarM = lebar / 100;
+      const tinggiM = tinggi / 100;
+
+      const needsSambung = tinggiM > lebarBahanM;
+      const tinggiEfektifM = needsSambung ? (tinggiM + 0.20) : tinggiM;
+
+      let gordenQty = 0;
+      if (gordenCheck.checked) {
+        if (gordenManualQtyCheck.checked) {
+          gordenQty = parseFloat(gordenManualQtyInput.value) || 0;
+        } else {
+          const selectedGordenProdId = gordenHidden.value;
+          const matchedGorden = produkKatalogDb.find(p => p.id === selectedGordenProdId) || { nama: 'Gorden Custom', kategori: 'Gorden', satuan: 'm' };
+          if (matchedGorden.satuan === 'm²') {
+            gordenQty = Math.max(1, lebarM * tinggiM);
+          } else {
+            const numJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+            gordenQty = numJalur * tinggiEfektifM;
+          }
+        }
+      }
+
+      let vitraceQty = 0;
+      if (vitraceCheck.checked) {
+        if (vitraceManualQtyCheck.checked) {
+          vitraceQty = parseFloat(vitraceManualQtyInput.value) || 0;
+        } else {
+          const vitraceNumJalur = Math.ceil((lebarM * 2.5) / lebarBahanM);
+          vitraceQty = vitraceNumJalur * (tinggiM > lebarBahanM ? (tinggiM + 0.20) : tinggiM);
+        }
+      }
+      
       const rellQty = (lebar + 30) / 100;
 
       // Construct components info
@@ -947,28 +1231,31 @@
         lokasi: lokasi,
         lebar: lebar,
         tinggi: tinggi,
+        lebarBahan: lebarBahanCm,
         components: {
           gorden: {
             enabled: gordenCheck.checked,
             productId: gordenHidden.value,
             productName: gordenTrigger.value.trim() || 'Custom Gorden',
-            harga: parseInt(gordenHargaInput.value) || 0,
-            qty: kainQty,
+            harga: parseInt(gordenHargaInput.value.replace(/\D/g, '')) || 0,
+            qty: gordenQty,
+            manualQtyEnabled: gordenManualQtyCheck.checked,
             subtotal: 0
           },
           vitrace: {
             enabled: vitraceCheck.checked,
             productId: vitraceHidden.value,
             productName: vitraceTrigger.value.trim() || 'Custom Vitrace',
-            harga: parseInt(vitraceHargaInput.value) || 0,
-            qty: kainQty,
+            harga: parseInt(vitraceHargaInput.value.replace(/\D/g, '')) || 0,
+            qty: vitraceQty,
+            manualQtyEnabled: vitraceManualQtyCheck.checked,
             subtotal: 0
           },
           rell: {
             enabled: rellCheck.checked,
             productId: rellHidden.value,
             productName: rellTrigger.value.trim() || 'Custom Rell',
-            harga: parseInt(rellHargaInput.value) || 0,
+            harga: parseInt(rellHargaInput.value.replace(/\D/g, '')) || 0,
             qty: rellQty,
             subtotal: 0
           }
@@ -979,11 +1266,11 @@
       // Set Subtotals
       let windowTotal = 0;
       if (windowItem.components.gorden.enabled) {
-        windowItem.components.gorden.subtotal = Math.round(kainQty * windowItem.components.gorden.harga);
+        windowItem.components.gorden.subtotal = Math.round(gordenQty * windowItem.components.gorden.harga);
         windowTotal += windowItem.components.gorden.subtotal;
       }
       if (windowItem.components.vitrace.enabled) {
-        windowItem.components.vitrace.subtotal = Math.round(kainQty * windowItem.components.vitrace.harga);
+        windowItem.components.vitrace.subtotal = Math.round(vitraceQty * windowItem.components.vitrace.harga);
         windowTotal += windowItem.components.vitrace.subtotal;
       }
       if (windowItem.components.rell.enabled) {
@@ -999,7 +1286,7 @@
         }
         editingWindowId = null;
         addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
-        addWindowBtn.className = 'btn btn-outline-primary py-3';
+        addWindowBtn.className = 'btn btn-outline-primary py-3 fw-semibold';
         if (document.getElementById('cancelEditBtn')) {
           document.getElementById('cancelEditBtn').remove();
         }
@@ -1025,6 +1312,13 @@
       gordenCheck.checked = true;
       vitraceCheck.checked = false;
       rellCheck.checked = false;
+      
+      gordenManualQtyCheck.checked = false;
+      vitraceManualQtyCheck.checked = false;
+      gordenManualQtyInput.value = '';
+      vitraceManualQtyInput.value = '';
+      gordenManualQtyInput.disabled = true;
+      vitraceManualQtyInput.disabled = true;
 
       gordenCheck.dispatchEvent(new Event('change'));
       vitraceCheck.dispatchEvent(new Event('change'));
@@ -1038,15 +1332,14 @@
     function renderDraftTable() {
       const tbody = document.getElementById('draftWindowsBody');
       const badgeCount = document.getElementById('draftWindowCountBadge');
+      const draftCard = document.getElementById('draftWindowsCard');
       
       badgeCount.textContent = `${draftWindows.length} Jendela`;
 
       if (draftWindows.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center py-4 text-muted">Belum ada jendela yang ditambahkan ke draf. Isi parameter jendela di atas lalu klik "Tambahkan Jendela ke Draf Daftar"</td>
-          </tr>
-        `;
+        if (draftCard) {
+          draftCard.classList.add('d-none');
+        }
         submitAllBtn.disabled = true;
 
         // Reset summaries
@@ -1057,6 +1350,9 @@
         return;
       }
 
+      if (draftCard) {
+        draftCard.classList.remove('d-none');
+      }
       submitAllBtn.disabled = false;
 
       let totalKain = 0;
@@ -1069,8 +1365,12 @@
         const detailRows = [];
 
         if (win.components.gorden.enabled) {
+          const selectedGordenProdId = win.components.gorden.productId;
+          const matchedGorden = produkKatalogDb.find(p => p.id === selectedGordenProdId) || { satuan: 'm' };
+          const unit = matchedGorden.satuan || 'm';
+          
           componentNames.push('<span class="badge bg-primary-light text-primary me-1">Gorden</span>');
-          detailRows.push(`<div>Gorden: <strong>${win.components.gorden.productName}</strong> (${win.components.gorden.qty.toFixed(1)}m x Rp ${win.components.gorden.harga.toLocaleString('id-ID')})</div>`);
+          detailRows.push(`<div>Gorden: <strong>${win.components.gorden.productName}</strong> (${win.components.gorden.qty.toFixed(1)}${unit} x Rp ${win.components.gorden.harga.toLocaleString('id-ID')})</div>`);
           totalKain += win.components.gorden.qty;
           grandTotal += win.components.gorden.subtotal;
         }
@@ -1101,12 +1401,23 @@
             <td class="text-end small text-muted">${detailRows.join('')}</td>
             <td class="text-end text-success fw-bold">${formatCurrency(win.totalHarga)}</td>
             <td class="text-center">
-              <button class="btn btn-outline-primary btn-sm px-2 py-1 me-1" onclick="editDraftWindow('${win.id}')" title="Edit Jendela" ${isEditing ? 'disabled' : ''}>
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-outline-danger btn-sm px-2 py-1" onclick="deleteDraftWindow('${win.id}')" title="Hapus Jendela">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="dropdown">
+                <button class="btn btn-link text-secondary btn-sm p-0 border-0 dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" data-bs-boundary="viewport" data-bs-strategy="fixed" aria-expanded="false" ${isEditing ? 'disabled' : ''}>
+                  <i class="bi bi-three-dots-vertical fs-5"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 120px;">
+                  <li>
+                    <a class="dropdown-item py-2 text-primary" href="#" onclick="event.preventDefault(); editDraftWindow('${win.id}')">
+                      <i class="bi bi-pencil me-2"></i> Edit
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item py-2 text-danger" href="#" onclick="event.preventDefault(); deleteDraftWindow('${win.id}')">
+                      <i class="bi bi-trash me-2"></i> Hapus
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </td>
           </tr>
         `;
@@ -1134,35 +1445,58 @@
         gordenHidden.value = win.components.gorden.productId;
         gordenTrigger.value = win.components.gorden.productName;
         gordenHargaInput.value = win.components.gorden.harga;
+        gordenHargaInput.dispatchEvent(new Event('input'));
+        
+        gordenManualQtyCheck.checked = !!win.components.gorden.manualQtyEnabled;
+        if (win.components.gorden.manualQtyEnabled) {
+          gordenManualQtyInput.value = win.components.gorden.qty;
+          gordenManualQtyInput.disabled = false;
+        } else {
+          gordenManualQtyInput.disabled = true;
+        }
 
         vitraceCheck.checked = win.components.vitrace.enabled;
         vitraceHidden.value = win.components.vitrace.productId;
         vitraceTrigger.value = win.components.vitrace.productName;
         vitraceHargaInput.value = win.components.vitrace.harga;
+        vitraceHargaInput.dispatchEvent(new Event('input'));
+        
+        vitraceManualQtyCheck.checked = !!win.components.vitrace.manualQtyEnabled;
+        if (win.components.vitrace.manualQtyEnabled) {
+          vitraceManualQtyInput.value = win.components.vitrace.qty;
+          vitraceManualQtyInput.disabled = false;
+        } else {
+          vitraceManualQtyInput.disabled = true;
+        }
 
         rellCheck.checked = win.components.rell.enabled;
         rellHidden.value = win.components.rell.productId;
         rellTrigger.value = win.components.rell.productName;
         rellHargaInput.value = win.components.rell.harga;
+        rellHargaInput.dispatchEvent(new Event('input'));
 
         gordenCheck.dispatchEvent(new Event('change'));
         vitraceCheck.dispatchEvent(new Event('change'));
         rellCheck.dispatchEvent(new Event('change'));
 
+        const currentLebarBahan = win.lebarBahan || 280;
+        const radioBtn = document.getElementById(`bahan${currentLebarBahan}`);
+        if (radioBtn) radioBtn.checked = true;
+
         addWindowBtn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Perbarui Jendela Draf';
-        addWindowBtn.className = 'btn btn-primary py-3';
+        addWindowBtn.className = 'btn btn-primary py-3 fw-semibold';
 
         // Add dynamic cancel edit button
         if (!document.getElementById('cancelEditBtn')) {
           const cancelBtn = document.createElement('button');
           cancelBtn.type = 'button';
           cancelBtn.id = 'cancelEditBtn';
-          cancelBtn.className = 'btn btn-outline-secondary py-3 mt-2';
+          cancelBtn.className = 'btn btn-outline-secondary py-3 mt-2 fw-semibold';
           cancelBtn.innerHTML = '<i class="bi bi-x-circle me-1"></i> Batal Edit';
           cancelBtn.onclick = () => {
             editingWindowId = null;
             addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
-            addWindowBtn.className = 'btn btn-outline-primary py-3';
+            addWindowBtn.className = 'btn btn-outline-primary py-3 fw-semibold';
             cancelBtn.remove();
             resetWindowInputs();
             renderDraftTable();
@@ -1179,7 +1513,7 @@
         if (editingWindowId === id) {
           editingWindowId = null;
           addWindowBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Tambahkan Jendela ke Draf Daftar';
-          addWindowBtn.className = 'btn btn-outline-primary py-3';
+          addWindowBtn.className = 'btn btn-outline-primary py-3 fw-semibold';
           if (document.getElementById('cancelEditBtn')) {
             document.getElementById('cancelEditBtn').remove();
           }
@@ -1301,6 +1635,24 @@
         submitAllBtn.disabled = false;
         submitAllBtn.innerHTML = '<i class="bi bi-check-all me-1"></i> Simpan Pelanggan & Semua Jendela';
       }
+    }
+
+    function applyRupiahMask(inputEl) {
+      if (!inputEl) return;
+      inputEl.addEventListener('input', (e) => {
+        let cursorPosition = inputEl.selectionStart;
+        let originalLength = inputEl.value.length;
+        let cleanVal = inputEl.value.replace(/\D/g, '');
+        if (cleanVal === '') {
+          inputEl.value = '';
+          return;
+        }
+        let formattedVal = parseInt(cleanVal, 10).toLocaleString('id-ID');
+        inputEl.value = formattedVal;
+        let newLength = formattedVal.length;
+        let newCursorPosition = cursorPosition + (newLength - originalLength);
+        inputEl.setSelectionRange(newCursorPosition, newCursorPosition);
+      });
     }
   </script>
 </body>

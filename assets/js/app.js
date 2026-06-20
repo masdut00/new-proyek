@@ -149,7 +149,7 @@ export async function deleteSumbangan(id) {
 export async function getPelangganList(limit = 20, offset = 0) {
   const { data, error, count } = await supabase
     .from('pelanggan_gorden')
-    .select('*, pesanan_jendela(id, total_harga, kebutuhan_kain_m)', { count: 'exact' })
+    .select('*, pesanan_jendela(id, total_harga, kebutuhan_kain_m, created_at)', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
 

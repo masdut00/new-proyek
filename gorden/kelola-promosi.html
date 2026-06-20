@@ -10,6 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="/assets/css/style.css" rel="stylesheet">
 
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
   <style>
     .promo-preview-card {
       border: 1px solid var(--border-color);
@@ -61,74 +64,23 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link active">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Page Header -->
     <header class="page-header">
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Kelola Konten & Promosi</h1>
-          <p class="page-subtitle">Atur slide gambar berjalan dan info kategori di halaman utama publik</p>
+          <h1 class="page-title m-0">Kelola Konten & Promosi</h1>
+          <p class="page-subtitle d-none d-md-block m-0">Atur slide gambar berjalan dan info kategori di halaman utama publik</p>
         </div>
-        <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-          <i class="bi bi-list fs-4"></i>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -301,20 +253,20 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
     </a>
     <a href="/gorden/pelanggan.html" class="bottom-nav-item">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item active">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
@@ -322,7 +274,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
-    import { checkAuth } from '/assets/js/auth.js';
+    import { checkAuth, logout } from '/assets/js/auth.js';
     import { uploadFotoKain } from '/assets/js/cloudinary.js';
     import { supabase, logActivity } from '/assets/js/supabase.js';
     import { getPromosiList, updatePromosi, getKategoriInfo, updateKategoriInfo, showToast } from '/assets/js/app.js';
@@ -356,15 +308,17 @@
       // Guard Check
       await checkAuth();
 
-      // Mobile Menu
-      document.getElementById('menuToggle').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('show');
-        document.getElementById('sidebarOverlay').classList.toggle('show');
-      });
-      document.getElementById('sidebarOverlay').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.remove('show');
-        document.getElementById('sidebarOverlay').classList.remove('show');
-      });
+      // Logout handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'danger');
+          }
+        });
+      }
 
       // 1. Fetch & Render slides
       await fetchAndRenderSlides();

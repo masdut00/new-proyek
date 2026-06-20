@@ -11,135 +11,133 @@
 
   <!-- Custom CSS -->
   <link href="/assets/css/style.css" rel="stylesheet">
+
+  <!-- Sidebar Script -->
+  <script type="module" src="/assets/js/sidebar.js"></script>
+
+  <style>
+    /* Page Header styles matching our premium floating card style */
+    .page-header {
+      background: white;
+      border-radius: var(--radius-md, 12px);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm, 0 4px 6px -1px rgba(0, 0, 0, 0.02));
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color, #f1f5f9);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .page-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-gradient, linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%));
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* Table columns adjustment on mobile to prevent scrollbars */
+    @media (max-width: 575.98px) {
+      .table th, .table td {
+        padding: 0.65rem 0.6rem !important;
+        font-size: 0.8rem;
+      }
+      .col-nama {
+        max-width: 140px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .col-nominal {
+        white-space: nowrap;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Sidebar Overlay (Mobile) -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/dashboard.html" class="sidebar-brand">
-        <div class="sidebar-brand-icon">
-          <i class="bi bi-house-heart"></i>
-        </div>
-        <div class="sidebar-brand-text">
-          Keluarga
-          <small>Manajemen Data</small>
-        </div>
-      </a>
-    </div>
-
-    <nav class="sidebar-nav">
-      <p class="nav-section-title">Menu Utama</p>
-      <a href="/dashboard.html" class="sidebar-link active">
-        <i class="bi bi-grid-1x2"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="/sumbangan/daftar-sumbangan.html" class="sidebar-link">
-        <i class="bi bi-cash-stack"></i>
-        <span>Data Sumbangan</span>
-      </a>
-      <a href="/hajatan/daftar-hajatan.html" class="sidebar-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Hajatan</span>
-      </a>
-      <a href="/gorden/pelanggan.html" class="sidebar-link">
-        <i class="bi bi-window-split"></i>
-        <span>Data Gorden</span>
-      </a>
-      <a href="/gorden/kalkulator-rab.html" class="sidebar-link">
-        <i class="bi bi-calculator"></i>
-        <span>Kalkulator RAB</span>
-      </a>
-      <a href="/gorden/katalog.html" class="sidebar-link">
-        <i class="bi bi-journal-richtext"></i>
-        <span>Katalog Produk</span>
-      </a>
-
-      <p class="nav-section-title mt-4">Lainnya</p>
-      <a href="/laporan.html" class="sidebar-link">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Laporan</span>
-      </a>
-      <a href="/gorden/kelola-promosi.html" class="sidebar-link">
-        <i class="bi bi-images"></i>
-        <span>Kelola Promosi</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Page Header -->
-    <header class="page-header">
-      <div class="d-flex justify-content-between align-items-center">
+    <header class="page-header animate-slide-in-left">
+      <div class="d-flex align-items-center justify-content-between w-100">
         <div>
-          <h1 class="page-title">Dashboard</h1>
-          <p class="page-subtitle">Selamat datang di Sistem Manajemen Keluarga</p>
+          <h1 class="page-title m-0">Dashboard</h1>
+          <p class="page-subtitle d-none d-md-block m-0">Selamat datang di Sistem Manajemen</p>
         </div>
-        <div class="d-flex align-items-center gap-3">
-          <button class="btn btn-outline-primary d-none d-md-inline-flex auth-button" id="authBtn">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Login
-          </button>
-          <button class="btn btn-link text-dark d-md-none mobile-header-toggle" id="menuToggle">
-            <i class="bi bi-list fs-4"></i>
+        <div class="d-flex align-items-center gap-2">
+          <a href="/index.html" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" title="Halaman Depan">
+            <i class="bi bi-house"></i> <span class="d-none d-md-inline">Halaman Depan</span>
+          </a>
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Logout</span>
           </button>
         </div>
       </div>
     </header>
 
     <!-- Page Content -->
-    <main class="page-content">
-      <!-- SECTION 1: Welcome Card -->
+    <main class="page-content animate-fade-in-up">
+      <!-- Welcome Card -->
       <div class="card mb-4">
-        <div class="card-body p-4">
+        <div class="card-body p-3 p-md-4">
           <div class="row align-items-center">
             <div class="col">
-              <h2 class="h4 mb-2">Halo, Selamat Datang!</h2>
-              <p class="text-muted mb-3">Kelola data sumbangan hajatan dan data pelanggan gorden dalam satu tempat.</p>
-              <div class="d-flex flex-wrap gap-2">
-                <a href="/sumbangan/tambah-sumbangan.html" class="btn btn-primary add-data-btn d-none">
-                  <i class="bi bi-plus-circle me-1"></i> Tambah Sumbangan
-                </a>
-                <a href="/hajatan/tambah-hajatan.html" class="btn btn-outline-primary add-data-btn d-none">
-                  <i class="bi bi-plus-circle me-1"></i> Tambah Hajatan
-                </a>
-              </div>
+              <h2 class="h5 mb-1">Halo, Selamat Datang!</h2>
+              <p class="text-muted mb-2" style="font-size:0.875rem;">Kelola catatan sumbangan dan data pelanggan gorden.</p>
+              <a href="/sumbangan/daftar-sumbangan.html" class="btn btn-sm btn-primary add-data-btn d-none">
+                <i class="bi bi-plus-circle me-1"></i> Tambah Sumbangan
+              </a>
             </div>
             <div class="col-auto d-none d-lg-block">
-              <div class="text-center" style="font-size: 4rem; opacity: 0.1;">
-                <i class="bi bi-house-heart"></i>
-              </div>
+              <div style="font-size: 4rem; opacity: 0.1;"><i class="bi bi-house-heart"></i></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SECTION 2: Quick Menu -->
-      <div class="row mb-4">
-        <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+      <!-- Quick Menu -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
           <div class="card h-100">
             <a href="/sumbangan/daftar-sumbangan.html" class="quick-menu-card">
-              <div class="quick-menu-icon primary">
-                <i class="bi bi-cash-stack"></i>
-              </div>
+              <div class="quick-menu-icon primary"><i class="bi bi-people"></i></div>
               <div class="quick-menu-text">
-                <h4>Data Sumbangan</h4>
-                <p>Daftar penyumbang</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-6 col-lg-3 mb-3 mb-lg-0">
-          <div class="card h-100">
-            <a href="/hajatan/daftar-hajatan.html" class="quick-menu-card">
-              <div class="quick-menu-icon success">
-                <i class="bi bi-calendar-event"></i>
-              </div>
-              <div class="quick-menu-text">
-                <h4>Data Hajatan</h4>
-                <p>Daftar acara</p>
+                <h4>Sumbangan</h4>
+                <p>Catatan tamu</p>
               </div>
             </a>
           </div>
@@ -147,9 +145,7 @@
         <div class="col-6 col-lg-3">
           <div class="card h-100">
             <a href="/gorden/pelanggan.html" class="quick-menu-card">
-              <div class="quick-menu-icon warning">
-                <i class="bi bi-window-split"></i>
-              </div>
+              <div class="quick-menu-icon warning"><i class="bi bi-window-split"></i></div>
               <div class="quick-menu-text">
                 <h4>Data Gorden</h4>
                 <p>Pelanggan & pesanan</p>
@@ -159,87 +155,82 @@
         </div>
         <div class="col-6 col-lg-3">
           <div class="card h-100">
-            <a href="/laporan.html" class="quick-menu-card">
-              <div class="quick-menu-icon danger">
-                <i class="bi bi-file-earmark-bar-graph"></i>
-              </div>
+            <a href="/gorden/kalkulator-rab.html" class="quick-menu-card">
+              <div class="quick-menu-icon success"><i class="bi bi-calculator"></i></div>
               <div class="quick-menu-text">
-                <h4>Laporan</h4>
-                <p>Rekap data</p>
+                <h4>Kalkulator RAB</h4>
+                <p>Hitung kebutuhan kain</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="card h-100">
+            <a href="/gorden/katalog.html" class="quick-menu-card">
+              <div class="quick-menu-icon danger"><i class="bi bi-journal-richtext"></i></div>
+              <div class="quick-menu-text">
+                <h4>Katalog</h4>
+                <p>Kelola produk</p>
               </div>
             </a>
           </div>
         </div>
       </div>
 
-      <!-- SECTION 3: Quick Search -->
+      <!-- Quick Search -->
       <div class="card mb-4">
         <div class="card-header">
-          <h3 class="card-title"><i class="bi bi-search me-2"></i>Pencarian Cepat</h3>
+          <h3 class="card-title"><i class="bi bi-search me-2"></i>Cari Sumbangan</h3>
         </div>
         <div class="card-body">
-          <form id="quickSearchForm">
-            <div class="row g-3">
-              <div class="col-12 col-md-5">
-                <div class="search-container">
-                  <input type="text" class="form-control" id="searchNama" placeholder="Cari nama penyumbang...">
-                  <i class="bi bi-search search-icon"></i>
-                </div>
-              </div>
-              <div class="col-12 col-md-4">
-                <select class="form-select" id="filterHajatan">
-                  <option value="">Semua Hajatan</option>
-                  <!-- Options will be loaded dynamically -->
-                </select>
-              </div>
-              <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-primary w-100">
-                  <i class="bi bi-search me-1"></i> Cari
-                </button>
+          <div class="row g-2">
+            <div class="col-12 col-md-7">
+              <div class="search-container">
+                <input type="text" class="form-control" id="searchNama" placeholder="Cari nama...">
+                <i class="bi bi-search search-icon"></i>
               </div>
             </div>
-          </form>
+            <div class="col-12 col-md-3">
+              <select class="form-select" id="filterJenisAcara">
+                <option value="">Semua Acara</option>
+                <option>Pernikahan</option>
+                <option>Khitanan</option>
+                <option>Aqiqah</option>
+                <option>7 Bulanan</option>
+                <option>Syukuran</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-2">
+              <button type="button" class="btn btn-primary w-100" id="btnCari">
+                <i class="bi bi-search me-1"></i> Cari
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- SECTION 4: Recent Hajatan -->
-      <div class="card mb-4">
+      <!-- Sumbangan Terbaru -->
+      <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="card-title"><i class="bi bi-calendar-event me-2"></i>Hajatan Terbaru</h3>
-          <a href="/hajatan/daftar-hajatan.html" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
+          <h3 class="card-title"><i class="bi bi-people me-2"></i>Sumbangan Terbaru</h3>
+          <a href="/sumbangan/daftar-sumbangan.html" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-hover mb-0">
               <thead>
                 <tr>
-                  <th>Nama Hajatan</th>
-                  <th>Jenis Acara</th>
-                  <th>Tanggal</th>
-                  <th>Lokasi</th>
-                  <th>Penyumbang</th>
-                  <th>Aksi</th>
+                  <th class="col-nama">Nama</th>
+                  <th class="col-nominal text-end text-sm-start">Nominal</th>
+                  <th class="d-none d-sm-table-cell">Jenis Acara</th>
+                  <th class="d-none d-md-table-cell">Waktu</th>
                 </tr>
               </thead>
-              <tbody id="hajatanTableBody">
-                <tr>
-                  <td colspan="6" class="text-center py-4 text-muted">Memuat data...</td>
-                </tr>
+              <tbody id="recentSumbanganBody">
+                <tr><td colspan="4" class="text-center py-4 text-muted">Memuat data...</td></tr>
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
-
-      <!-- SECTION 5: Recent Activity -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><i class="bi bi-clock-history me-2"></i>Aktivitas Terbaru</h3>
-        </div>
-        <div class="card-body">
-          <ul class="activity-list" id="activityList">
-            <li class="text-center py-4 text-muted">Memuat aktivitas...</li>
-          </ul>
         </div>
       </div>
     </main>
@@ -252,20 +243,20 @@
       <span>Home</span>
     </a>
     <a href="/sumbangan/daftar-sumbangan.html" class="bottom-nav-item">
-      <i class="bi bi-cash-stack"></i>
+      <i class="bi bi-people"></i>
       <span>Sumbangan</span>
-    </a>
-    <a href="/hajatan/daftar-hajatan.html" class="bottom-nav-item">
-      <i class="bi bi-calendar-event"></i>
-      <span>Hajatan</span>
     </a>
     <a href="/gorden/pelanggan.html" class="bottom-nav-item">
       <i class="bi bi-window-split"></i>
       <span>Gorden</span>
     </a>
-    <a href="/gorden/kalkulator-rab.html" class="bottom-nav-item">
-      <i class="bi bi-calculator"></i>
-      <span>RAB</span>
+    <a href="/gorden/katalog.html" class="bottom-nav-item">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Katalog</span>
+    </a>
+    <a href="/gorden/kelola-promosi.html" class="bottom-nav-item">
+      <i class="bi bi-images"></i>
+      <span>Promosi</span>
     </a>
   </nav>
 
@@ -275,145 +266,56 @@
   <!-- App Scripts -->
   <script type="module">
     import { checkAuth, isLoggedIn, logout } from '/assets/js/auth.js';
-    import { getHajatanList, getAktivitasList, getDashboardStats, formatDate, timeAgo, showToast } from '/assets/js/app.js';
-    import { supabase } from '/assets/js/supabase.js';
+    import { getSumbanganList, formatCurrency, timeAgo, showToast } from '/assets/js/app.js';
 
-    // DOM Elements
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
-    const authBtn = document.getElementById('authBtn');
-    const hajatanTableBody = document.getElementById('hajatanTableBody');
-    const activityList = document.getElementById('activityList');
-    const filterHajatan = document.getElementById('filterHajatan');
-    const quickSearchForm = document.getElementById('quickSearchForm');
+    const recentBody     = document.getElementById('recentSumbanganBody');
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', async () => {
 
-    async function init() {
-      // Setup mobile menu toggle
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-      });
-
-      sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('show');
-        sidebarOverlay.classList.remove('show');
-      });
-
-      // Check auth state
       await checkAuth();
+      const logged = await isLoggedIn();
+      if (logged) {
+        document.querySelectorAll('.add-data-btn').forEach(b => b.classList.remove('d-none'));
+      }
 
-      authBtn.innerHTML = '<i class="bi bi-box-arrow-right me-1"></i> Logout';
-      authBtn.onclick = logout;
-      document.querySelectorAll('.add-data-btn').forEach(btn => btn.classList.remove('d-none'));
+      // Logout handler
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          try {
+            await logout();
+          } catch (err) {
+            showToast('Gagal logout: ' + err.message, 'danger');
+          }
+        });
+      }
 
-      // Load data
-      await loadHajatanList();
-      await loadActivityList();
-      await loadHajatanOptions();
-    }
+      // Quick search redirect
+      document.getElementById('btnCari').addEventListener('click', () => {
+        const q = document.getElementById('searchNama').value.trim();
+        const j = document.getElementById('filterJenisAcara').value;
+        let url = '/sumbangan/daftar-sumbangan.html';
+        window.location.href = url;
+      });
 
-    // Load Hajatan List
-    async function loadHajatanList() {
+      // Load recent sumbangan
       try {
-        const { data } = await getHajatanList(5);
-
+        const { data } = await getSumbanganList({}, 8);
         if (!data || data.length === 0) {
-          hajatanTableBody.innerHTML = `
-            <tr>
-              <td colspan="6" class="text-center py-4 text-muted">
-                Belum ada data hajatan
-              </td>
-            </tr>
-          `;
+          recentBody.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">Belum ada catatan sumbangan.</td></tr>';
           return;
         }
-
-        hajatanTableBody.innerHTML = data.map(h => `
+        recentBody.innerHTML = data.map(s => `
           <tr>
-            <td><strong>${h.nama_hajatan}</strong></td>
-            <td>${h.jenis_acara}</td>
-            <td>${formatDate(h.tanggal)}</td>
-            <td>${h.lokasi || '-'}</td>
-            <td><span class="badge bg-primary-light text-primary">${h.sumbangan?.[0]?.count || 0} orang</span></td>
-            <td>
-              <a href="/hajatan/daftar-hajatan.html?id=${h.id}" class="btn btn-sm btn-outline-primary">
-                Detail
-              </a>
-            </td>
+            <td class="col-nama"><strong>${s.nama_penyumbang}</strong></td>
+            <td class="col-nominal text-success fw-bold text-end text-sm-start">${formatCurrency(s.nominal || 0)}</td>
+            <td class="d-none d-sm-table-cell"><span style="font-size:0.75rem;background:var(--primary-light);color:var(--primary);padding:0.2em 0.6em;border-radius:100px;font-weight:700;">${s.jenis_acara || s.hajatan?.jenis_acara || '–'}</span></td>
+            <td class="d-none d-md-table-cell text-muted" style="font-size:0.78rem;">${timeAgo(s.created_at)}</td>
           </tr>
         `).join('');
-      } catch (error) {
-        hajatanTableBody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center py-4 text-danger">
-              Gagal memuat data
-            </td>
-          </tr>
-        `;
+      } catch (err) {
+        recentBody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-muted">–</td></tr>';
       }
-    }
-
-    // Load Activity List
-    async function loadActivityList() {
-      try {
-        const data = await getAktivitasList(5);
-
-        if (!data || data.length === 0) {
-          activityList.innerHTML = '<li class="text-center py-4 text-muted">Belum ada aktivitas</li>';
-          return;
-        }
-
-        activityList.innerHTML = data.map(a => {
-          let iconClass = 'add';
-          if (a.aksi === 'update') iconClass = 'edit';
-          if (a.aksi === 'delete') iconClass = 'delete';
-
-          return `
-            <li class="activity-item">
-              <div class="activity-icon ${iconClass}">
-                <i class="bi bi-${iconClass === 'add' ? 'plus' : iconClass === 'edit' ? 'pencil' : 'trash'}"></i>
-              </div>
-              <div class="activity-content">
-                <p class="activity-text">${a.deskripsi || 'Aktivitas baru'}</p>
-                <span class="activity-time">${timeAgo(a.created_at)}</span>
-              </div>
-            </li>
-          `;
-        }).join('');
-      } catch (error) {
-        activityList.innerHTML = '<li class="text-center py-4 text-muted">Belum ada aktivitas</li>';
-      }
-    }
-
-    // Load Hajatan Options for Filter
-    async function loadHajatanOptions() {
-      try {
-        const { data } = await getHajatanList(50);
-
-        if (data && data.length > 0) {
-          filterHajatan.innerHTML = '<option value="">Semua Hajatan</option>' +
-            data.map(h => `<option value="${h.id}">${h.nama_hajatan}</option>`).join('');
-        }
-      } catch (error) {
-        console.error('Failed to load hajatan options:', error);
-      }
-    }
-
-    // Quick Search Form Handler
-    quickSearchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nama = document.getElementById('searchNama').value;
-      const hajatan = filterHajatan.value;
-
-      let url = '/sumbangan/daftar-sumbangan.html?';
-      if (nama) url += `search=${encodeURIComponent(nama)}&`;
-      if (hajatan) url += `hajatan=${hajatan}`;
-
-      window.location.href = url;
     });
   </script>
 </body>

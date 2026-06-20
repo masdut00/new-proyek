@@ -1,0 +1,210 @@
+<!-- ================================================================
+     SHARED HEADER PARTIAL — Duta Interior Gorden
+     Di-load via fetch() oleh assets/js/partials.js
+     ================================================================ -->
+
+<!-- Navbar Pill Styles (only injected once per page) -->
+<style id="navbar-pill-style">
+  /* ── Body offset ── */
+  body { padding-top: 82px; }
+
+  /* ── Wrapper positioner ── */
+  .navbar-pill-wrapper {
+    position: fixed;
+    top: 1.1rem;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+
+  /* ── The pill itself ── */
+  .navbar-pill {
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 100px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+    width: 100%;
+    max-width: 720px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .navbar-pill.scrolled {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ── Brand ── */
+  .np-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    flex-shrink: 0;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+  .np-brand .np-brand-icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .np-brand-text { display: none; }
+  @media (min-width: 400px) {
+    .np-brand-text {
+      display: inline;
+    }
+    .np-brand-text span {
+      background: linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  /* ── Nav links ── */
+  .np-links {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0 0.5rem;
+  }
+  .np-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    text-decoration: none;
+    padding: 0.38rem 0.75rem;
+    border-radius: 100px;
+    transition: background 0.18s ease, color 0.18s ease;
+    white-space: nowrap;
+  }
+  .np-link:hover {
+    background: rgba(92, 96, 245, 0.08);
+    color: #5c60f5;
+  }
+  .np-link.active {
+    background: #0f172a;
+    color: #ffffff;
+  }
+
+  /* ── CTA area ── */
+  .np-cta {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .np-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: white;
+    background: #0f172a;
+    border: none;
+    border-radius: 100px;
+    padding: 0.42rem 1rem;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+  }
+  .np-cta-btn:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    color: white;
+  }
+  .np-cta-btn.primary-cta {
+    background: linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%);
+    box-shadow: 0 4px 12px -2px rgba(92, 96, 245, 0.4);
+  }
+  .np-cta-btn.primary-cta:hover {
+    opacity: 0.92;
+    background: linear-gradient(135deg, #5c60f5 0%, #7d60f5 100%);
+  }
+
+  /* ── Auth container ── */
+  #np-auth { display: flex; align-items: center; }
+
+  /* ── Mobile: hide text links when very small ── */
+  @media (max-width: 359px) {
+    .np-links { display: none; }
+  }
+</style>
+
+<!-- Navbar HTML -->
+<div class="navbar-pill-wrapper" id="navbarWrapper">
+  <nav class="navbar-pill" id="navbarPill" role="navigation" aria-label="Navigasi Utama">
+
+    <!-- Brand -->
+    <a href="/" class="np-brand" id="np-home-brand">
+      <span class="np-brand-icon"><i class="bi bi-shop"></i></span>
+      <span class="np-brand-text">Duta <span>Interior Gorden</span></span>
+    </a>
+
+    <!-- Nav Links -->
+    <div class="np-links">
+      <a href="/" class="np-link" data-navpath="/">Beranda</a>
+      <a href="/katalog.html" class="np-link" data-navpath="/katalog.html">Katalog</a>
+    </div>
+
+    <!-- CTA / Auth -->
+    <div class="np-cta">
+      <div id="np-auth"></div>
+      <a href="https://wa.me/6281234567890" target="_blank" class="np-cta-btn primary-cta" id="np-wa-btn">
+        <i class="bi bi-whatsapp"></i>
+        <span class="d-none d-sm-inline">Konsultasi</span>
+      </a>
+    </div>
+
+  </nav>
+</div>
+
+<!-- Navbar JS (inline, runs after DOM insertion) -->
+<script>
+(function() {
+  // 1. Scroll shadow effect
+  const pill = document.getElementById('navbarPill');
+  window.addEventListener('scroll', function() {
+    if (pill) pill.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // 2. Active nav link detection
+  const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.np-link[data-navpath]').forEach(function(link) {
+    const lp = link.dataset.navpath.replace(/\/$/, '') || '/';
+    if (currentPath === lp || (lp !== '/' && currentPath.startsWith(lp))) {
+      link.classList.add('active');
+    }
+  });
+
+  // 3. Inject admin Dashboard button if logged in
+  //    (auth check done separately by each page's module script)
+  window._npSetAdminBtn = function(show) {
+    const c = document.getElementById('np-auth');
+    if (!c) return;
+    if (show) {
+      c.innerHTML = '<a href="/dashboard.html" class="np-cta-btn" style="background:#5c60f5;box-shadow:0 4px 12px -2px rgba(92,96,245,0.4)"><i class="bi bi-speedometer2"></i><span class="d-none d-md-inline"> Admin</span></a>';
+    }
+  };
+})();
+</script>

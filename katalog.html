@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Produk - Duta Interior Gorden</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .katalog-header {
+      background: linear-gradient(135deg, #5c60f5 0%, #3b3dbb 100%);
+      color: white;
+      padding: 4rem 0 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .katalog-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .filter-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: sticky;
+      top: 90px;  /* offset for floating pill navbar */
+      box-shadow: var(--shadow-sm);
+    }
+    .product-grid-card {
+      transition: var(--transition-spring);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .product-grid-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    .product-grid-img {
+      height: 190px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(92, 96, 245, 0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+    .product-grid-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .product-grid-card:hover .product-grid-img img {
+      transform: scale(1.08);
+    }
+    .badge-cat-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-weight: 700;
+      font-size: 0.7rem;
+      z-index: 5;
+    }
+    .page-link-custom {
+      border-radius: var(--radius-sm);
+      margin: 0 3px;
+      font-weight: 600;
+      color: var(--primary);
+      border: 1px solid var(--border-color);
+      transition: var(--transition-smooth);
+    }
+    .page-link-custom:hover, .page-item.active .page-link-custom {
+      background-color: var(--primary) !important;
+      border-color: var(--primary) !important;
+      color: white !important;
+    }
+    .detail-img-box {
+      height: 300px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, rgba(92, 96, 245, 0.05) 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--primary);
+    }
+    .detail-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .nav-link-cat {
+      display: block;
+      padding: 0.6rem 0.8rem;
+      color: var(--text-body);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-smooth);
+      margin-bottom: 0.25rem;
+    }
+    .nav-link-cat:hover {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+    .nav-link-cat.active {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    /* Responsive adjustment for 2-column mobile products */
+    @media (max-width: 576px) {
+      .product-grid-img {
+        height: 140px;
+      }
+      .col-6-mobile {
+        width: 50% !important;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+      }
+      .col-6-mobile .card-body {
+        padding: 0.75rem !important;
+      }
+      .col-6-mobile .card-title {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      .col-6-mobile .card-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 0.75rem !important;
+      }
+      .col-6-mobile .fs-5 {
+        font-size: 0.95rem !important;
+      }
+      .col-6-mobile .fs-6 {
+        font-size: 0.75rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Blob Background -->
+  <div class="blob-bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
+  <!-- Shared Header Mount -->
+  <div id="header-mount"></div>
+
+  <!-- Banner Header -->
+  <header class="katalog-header">
+    <div class="container px-4 text-center">
+      <h1 class="display-5 fw-800 text-white mb-2" style="letter-spacing: -0.03em;">Eksplorasi Katalog Gorden & Blinds</h1>
+      <p class="lead text-white-50 max-width-600 mx-auto mb-0" style="font-size: 1.05rem;">Temukan pilihan bahan interior terbaik untuk rumah, kantor, atau apartemen Anda dengan harga transparan.</p>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <div class="container px-4 my-5">
+    <div class="row g-4">
+      
+      <!-- Filter Sidebar (Left Panel) -->
+      <aside class="col-12 col-lg-3">
+        <!-- Desktop Placeholder -->
+        <div id="desktopFilterPlaceholder" class="d-none d-lg-block">
+          <div class="filter-card" id="filterContent">
+            <div class="d-none d-lg-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-funnel me-2 text-primary"></i>Penyaringan</h5>
+            </div>
+
+            <!-- Search Input -->
+            <div class="mb-4">
+              <label class="form-label text-uppercase text-light small fw-700">Cari Bahan</label>
+              <div class="search-container">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="form-control" id="searchInput" placeholder="Contoh: blackout amani...">
+              </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-4">
+              <label class="form-label text-uppercase text-light small fw-700">Kategori</label>
+              <nav class="d-flex flex-column" id="categoryNav">
+                <a href="#" class="nav-link-cat active" data-category="all">Semua Kategori</a>
+                <a href="#" class="nav-link-cat" data-category="gorden-blackout">Gorden Blackout</a>
+                <a href="#" class="nav-link-cat" data-category="gorden-dimout">Gorden Dimout</a>
+                <a href="#" class="nav-link-cat" data-category="gorden-standar">Gorden Standar</a>
+                <a href="#" class="nav-link-cat" data-category="vitrace">Vitrace</a>
+                <a href="#" class="nav-link-cat" data-category="roller-blind">Roller Blind</a>
+                <a href="#" class="nav-link-cat" data-category="vertical-blind">Vertical Blind</a>
+                <a href="#" class="nav-link-cat" data-category="rell">Rell & Aksesoris</a>
+                <a href="#" class="nav-link-cat" data-category="kaca-film">Kaca Film</a>
+              </nav>
+            </div>
+
+            <!-- Sorting -->
+            <div>
+              <label class="form-label text-uppercase text-light small fw-700">Urutkan Berdasarkan</label>
+              <select class="form-select" id="sortSelect">
+                <option value="default">Terbaru</option>
+                <option value="price-asc">Harga: Terendah ke Tinggi</option>
+                <option value="price-desc">Harga: Tertinggi ke Rendah</option>
+                <option value="name-asc">Nama: A - Z</option>
+                <option value="name-desc">Nama: Z - A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Products Grid & Pagination (Right Panel) -->
+      <main class="col-12 col-lg-9">
+        <!-- Results info and mobile filter triggers -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <p class="text-muted small mb-0" id="resultCountText">Menampilkan 0 produk</p>
+          <div class="d-lg-none w-100 ms-3" style="max-width: 180px;">
+            <button class="btn btn-outline-primary btn-sm w-100 py-2 d-flex align-items-center justify-content-center gap-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas">
+              <i class="bi bi-funnel-fill"></i> Filter & Urutkan
+            </button>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="row g-3" id="katalogGrid">
+          <div class="col-12 text-center py-5">
+            <span class="spinner-border spinner-border-lg text-primary"></span>
+          </div>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav class="d-flex justify-content-center mt-5" aria-label="Navigasi Katalog">
+          <ul class="pagination pagination-sm" id="paginationContainer">
+            <!-- Injected by script -->
+          </ul>
+        </nav>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Detail Produk Modal -->
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header border-bottom py-3">
+          <h5 class="modal-title fw-bold text-dark" id="modalTitle">Detail Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" id="modalBody">
+          <!-- Injected dynamically -->
+        </div>
+        <div class="modal-footer border-top p-3 justify-content-between">
+          <span class="fs-5 fw-bold text-primary" id="modalPrice">Rp 0 / m</span>
+          <a href="#" target="_blank" class="btn btn-success px-4 py-2 rounded-pill" id="modalWaBtn">
+            <i class="bi bi-whatsapp me-1"></i> Tanya / Pesan via WA
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Footer Mount -->
+  <div id="footer-mount"></div>>
+
+  <!-- Offcanvas Filter Drawer (Mobile Only) -->
+  <div class="offcanvas offcanvas-bottom h-75 d-lg-none" tabindex="-1" id="filterOffcanvas" style="border-radius: var(--radius-lg) var(--radius-lg) 0 0; z-index: 1045;">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold text-dark"><i class="bi bi-funnel-fill text-primary me-2"></i>Penyaringan</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="mobileFilterPlaceholder">
+      <!-- filterContent will be moved here dynamically on mobile -->
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- App Logic -->
+  <script type="module">
+    import { getProdukKatalog } from '/assets/js/app.js';
+    import { isLoggedIn } from '/assets/js/auth.js';
+    import { loadHeader, loadFooter } from '/assets/js/partials.js';
+
+    // DOM References
+    const authBtnContainer = document.getElementById('authBtnContainer');
+    const searchInput = document.getElementById('searchInput');
+    const categoryNav = document.getElementById('categoryNav');
+    const sortSelect = document.getElementById('sortSelect');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    const katalogGrid = document.getElementById('katalogGrid');
+    const resultCountText = document.getElementById('resultCountText');
+    const paginationContainer = document.getElementById('paginationContainer');
+
+    // Filter Repositioning References
+    const filterContent = document.getElementById('filterContent');
+    const desktopFilterPlaceholder = document.getElementById('desktopFilterPlaceholder');
+    const mobileFilterPlaceholder = document.getElementById('mobileFilterPlaceholder');
+
+    // Modal References
+    const detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalWaBtn = document.getElementById('modalWaBtn');
+
+    // App State
+    let productsList = [];
+    let filteredProducts = [];
+    let currentPage = 1;
+    const itemsPerPage = 12;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load shared header & footer
+      await loadHeader();
+      await loadFooter();
+
+      // Init filter repositioning
+      repositionFilters();
+      window.addEventListener('resize', repositionFilters);
+
+      // Admin Dashboard shortcut if logged in
+      const logged = await isLoggedIn();
+      if (logged && window._npSetAdminBtn) window._npSetAdminBtn(true);
+
+      // Fetch all products
+      try {
+        productsList = await getProdukKatalog();
+        
+        // 3. Read initial category filter from URL search parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCat = urlParams.get('category');
+        if (urlCat) {
+          setActiveCategory(urlCat);
+        }
+
+        // Apply initial filters
+        applyFiltersAndRender();
+      } catch (err) {
+        console.error("Gagal meload katalog:", err);
+        katalogGrid.innerHTML = `
+          <div class="col-12 text-center py-5 text-danger">
+            <i class="bi bi-exclamation-triangle fs-1 d-block mb-2"></i>
+            Gagal memuat katalog produk. Silakan hubungi admin.
+          </div>
+        `;
+      }
+
+      // 4. Bind Listeners
+      searchInput.addEventListener('input', () => {
+        currentPage = 1;
+        applyFiltersAndRender();
+      });
+
+      categoryNav.querySelectorAll('.nav-link-cat').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          categoryNav.querySelectorAll('.nav-link-cat').forEach(l => l.classList.remove('active'));
+          e.target.classList.add('active');
+          currentPage = 1;
+          applyFiltersAndRender();
+
+          // Close mobile offcanvas filter drawer on selection
+          const offcanvasEl = document.getElementById('filterOffcanvas');
+          if (offcanvasEl && window.innerWidth < 992) {
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            if (bsOffcanvas) {
+              bsOffcanvas.hide();
+            }
+          }
+        });
+      });
+
+      sortSelect.addEventListener('change', () => {
+        currentPage = 1;
+        applyFiltersAndRender();
+
+        // Close mobile offcanvas filter drawer on sort change
+        const offcanvasEl = document.getElementById('filterOffcanvas');
+        if (offcanvasEl && window.innerWidth < 992) {
+          const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+          if (bsOffcanvas) {
+            bsOffcanvas.hide();
+          }
+        }
+      });
+
+      if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          setActiveCategory('all');
+          sortSelect.value = 'default';
+          currentPage = 1;
+          applyFiltersAndRender();
+        });
+      }
+    });
+
+    // Setup active category visual class
+    function setActiveCategory(catId) {
+      categoryNav.querySelectorAll('.nav-link-cat').forEach(l => {
+        if (l.dataset.category === catId) {
+          l.classList.add('active');
+        } else {
+          l.classList.remove('active');
+        }
+      });
+    }
+
+    // Filter, Sort, and Paginate Products
+    function applyFiltersAndRender() {
+      const searchVal = searchInput.value.toLowerCase().trim();
+      const activeLink = categoryNav.querySelector('.nav-link-cat.active');
+      const categoryVal = activeLink ? activeLink.dataset.category : 'all';
+      const sortVal = sortSelect.value;
+
+      // Filter by Category and Search
+      filteredProducts = productsList.filter(prod => {
+        const matchesSearch = prod.nama.toLowerCase().includes(searchVal) || 
+                              (prod.deskripsi && prod.deskripsi.toLowerCase().includes(searchVal));
+        const matchesCategory = categoryVal === 'all' || prod.kategori_id === categoryVal;
+        return matchesSearch && matchesCategory;
+      });
+
+      // Sort
+      if (sortVal === 'price-asc') {
+        filteredProducts.sort((a, b) => a.harga - b.harga);
+      } else if (sortVal === 'price-desc') {
+        filteredProducts.sort((a, b) => b.harga - a.harga);
+      } else if (sortVal === 'name-asc') {
+        filteredProducts.sort((a, b) => a.nama.localeCompare(b.nama));
+      } else if (sortVal === 'name-desc') {
+        filteredProducts.sort((a, b) => b.nama.localeCompare(a.nama));
+      }
+
+      resultCountText.textContent = `Menampilkan ${filteredProducts.length} produk`;
+
+      renderPage();
+      renderPaginationControls();
+    }
+
+    // Render paginated slice of products
+    function renderPage() {
+      if (filteredProducts.length === 0) {
+        katalogGrid.innerHTML = `
+          <div class="col-12 text-center py-5 text-muted">
+            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+            Tidak ada produk yang cocok dengan pencarian Anda.
+          </div>
+        `;
+        return;
+      }
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.length);
+      const pageProducts = filteredProducts.slice(startIndex, endIndex);
+
+      katalogGrid.innerHTML = pageProducts.map(prod => {
+        let badgeClass = 'bg-primary';
+        if (prod.kategori.includes('Dimout')) badgeClass = 'bg-warning text-dark';
+        if (prod.kategori.includes('Vitrace')) badgeClass = 'bg-info text-dark';
+        if (prod.kategori.includes('Blind')) badgeClass = 'bg-dark';
+        if (prod.kategori.includes('Rell') || prod.kategori.includes('Aksesoris')) badgeClass = 'bg-secondary';
+        if (prod.kategori.includes('Kaca Film')) badgeClass = 'bg-danger';
+
+        const imgHtml = prod.gambar_url 
+          ? `<img src="${prod.gambar_url}" alt="${prod.nama}">`
+          : `<i class="bi ${prod.icon || 'bi-window-split'} display-4"></i>`;
+
+        return `
+          <div class="col-6 col-6-mobile col-md-4 col-lg-4">
+            <div class="product-grid-card" onclick="window.showProductDetail('${prod.id}')">
+              <div class="product-grid-img">
+                <span class="badge ${badgeClass} badge-cat-tag">${prod.kategori}</span>
+                ${imgHtml}
+              </div>
+              <div class="card-body p-3 d-flex flex-column justify-content-between flex-grow-1" style="min-height: 140px;">
+                <div>
+                  <h5 class="card-title text-dark mb-1 fw-bold" style="font-size: 0.985rem; line-height: 1.3;">${prod.nama}</h5>
+                  <p class="card-text text-muted small mb-2" style="font-size: 0.8rem; line-height: 1.4;">${prod.deskripsi || 'Tidak ada deskripsi.'}</p>
+                </div>
+                <div class="pt-2 border-top border-light mt-auto">
+                  <span class="text-primary fw-bold fs-5">Rp ${prod.harga.toLocaleString('id-ID')} <small class="text-muted fs-6">/ ${prod.satuan}</small></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render pagination buttons
+    function renderPaginationControls() {
+      const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+      if (totalPages <= 1) {
+        paginationContainer.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+      
+      // Prev Button
+      html += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <button class="page-link page-link-custom" onclick="window.changeCatalogPage(${currentPage - 1})"><i class="bi bi-chevron-left"></i></button>
+        </li>
+      `;
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        html += `
+          <li class="page-item ${currentPage === i ? 'active' : ''}">
+            <button class="page-link page-link-custom" onclick="window.changeCatalogPage(${i})">${i}</button>
+          </li>
+        `;
+      }
+
+      // Next Button
+      html += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <button class="page-link page-link-custom" onclick="window.changeCatalogPage(${currentPage + 1})"><i class="bi bi-chevron-right"></i></button>
+        </li>
+      `;
+
+      paginationContainer.innerHTML = html;
+    }
+
+    // Global Functions bound to window for inline onclick attributes
+    window.changeCatalogPage = function(pageNumber) {
+      currentPage = pageNumber;
+      applyFiltersAndRender();
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    };
+
+    window.showProductDetail = function(id) {
+      const prod = productsList.find(p => p.id === id);
+      if (!prod) return;
+
+      modalTitle.textContent = prod.nama;
+      
+      const imgHtml = prod.gambar_url 
+        ? `<img src="${prod.gambar_url}" alt="${prod.nama}">`
+        : `<i class="bi ${prod.icon || 'bi-window-split'} display-1"></i>`;
+
+      modalBody.innerHTML = `
+        <div class="row g-3">
+          <div class="col-12 text-center mb-2">
+            <div class="detail-img-box">
+              ${imgHtml}
+            </div>
+          </div>
+          <div class="col-12">
+            <span class="badge bg-primary-light text-primary px-3 py-2 rounded-pill mb-2">${prod.kategori}</span>
+            <p class="text-body mt-2 mb-0" style="line-height: 1.6;">${prod.deskripsi || 'Tidak ada deskripsi detail untuk produk ini.'}</p>
+          </div>
+        </div>
+      `;
+
+      modalPrice.innerHTML = `Rp ${prod.harga.toLocaleString('id-ID')} <small class="text-muted fs-6">/ ${prod.satuan}</small>`;
+
+      // Prefill WhatsApp order text
+      const waMsg = encodeURIComponent(
+        `Halo Duta Interior Gorden, saya tertarik dengan produk *${prod.nama}* (${prod.kategori}) seharga Rp ${prod.harga.toLocaleString('id-ID')} / ${prod.satuan}.\n\nBisa tolong berikan informasi ketersediaan bahan ini?`
+      );
+      modalWaBtn.href = `https://wa.me/6281234567890?text=${waMsg}`;
+
+      detailModal.show();
+    };
+
+    // Responsive DOM reposition for Filter Card
+    function repositionFilters() {
+      if (window.innerWidth < 992) {
+        if (filterContent.parentNode !== mobileFilterPlaceholder) {
+          mobileFilterPlaceholder.appendChild(filterContent);
+        }
+      } else {
+        if (filterContent.parentNode !== desktopFilterPlaceholder) {
+          desktopFilterPlaceholder.appendChild(filterContent);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
